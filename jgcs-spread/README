@@ -1,0 +1,58 @@
+Spread implementation of jGCS - Group Communication Service
+Copyright (c) 2006, Universidade do Minho
+All rights reserved.
+
+1. Overview
+-----------
+
+The jGCS library provides a generic interface for Group
+Communication. This interface can be used by applications that need
+primitives from simple IP Multicast group communication to virtual
+synchrony or atomic broadcast. Its a common interface to several
+existing toolkits that provide different APIs.
+
+This library contains a Spread/FlushSpread implementation, that provides
+group communication with the Quality of Service defined on
+configuration. This means that with this implementation, the
+application can use group communication with membership, and several
+different properties for message delivery. Please see the Spread home
+page for further details: http://www.spread.org
+
+This implementation is based on the (now obsolete) Java Native
+Interface (JNI) binding to Spread and FlushSpread created by
+Jose' Pereira.
+
+2. Compile
+----------
+
+To compile this distribution use the Apache Ant and Ivy. Targets are:
+
+* publish - resolve dependencies, build, and install jar files in local repository
+* clean - remove all generated and downloaded files
+
+Then compile the native binding in directory csrc/ using make. Edit
+the Makefile and change it according to your local installation of
+Java, Spread and FlushSpread.
+
+3. Credits
+----------
+
+The Spread implementation of the jGCS service was developed by:
+
+ - Jose' Pereira <jop@di.uminho.pt>
+ - Nuno Carvalho <nunomrc@di.fc.ul.pt>
+
+Research leading to this implementation was partially funded by the
+European Union. People involved were N. Carvalho, J. Pereira,
+L. Rodrigues and R. Oliveira.
+
+4. License
+----------
+
+This library is released under a BSD-style licence,
+See COPYING for licensing details.
+
+5. Contacts
+-----------
+
+For more information, see http://jgcs.sf.net.

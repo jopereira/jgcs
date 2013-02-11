@@ -1,0 +1,25 @@
+This package demonstrates how to build protocol independent applications
+using JNDI. (*) denotes the file that needs to be changed to switch protocol
+implementations. By defaul, examples use JGroups.
+
+Run each test as follows:
+
+ 1. Baseline: Hardcoded configuration
+ 
+ 	Files:
+ 		- src/net/sf/jgcs/test/HardcodedTest.java (*)
+ 		
+ 	Howto:
+ 		- ant
+ 	  - ant run.hardcoded
+ 	  
+ 2. JNDI: Lookup dependencies in a directory
+ 
+ 	Files:
+ 		- src/net/sf/jgcs/test/JNDITest.java
+ 		- jndi.properties
+ 		- config/default.properties (*)
+ 		 		
+ 	Howto:
+ 		- ant
+ 	  - ant run.jndi

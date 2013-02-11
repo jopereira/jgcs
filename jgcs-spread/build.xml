@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jgcs" basedir="." default="build">
+	<import file="../common/targets.xml" as=""/>
+</project>

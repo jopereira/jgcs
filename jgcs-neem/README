@@ -1,0 +1,60 @@
+NeEM implementation of jGCS - Group Communication Service
+Copyright (c) 2006, Universidade do Minho
+All rights reserved.
+
+1. Overview
+-----------
+
+The jGCS library provides a generic interface for Group
+Communication. This interface can be used by applications that need
+primitives from simple IP Multicast group communication to virtual
+synchrony or atomic broadcast. Its a common interface to several
+existing toolkits that provide different APIs.
+
+This library contains a NeEM implementation, that provides group
+communication based on epidemic broadcast. Please see the NeEM home
+page for more details: http://neem.sf.net 
+
+2. Compile
+----------
+
+To compile this distribution use the Apache Ant and Ivy. Targets are:
+
+* publish - resolve dependencies, build, and install jar files in local repository
+* clean - remove all generated and downloaded files
+
+3. Credits
+----------
+
+The NeEM implementation of the jGCS service was developed by:
+
+ - Jose' Pereira <jop@di.uminho.pt>
+ - Nuno Carvalho <nunomrc@di.fc.ul.pt>
+
+Research leading to this implementation was partially funded by the
+European Union. People involved were N. Carvalho, J. Pereira,
+L. Rodrigues and R. Oliveira.
+
+4. License
+----------
+
+This library is released using the BSD licence,
+Copyright (C) 2006 Jose' Pereira, Universidade do Minho.
+See COPYING for licensing details.
+
+
+5. Contacts
+-----------
+
+For more information, contact Nuno Carvalho.
+
+Postal address:
+
+LASIGE, Departamento de Informatica, 
+Universidade de Lisboa Bloco C6, Faculdade de Ciências, 
+Campo Grande, 1749-016 Lisboa, 
+Portugal.
+
+email:
+jgcs@lasige.di.fc.ul.pt
+

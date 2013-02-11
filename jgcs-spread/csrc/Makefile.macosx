@@ -1,0 +1,29 @@
+# Set as required for your system:
+
+JDK=/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home
+
+LDFLAGS=-lspread
+#CFLAGS=-dynamiclib -I $(JDK)/include -I $(JDK)/include/linux
+
+CFLAGS=-bundle -I $(JDK)/include -I $(JDK)/include/linux
+
+all: libspjgcs.jnilib
+
+libspjgcs.jnilib: net_sf_jgcs_spread_jni_Mailbox.h\
+                net_sf_jgcs_spread_jni_SpMailbox.h\
+                net_sf_jgcs_spread_jni_FlMailbox.h\
+                jnistubs.c
+	gcc $(CFLAGS) jnistubs.c -o libspjgcs.jnilib $(LDFLAGS)
+
+net_sf_jgcs_spread_jni_Mailbox.h: ../bin/net/sf/jgcs/spread/jni/Mailbox.class
+	javah -classpath ../bin/ -force net.sf.jgcs.spread.jni.Mailbox
+
+net_sf_jgcs_spread_jni_SpMailbox.h: ../bin/net/sf/jgcs/spread/jni/SpMailbox.class
+	javah -classpath ../bin/ -force net.sf.jgcs.spread.jni.SpMailbox
+
+net_sf_jgcs_spread_jni_FlMailbox.h: ../bin/net/sf/jgcs/spread/jni/FlMailbox.class
+	javah -classpath ../bin/ -force net.sf.jgcs.spread.jni.FlMailbox
+
+clean:
+	rm -f *.h *.so *.jnilib *~
+

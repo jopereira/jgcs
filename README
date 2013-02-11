@@ -1,0 +1,19 @@
+
+This is a simplified distribution of jGCS, the generic interface for 
+group communication in Java. The original and more information can be 
+found at http://jgcs.sf.net. This API is unchanged. Main changes are: 
+new build system with Ivy for dependency resolution and minor changes 
+to bindings to use updated versions of protocols. 
+
+To compile and use:
+
+ - execute ant publish in jgcs/
+ - execute ant publish in desired bindings, e.g. jgcs-jgroups/
+ 
+Desired artifacts are then available at your local Ivy repository. 
+See samples/ directory for an usage example.
+
+Current source is at https://github.com/jopereira/jgcs.
+
+Licenses for each sub-package differ and can be found in each 
+sub-directory.

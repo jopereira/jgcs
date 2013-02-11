@@ -1,0 +1,11 @@
+<ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
+    <info organisation="net.sf.jgcs" module="jgcs" revision="0.6.2"/>
+	<publications>
+		<artifact name="jgcs" ext="jar"/>
+		<artifact name="jgcs" type="javadoc" ext="jar" m:classifier="javadoc"/>
+		<artifact name="jgcs" type="source" ext="jar" m:classifier="sources"/>
+	</publications>
+    <dependencies>
+		<dependency org="log4j" name="log4j" rev="1.2.16"/>
+    </dependencies>
+</ivy-module>

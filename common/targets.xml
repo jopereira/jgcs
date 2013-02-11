@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant">
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="classes" location="${build}/classes"/>
+    <property name="api" location="${build}/api"/>
+    <property name="dist" location="${build}/dist"/>
+    <property name="lib" location="lib"/>
+
+	<path id="project.classpath">
+    	<fileset dir="${lib}">
+    		<include name="*"/>
+    	</fileset>
+    </path>
+
+    <target name="init">
+		<ivy:retrieve />
+		<basename property="jarname" file="${basedir}"/>
+    	<mkdir dir="${build}"/>    	
+    	<mkdir dir="${classes}"/>    	
+    	<mkdir dir="${api}"/>    	
+    	<mkdir dir="${dist}"/>    	
+    </target>
+
+    <target name="compile" depends="init">
+        <javac destdir="${classes}">
+            <src path="${src}"/>
+            <classpath refid="project.classpath"/>
+        </javac>
+    </target>
+	
+    <target name="build" depends="compile,doc" description="Creates jar files">
+        <jar destfile="${dist}/${jarname}.jar" basedir="${classes}"/>
+        <jar destfile="${dist}/${jarname}-javadoc.jar" basedir="${api}"/>
+        <jar destfile="${dist}/${jarname}-sources.jar" basedir="${src}"/>
+    </target>
+
+    <target name="doc" depends="init">
+        <javadoc sourcepath="${src}" destdir="${api}" >
+        	<header>Documentation</header>
+        	<doctitle>- Group Communication Service</doctitle>
+        	<bottom>
+        		<![CDATA[Copyright (c) 2006-2008, FFCUL and U. Uminho<BR>For updates and related information please see <A HREF="http://jgcs.sf.net">home page</A>]]>
+        	</bottom>
+	        <packageset dir="${src}" >
+        		<include name="**"/>
+        	</packageset>
+            <classpath refid="project.classpath"/>
+        </javadoc>
+    </target>
+
+	<target name="publish" depends="build" description="Publish artifacts to local Ivy repo">
+		<ivy:publish resolver="local" overwrite="true">
+			<artifacts pattern="build/dist/[artifact](-[classifier]).[ext]"/>
+		</ivy:publish>
+	</target>
+
+    <target name="clean" description="Cleans build directory">
+    	<delete dir="${build}"/>
+    	<delete dir="${lib}"/>
+    </target>
+
+</project>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jgcs" basedir="." default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="classes" location="${build}/classes"/>
+    <property name="dist" location="${build}/dist"/>
+    <property name="lib" location="lib"/>
+
+	<path id="project.classpath">
+    	<fileset dir="${lib}">
+    		<include name="*"/>
+    	</fileset>
+    	<fileset dir="${dist}">
+    		<include name="*"/>
+    	</fileset>
+    </path>
+
+    <target name="init">
+		<ivy:retrieve />
+		<basename property="jarname" file="${basedir}"/>
+    	<mkdir dir="${build}"/>    	
+    	<mkdir dir="${classes}"/>    	
+    	<mkdir dir="${dist}"/>    	
+    </target>
+
+    <target name="compile" depends="init">
+        <javac destdir="${classes}">
+            <src path="${src}"/>
+            <classpath refid="project.classpath"/>
+        </javac>
+    </target>
+	
+    <target name="build" depends="compile" description="Build jar files">
+        <jar destfile="${dist}/${jarname}.jar">
+			<fileset dir="${classes}"/>
+			<fileset file="jndi.properties"/>
+		</jar>
+    </target>
+
+	<target name="run.hardcoded" depends="build" description="Run sample with hardcoded configuration">
+		<java classname="net.sf.jgcs.test.HardcodedTest" fork="true" classpathref="project.classpath"/>
+	</target>
+
+	<target name="run.jndi" depends="build" description="Run sample with JNDI configuration">
+		<java classname="net.sf.jgcs.test.JNDITest" fork="true" classpathref="project.classpath"/>
+	</target>
+
+    <target name="clean" description="Cleans build directory">
+    	<delete dir="${build}"/>
+    	<delete dir="${lib}"/>
+    </target>
+
+</project>
