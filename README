@@ -1,9 +1,12 @@
 
 This is a simplified distribution of jGCS, the generic interface for 
-group communication in Java. The original and more information can be 
-found at http://jgcs.sf.net. This API is unchanged. Main changes are: 
-new build system with Ivy for dependency resolution and minor changes 
-to bindings to use updated versions of protocols. 
+group communication in Java, providing access to multiple toolkits, 
+such as Appia, JGroups or Spread, through a common interface.
+
+The original SVN repository and more information can be found at 
+http://jgcs.sf.net. Main changes are: new build system with Ivy for 
+dependency resolution and minor changes to bindings to use updated 
+versions of protocols. The API is unchanged from version 0.6.1.
 
 To compile and use:
 
