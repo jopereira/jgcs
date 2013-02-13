@@ -1,0 +1,54 @@
+Corosync/CPG implementation of jGCS - Group Communication Service
+Copyright (C) 2013, Universidade do Minho
+All rights reserved.
+
+1. Overview
+-----------
+
+The jGCS library provides a generic interface for Group
+Communication. This interface can be used by applications that need
+primitives from simple IP Multicast group communication to virtual
+synchrony or atomic broadcast. Its a common interface to several
+existing toolkits that provide different APIs.
+
+This library contains a Corosync Closed Process Group (CPG) 
+implementation, that provides group communication with the Quality of 
+Service defined on configuration. This means that with this 
+implementation, the application can use group communication with 
+membership, and several different properties for message delivery. 
+Please see the Corosync home page for further details: 
+http://www.corosync.org.
+
+2. Compile
+----------
+
+To compile this distribution use the Apache Ant and Ivy. Targets are:
+
+* publish - resolve dependencies, build, and install jar files in local repository
+* clean - remove all generated and downloaded files
+
+Then compile the native binding in directory csrc/ using make. Edit
+the Makefile and change it according to your local installation of
+Java and Corosync.
+
+WARNING: Due to the large stack used by cpg_dispatch() in version 2.3, 
+you need to use something like -Xss65536k when invoking the JVM. 
+Otherwise, you'll get segmentation faults and other weird errors.
+
+3. Credits
+----------
+
+The Corosync implementation of the jGCS service was developed by:
+
+ - Jose' Pereira <jop@di.uminho.pt>
+
+4. License
+----------
+
+This library is released under a BSD-style licence,
+See COPYING for licensing details.
+
+5. Contacts
+-----------
+
+For more information, see https://github.com/jopereira/jgcs.
