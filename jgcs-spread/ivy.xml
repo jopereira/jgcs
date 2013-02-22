@@ -3,7 +3,7 @@
 	<publications>
 		<artifact name="jgcs-spread" type="jar" ext="jar"/>
 		<artifact name="jgcs-spread" type="javadoc" ext="jar" m:classifier="javadoc"/>
-		<artifact name="jgcs-spread" type="sources" ext="jar" m:classifier="sources"/>
+		<artifact name="jgcs-spread" type="source" ext="jar" m:classifier="sources"/>
 	</publications>
     <dependencies>
 		<dependency org="net.sf.jgcs" name="jgcs" rev="0.6.3-SNAPSHOT"/>

@@ -3,7 +3,7 @@
 	<publications>
 		<artifact name="jgcs-corosync" type="jar" ext="jar"/>
 		<artifact name="jgcs-corosync" type="javadoc" ext="jar" m:classifier="javadoc"/>
-		<artifact name="jgcs-corosync" type="sources" ext="jar" m:classifier="sources"/>
+		<artifact name="jgcs-corosync" type="source" ext="jar" m:classifier="sources"/>
 	</publications>
     <dependencies>
 		<dependency org="net.sf.jgcs" name="jgcs" rev="0.6.3-SNAPSHOT"/>

@@ -3,7 +3,7 @@
 	<publications>
 		<artifact name="jgcs-neem" type="jar" ext="jar"/>
 		<artifact name="jgcs-neem" type="javadoc" ext="jar" m:classifier="javadoc"/>
-		<artifact name="jgcs-neem" type="sources" ext="jar" m:classifier="sources"/>
+		<artifact name="jgcs-neem" type="source" ext="jar" m:classifier="sources"/>
 	</publications>
     <dependencies>
 		<dependency org="net.sf.jgcs" name="jgcs" rev="0.6.3-SNAPSHOT"/>
