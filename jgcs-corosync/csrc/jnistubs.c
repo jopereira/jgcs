@@ -29,6 +29,7 @@ static jfieldID fid_CPG_callbacks;
 
 static jmethodID mid_CPG_deliver;
 static jmethodID mid_CPG_confchg;
+static jmethodID mid_CPG_ringchg;
 
 static jmethodID mid_CPG_new_Address;
 
@@ -41,10 +42,11 @@ static void setup(JNIEnv *env) {
 
 	clazz=(*env)->FindClass(env, "net/sf/jgcs/corosync/jni/ClosedProcessGroup$Callbacks");
 	mid_CPG_deliver=(*env)->GetMethodID(env, clazz, "deliver", "(Ljava/lang/String;II[B)V");
-	mid_CPG_confchg=(*env)->GetMethodID(env, clazz, "configurationChange", "(Ljava/lang/String;[Lnet/sf/jgcs/corosync/jni/ClosedProcessGroup$Address;[Lnet/sf/jgcs/corosync/jni/ClosedProcessGroup$Address;[Lnet/sf/jgcs/corosync/jni/ClosedProcessGroup$Address;)V");
+	mid_CPG_confchg=(*env)->GetMethodID(env, clazz, "configurationChange", "(Ljava/lang/String;[Lnet/sf/jgcs/corosync/CPGAddress;[Lnet/sf/jgcs/corosync/CPGAddress;[I[Lnet/sf/jgcs/corosync/CPGAddress;[I)V");
+	mid_CPG_ringchg=(*env)->GetMethodID(env, clazz, "ringChange", "(IJ[I)V");
 
-	clazz=(*env)->FindClass(env, "net/sf/jgcs/corosync/jni/ClosedProcessGroup$Address");
-	mid_CPG_new_Address=(*env)->GetMethodID(env, clazz, "<init>", "(III)V");
+	clazz=(*env)->FindClass(env, "net/sf/jgcs/corosync/CPGAddress");
+	mid_CPG_new_Address=(*env)->GetMethodID(env, clazz, "<init>", "(II)V");
 }
 
 /*
@@ -76,11 +78,19 @@ static void throw_CorosyncException(JNIEnv *env, cs_error_t error) {
 
 static jarray make_member_array(JNIEnv *env, const struct cpg_address *member_list, size_t member_list_entries) {
 	int i;
-	jclass clazz=(*env)->FindClass(env, "net/sf/jgcs/corosync/jni/ClosedProcessGroup$Address");
+	jclass clazz=(*env)->FindClass(env, "net/sf/jgcs/corosync/CPGAddress");
 	jarray members = (*env)->NewObjectArray(env, member_list_entries, clazz, NULL);
 	for(i=0;i<member_list_entries;i++)
 		(*env)->SetObjectArrayElement(env, members, i, (*env)->NewObject(env, clazz, mid_CPG_new_Address,
-			member_list[i].nodeid, member_list[i].pid, member_list[i].reason));
+			member_list[i].nodeid, member_list[i].pid));
+	return members;
+}
+
+static jarray make_reason_array(JNIEnv *env, const struct cpg_address *member_list, size_t member_list_entries) {
+	int i;
+	jarray members = (*env)->NewIntArray(env, member_list_entries);
+	for(i=0;i<member_list_entries;i++)
+		(*env)->SetIntArrayRegion(env, members, i, 1, (int*)&member_list[i].reason);
 	return members;
 }
 
@@ -127,7 +137,29 @@ static void cpg_confchg(
 		group_to_jstring(env, group_name),
 		make_member_array(env, member_list, member_list_entries), 
 		make_member_array(env, left_list, left_list_entries), 
-		make_member_array(env, joined_list, joined_list_entries));
+		make_reason_array(env, left_list, left_list_entries), 
+		make_member_array(env, joined_list, joined_list_entries),
+		make_reason_array(env, joined_list, joined_list_entries));
+
+	(*env)->PopLocalFrame(env, NULL);
+}
+
+static void cpg_ringchg(
+        cpg_handle_t handle,
+		struct cpg_ring_id ring_id,
+		uint32_t member_list_entries,
+		const uint32_t *member_list) {
+
+	struct context* jctx = get_context(handle);
+	JNIEnv *env = jctx->env;
+
+	(*env)->PushLocalFrame(env, 10);
+
+	jarray members = (*env)->NewIntArray(env, member_list_entries);
+	(*env)->SetIntArrayRegion(env, members, 0, member_list_entries, (int*)member_list);
+
+	jobject cb = (*env)->GetObjectField(env, jctx->self, fid_CPG_callbacks);
+	(*env)->CallVoidMethod(env, cb, mid_CPG_ringchg, ring_id.nodeid, ring_id.seq, members);
 
 	(*env)->PopLocalFrame(env, NULL);
 }
@@ -138,7 +170,7 @@ JNIEXPORT void JNICALL Java_net_sf_jgcs_corosync_jni_ClosedProcessGroup__1initia
 		CPG_MODEL_V1,
 		cpg_deliver,
 		cpg_confchg,
-		NULL,
+		cpg_ringchg,
 		0
 	};
 

@@ -12,9 +12,9 @@
 
 package net.sf.jgcs.corosync.jni;
 
-import java.io.IOException;
+import net.sf.jgcs.JGCSException;
 
-public class CorosyncException extends IOException {
+public class CorosyncException extends JGCSException {
 	private CorosyncException(String string) {
 		super(string);
 	}	

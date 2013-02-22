@@ -12,6 +12,9 @@
 
 package net.sf.jgcs.corosync.jni;
 
+import net.sf.jgcs.corosync.CPGAddress;
+import net.sf.jgcs.corosync.CPGRingID;
+
 public class ClosedProcessGroup {
 	private long handle;
 	private Callbacks callbacks;
@@ -48,6 +51,7 @@ public class ClosedProcessGroup {
 	public native void multicast(int guarantee, byte[] msg) throws CorosyncException;
 	
 	public native int getLocalNodeId() throws CorosyncException;
+	public native int getProcessId();
 	
 	public void close() throws CorosyncException {
 		_finalize();
@@ -58,65 +62,11 @@ public class ClosedProcessGroup {
 	public static final int CPG_REASON_NODEDOWN = 3;
 	public static final int CPG_REASON_NODEUP = 4;
 	public static final int CPG_REASON_PROCDOWN = 5;
-
-	public static class Address {
-		private int nodeid;
-		private int pid;
-		private int reason;
-
-		public Address(int nodeid, int pid, int reason) {
-			super();
-			this.nodeid = nodeid;
-			this.pid = pid;
-			this.reason = reason;
-		}
-
-		public int getNodeid() {
-			return nodeid;
-		}
-
-		public int getPid() {
-			return pid;
-		}
-
-		public int getReason() {
-			return reason;
-		}
-		
-		@Override
-		public String toString() {
-			return "("+nodeid+","+pid+")";
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + nodeid;
-			result = prime * result + pid;
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Address other = (Address) obj;
-			if (nodeid != other.nodeid)
-				return false;
-			if (pid != other.pid)
-				return false;
-			return true;
-		}
-	}
 	
 	public static interface Callbacks {
 		public void deliver(String group, int nodeid, int pid, byte[] msg);
-		public void configurationChange(String group, Address[] members, Address[] left, Address[] joined);
+		public void configurationChange(String group, CPGAddress[] members, CPGAddress[] left, int[] lreason, CPGAddress[] joined, int[] jreason);
+		public void ringChange(int nodeid, long seq, int[] nodes);
 	};
 	
 	static {
