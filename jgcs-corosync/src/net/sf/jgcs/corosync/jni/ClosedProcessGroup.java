@@ -13,7 +13,6 @@
 package net.sf.jgcs.corosync.jni;
 
 import net.sf.jgcs.corosync.CPGAddress;
-import net.sf.jgcs.corosync.CPGRingID;
 
 public class ClosedProcessGroup {
 	private long handle;
