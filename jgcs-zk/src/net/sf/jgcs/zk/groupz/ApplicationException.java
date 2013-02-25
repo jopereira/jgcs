@@ -16,6 +16,8 @@
 
 package net.sf.jgcs.zk.groupz;
 
+import net.sf.jgcs.zk.ZKException;
+
 /**
  * Wrapped application exception. An application exception during a group
  * call back (e.g. install or receive) can be wrapped with this class and
@@ -24,7 +26,7 @@ package net.sf.jgcs.zk.groupz;
  * 
  * @author jop
  */
-public class ApplicationException extends GroupException {
+public class ApplicationException extends ZKException {
 	/**
 	 * Wrap an exception.
 	 * 

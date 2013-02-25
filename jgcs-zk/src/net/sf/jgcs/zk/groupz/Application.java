@@ -16,6 +16,8 @@
 
 package net.sf.jgcs.zk.groupz;
 
+import net.sf.jgcs.zk.ZKException;
+
 /**
  * Application callbacks for group communication. The application must
  * implement this interface to handle group events. Any exceptions thrown
@@ -27,26 +29,26 @@ public interface Application {
 	/**
 	 * Handle a message.
 	 * @param data raw message data, as sent by a process
-	 * @throws GroupException an exception that might occur while trying to
+	 * @throws ZKException an exception that might occur while trying to
 	 * perform other group operations
 	 */
-	public void receive(byte[] data) throws GroupException;
+	public void receive(byte[] data) throws ZKException;
 	
 	/**
 	 * Handle a new view.
 	 * @param vid a monotonically increasing view indentifier
 	 * @param members the current members of the group, or null if the process
 	 * has been excluded
-	 * @throws GroupException an exception that might occur while trying to
+	 * @throws ZKException an exception that might occur while trying to
 	 * perform other group operations
 	 */
-	public void install(int vid, String[] members) throws GroupException;
+	public void install(int vid, String[] members) throws ZKException;
 	
 	/**
 	 * Prepare for a new view. A process should stop sending messages and
 	 * then call blockOk() to allow the installation of a new view to proceed.
-	 * @throws GroupException an exception that might occur while trying to
+	 * @throws ZKException an exception that might occur while trying to
 	 * perform other group operations
 	 */
-	public void block() throws GroupException;
+	public void block() throws ZKException;
 }

@@ -14,9 +14,9 @@
    limitations under the License.
 */
 
-package net.sf.jgcs.zk.groupz;
+package net.sf.jgcs.zk;
 
-import java.io.IOException;
+import net.sf.jgcs.JGCSException;
 
 /**
  * Group communication exception. Any exception within the group
@@ -25,8 +25,8 @@ import java.io.IOException;
  * 
  * @author jop
  */
-public class GroupException extends IOException {
-	GroupException(String message, Throwable cause) {
+public class ZKException extends JGCSException {
+	public ZKException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

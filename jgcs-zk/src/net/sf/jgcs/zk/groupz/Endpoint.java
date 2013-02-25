@@ -19,6 +19,8 @@ package net.sf.jgcs.zk.groupz;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.jgcs.zk.ZKException;
+
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
@@ -57,20 +59,14 @@ public class Endpoint {
 	 * 
 	 * @param gid a group identifier
 	 * @param cb application callbacks
-	 * @throws GroupException if a local ZooKeeper server cannot be used
+	 * @throws ZKException if a local ZooKeeper server cannot be used
 	 */
-	public Endpoint(String gid, Application cb) throws GroupException {
-		try {
-			this.zk=new ZooKeeper("localhost", 3000, null);
-			this.path=root+"/group/"+gid;
-			this.app=cb;
-			this.state=State.CONNECTED;
-			logger.info("created endpoint on group "+gid);
-		} catch(Exception e) {
-			GroupException ge=new GroupException("cannot connect to ZooKeeper", e);
-			cleanup(ge);
-			throw ge;
-		}
+	public Endpoint(ZooKeeper zk, String gid, Application cb) {
+		this.zk=zk;
+		this.path=root+"/group/"+gid;
+		this.app=cb;
+		this.state=State.CONNECTED;
+		logger.info("created endpoint on group "+gid);
 	}
 
 	/* -- Main VSC state-machine */
@@ -82,7 +78,7 @@ public class Endpoint {
 	}
 		
 	// Output action to start changing a view
-	private void block() throws KeeperException, InterruptedException, GroupException {
+	private void block() throws KeeperException, InterruptedException, ZKException {
 		synchronized (this) {
 			if (!readyToBlock()) return;
 			
@@ -100,9 +96,9 @@ public class Endpoint {
 	 * been invoked. This means that the application cannot send more
 	 * messages until a new view has been installed. 
 	 * 
-	 * @throws GroupException if the group is not trying to block
+	 * @throws ZKException if the group is not trying to block
 	 */
-	public synchronized void blockOk() throws GroupException {
+	public synchronized void blockOk() throws ZKException {
 		onEntry(State.BLOCKING);
 
 		try {
@@ -131,7 +127,7 @@ public class Endpoint {
 	}
 	
 	// Output action for installing a view
-	private void install() throws KeeperException, InterruptedException, GroupException {
+	private void install() throws KeeperException, InterruptedException, ZKException {
 		String[] names=null; 
 
 		synchronized (this) {
@@ -139,7 +135,7 @@ public class Endpoint {
 			
 			// Garbage collect and verify view-synchrony
 			if (messages!=null && !messages.receiveAndGC(getLastStableMessage()).isEmpty())
-				throw new GroupException("there is a bug somewhere", null);
+				throw new ZKException("there is a bug somewhere", null);
 
 			List<String> prop=new ArrayList<String>();
 			// Respect order in previous view
@@ -197,7 +193,7 @@ public class Endpoint {
 		logger.info("my process id is "+me);
 	}
 			
-	private void boot() throws KeeperException, InterruptedException, GroupException {
+	private void boot() throws KeeperException, InterruptedException, ZKException {
 		vid=0;
 
 		createPath(root);
@@ -227,9 +223,9 @@ public class Endpoint {
 	 * Join the group. This blocks the calling thread until an initial view is
 	 * installed.
 	 * 
-	 * @throws GroupException if the end-point is not freshly created.
+	 * @throws ZKException if the end-point is not freshly created.
 	 */
-	public synchronized void join() throws GroupException {
+	public synchronized void join() throws ZKException {
 		onEntry(State.CONNECTED);
 				
 		try {
@@ -263,7 +259,7 @@ public class Endpoint {
 		}
 
 		if (state==State.DISCONNECTED)
-			throw new GroupException("failed to join", cause);
+			throw new ZKException("failed to join", cause);
 	}
 
 	/**
@@ -288,7 +284,7 @@ public class Endpoint {
 	}
 	
 	// Action for delivering messages
-	private void deliver() throws KeeperException, InterruptedException, GroupException {
+	private void deliver() throws KeeperException, InterruptedException, ZKException {
 		List<byte[]> values;
 		
 		synchronized (this) {
@@ -315,9 +311,9 @@ public class Endpoint {
 	 * Send a message. This cannot be invoked after blockOk() has been called
 	 * until a new view is installed.
 	 * 
-	 * @throws GroupException if the end-point is not freshly created.
+	 * @throws ZKException if the end-point is not freshly created.
 	 */
-	public synchronized void send(byte[] data) throws GroupException {
+	public synchronized void send(byte[] data) throws ZKException {
 		onEntry(State.JOINED, State.BLOCKING);
 		
 		try {
@@ -335,9 +331,9 @@ public class Endpoint {
 	 * Get a unique identifier of the local process.
 	 * 
 	 * @return the identification of the local process
-	 * @throws GroupException if no view is installed
+	 * @throws ZKException if no view is installed
 	 */
-	public synchronized String getProcessId() throws GroupException {
+	public synchronized String getProcessId() throws ZKException {
 		onEntry(State.JOINED, State.BLOCKING, State.BLOCKED);		
 		return me;
 	}
@@ -347,9 +343,9 @@ public class Endpoint {
 	 * be exactly the same in all members.
 	 * 
 	 * @return the list of group members
-	 * @throws GroupException if no view is installed
+	 * @throws ZKException if no view is installed
 	 */
-	public synchronized String[] getCurrentView() throws GroupException {
+	public synchronized String[] getCurrentView() throws ZKException {
 		onEntry(State.JOINED, State.BLOCKING, State.BLOCKED);
 		try {
 			return current.getProcesses().toArray(new String[current.getProcesses().size()]);
@@ -361,7 +357,7 @@ public class Endpoint {
 
 	/* -- Error handling -- */
 	
-	private void onEntry(State... reqs) throws GroupException  {
+	private void onEntry(State... reqs) throws ZKException  {
 		for(State req: reqs)
 			if (req==state)
 				return;
@@ -371,14 +367,14 @@ public class Endpoint {
 				rl=req.toString();
 			else
 				rl+=" or "+req;
-		GroupException e=new GroupException("the group is "+state+", should be "+rl, cause);
+		ZKException e=new ZKException("the group is "+state+", should be "+rl, cause);
 		cleanup(e);
 		throw e;
 	}
 
-	private void onExit(Exception e) throws GroupException  {
+	private void onExit(Exception e) throws ZKException  {
 		cleanup(e);
-		throw new GroupException("disconnected on internal error", e);
+		throw new ZKException("disconnected on internal error", e);
 	}
 
 	private synchronized void cleanup(Exception cause) {
