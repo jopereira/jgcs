@@ -12,12 +12,13 @@ synchrony or atomic broadcast. Its a common interface to several
 existing toolkits that provide different APIs.
 
 This library contains a Corosync Closed Process Group (CPG) 
-implementation, that provides group communication with the Quality of 
-Service defined on configuration. This means that with this 
-implementation, the application can use group communication with 
-membership, and several different properties for message delivery. 
-Please see the Corosync home page for further details: 
-http://www.corosync.org.
+implementation using the native C API through JNI.Please see the 
+Corosync home page for further details on the abilities of the CPG 
+library http://www.corosync.org. 
+
+In addition to the standard jGCS interface, package 
+net.sf.jgcs.corosync.jni provides a minimum Java wrapper of the C API 
+that can also be used directly.
 
 2. Compile
 ----------
