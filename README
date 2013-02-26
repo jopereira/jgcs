@@ -7,6 +7,7 @@ The original SVN repository and more information can be found at
 http://jgcs.sf.net. Main changes are:
 
 	- a new Corosync / Closed Process Group (CPG) binding using JNI
+	- a new ZooKeeper binding, usable only for membership
 	- minor changes to bindings to use updated versions of protocols
 	- new build system with Ivy for dependency resolution;
 	

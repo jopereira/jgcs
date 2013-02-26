@@ -16,16 +16,18 @@ implementing the traditional virtually synchronous group communication
 model. This includes view synchrony with sending view delivery and 
 totally ordered multicast.
 
-Using this binding in production is not recommended: Please use 
-ZooKeeper directly or other JGCS binding. Regard it just as (i) an 
-exercise on how the good old virtual synchrony maps to the new 
-abstraction and (maybe) how to program with ZooKeeper; (ii) a toolkit 
-whose API is very simple and directly matches the theoretical 
-literature, for use in classes and labs. It is currently being used 
-with both these purposes at the U. Minho. 
+WARNING: This binding should not be used as a multicast protocol, 
+since it makes a write-intensive use of ZooKeeper. Please use other 
+JGCS binding for that purpose. Using it only for keeping membership 
+should be ok.
 
-The view-synchrony implementation on ZooKeeper was original published 
-at https://gitorious.org/groupz.
+Otherwise, regard it just as (i) an exercise on how the good old 
+virtual synchrony maps to the new abstraction and (maybe) how to 
+program with ZooKeeper; (ii) a toolkit whose API is very simple and 
+directly matches the theoretical literature, for use in classes and 
+labs. It is currently being used with both these purposes at the U. 
+Minho. The view-synchrony implementation on ZooKeeper was original 
+published at https://gitorious.org/groupz.
 
 2. Compile
 ----------
