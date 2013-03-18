@@ -54,13 +54,13 @@ public class JGroupsMembership implements Membership {
 	
 	public JGroupsMembership(View view, JChannel ch) {
 		addresses = new ArrayList<SocketAddress>();
-		Iterator it = view.getMembers().iterator();
+		Iterator<Address> it = view.getMembers().iterator();
 		while(it.hasNext()){
 			Address jgroupsAddr = (Address) it.next();
 			addresses.add(new JGroupsSocketAddress(jgroupsAddr));
 		}
-		membershipID = new JGroupsMembershipID(view.getVid().getCoordAddress(),view.getVid().getId());
-		Address myjgaddr = (Address) ch.getLocalAddress();
+		membershipID = new JGroupsMembershipID(view.getViewId());
+		Address myjgaddr = (Address) ch.getAddress();
 		myAddr = new JGroupsSocketAddress(myjgaddr);
 		failed = new ArrayList<SocketAddress>(addresses.size());
 		joined = new ArrayList<SocketAddress>(addresses.size());

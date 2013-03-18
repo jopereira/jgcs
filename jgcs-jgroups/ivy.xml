@@ -7,6 +7,6 @@
 	</publications>
     <dependencies>
 		<dependency org="net.sf.jgcs" name="jgcs" rev="0.6.3-SNAPSHOT"/>
-		<dependency org="org.jgroups" name="jgroups" rev="2.12.3.Final"/>
+		<dependency org="org.jgroups" name="jgroups" rev="3.2.7.Final"/>
     </dependencies>
 </ivy-module>

@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.net.SocketAddress;
 import java.util.HashMap;
 
-
 import net.sf.jgcs.AbstractDataSession;
 import net.sf.jgcs.AbstractProtocol;
 import net.sf.jgcs.Annotation;
@@ -47,10 +46,7 @@ import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
 
 import org.apache.log4j.Logger;
-import org.jgroups.ChannelClosedException;
-import org.jgroups.ChannelNotConnectedException;
 import org.jgroups.JChannel;
-import org.jgroups.stack.IpAddress;
 
 public class JGroupsDataSession extends AbstractDataSession {
 
@@ -88,10 +84,8 @@ public class JGroupsDataSession extends AbstractDataSession {
 			throw new UnsupportedServiceException("There is no JGroups channel for the service "+service);
 		try {
 			channel.send((org.jgroups.Message) msg);
-		} catch (ChannelNotConnectedException e) {
-			throw new ClosedSessionException("Channel is closed.",e);
-		} catch (ChannelClosedException e) {
-			throw new ClosedSessionException("Channel is closed.",e);
+		} catch (Exception e) {
+			throw new JGCSException("Cannot send message.",e);
 		}
 	}
 
@@ -111,10 +105,8 @@ public class JGroupsDataSession extends AbstractDataSession {
 		((org.jgroups.Message) msg).setDest(((JGroupsSocketAddress)destination).getAddress());		
 		try {
 			channel.send((org.jgroups.Message) msg);
-		} catch (ChannelNotConnectedException e) {
-			throw new ClosedSessionException("Channel is closed.",e);
-		} catch (ChannelClosedException e) {
-			throw new ClosedSessionException("Channel is closed.",e);
+		} catch (Exception e) {
+			throw new JGCSException("Cannot send message.",e);
 		}
 	}
 	

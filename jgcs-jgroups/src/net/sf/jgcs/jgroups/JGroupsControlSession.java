@@ -38,21 +38,18 @@ import java.util.List;
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.NotJoinedException;
-import net.sf.jgcs.membership.AbstractBlockSession;
+import net.sf.jgcs.membership.AbstractMembershipSession;
 
 import org.apache.log4j.Logger;
 import org.jgroups.Address;
-import org.jgroups.ChannelException;
 import org.jgroups.JChannel;
 import org.jgroups.View;
-import org.jgroups.stack.IpAddress;
 
-public class JGroupsControlSession extends AbstractBlockSession {
+public class JGroupsControlSession extends AbstractMembershipSession {
 
 	private static Logger logger = Logger.getLogger(JGroupsControlSession.class);
 
 	private JChannel channel;
-	private boolean isChannelBlocked;
 	private String groupName;
 
 	public JGroupsControlSession(JChannel ch, String group_name) {
@@ -61,20 +58,10 @@ public class JGroupsControlSession extends AbstractBlockSession {
 		this.groupName = group_name;
 	}
 
-	public void blockOk() throws JGCSException{
-		channel.blockOk();		
-	}
-
-	public boolean isBlocked() {
-		return isChannelBlocked;
-	}
-
-	public void join() throws ClosedSessionException, JGCSException {
-		if(!channel.isOpen())
-			throw new ClosedSessionException("JGroups channel is closed");
+	public void join() throws JGCSException {
 		try {
 			channel.connect(groupName);
-		} catch (ChannelException e) {
+		} catch (Exception e) {
 			throw new JGCSException("Could not connect JGroups Channel.",e);
 		}
 	}
@@ -87,7 +74,7 @@ public class JGroupsControlSession extends AbstractBlockSession {
 	public SocketAddress getLocalAddress() {
 		if (channel == null)
 			return null;
-		return new JGroupsSocketAddress(channel.getLocalAddress());
+		return new JGroupsSocketAddress(channel.getAddress());
 	}
 
 	// listeners of JGroups
@@ -95,7 +82,6 @@ public class JGroupsControlSession extends AbstractBlockSession {
 	public void jgroupsViewAccepted(View new_view) {
 	    //JGroups BugWorkAround: Do Not Remove This String Representation Of The View 
 		new_view.toString();
-		isChannelBlocked = false;
 		JGroupsMembership currentMembership = null;
 		try {
 			currentMembership = (JGroupsMembership) getMembership();
@@ -161,13 +147,6 @@ public class JGroupsControlSession extends AbstractBlockSession {
 		m.addToFailed(peer);
 	}
 
-	public void jgroupsBlock() {
-		isChannelBlocked = true;
-		notifyBlock();
-		if(logger.isDebugEnabled())
-			logger.debug("received block");
-	}
-
 	public boolean isJoined() {
 		try {
 			return getMembership() != null;
@@ -175,5 +154,4 @@ public class JGroupsControlSession extends AbstractBlockSession {
 			return false;
 		}
 	}
-
 }

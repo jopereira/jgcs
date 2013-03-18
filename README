@@ -6,9 +6,9 @@ such as Appia, JGroups, Corosync, or Spread, through a common interface.
 The original SVN repository and more information can be found at 
 http://jgcs.sf.net. Main changes are:
 
+	- migrated JGroups binding to 3.x (experimental)
 	- a new Corosync / Closed Process Group (CPG) binding using JNI
 	- a new ZooKeeper binding, usable only for membership
-	- minor changes to bindings to use updated versions of protocols
 	- new build system with Ivy for dependency resolution;
 	
 The API is unchanged from version 0.6.1.

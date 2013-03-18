@@ -33,11 +33,8 @@ package net.sf.jgcs.jgroups;
 
 import java.net.SocketAddress;
 
-import org.jgroups.util.UUID;
-
-public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.Message{
+public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.Message {
 	
-	private static final long serialVersionUID = -3643156353526717273L;
 	private SocketAddress sender;
 
 	public JGroupsMessage() {

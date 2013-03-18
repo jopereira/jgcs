@@ -33,41 +33,34 @@ package net.sf.jgcs.jgroups;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.membership.MembershipID;
 
-import org.jgroups.Address;
 import org.jgroups.ViewId;
 
+public class JGroupsMembershipID implements MembershipID {
 
-public class JGroupsMembershipID extends ViewId implements MembershipID {
-
-	private static final long serialVersionUID = -1585298721725820115L;
+	private ViewId id;
 
 	public JGroupsMembershipID() {
-		super();
+		id = new ViewId();
 	}
 
-	public JGroupsMembershipID(Address coord_addr, long id) {
-		super(coord_addr, id);
+	public JGroupsMembershipID(ViewId id) {
+		this.id = id;
 	}
 
-	public JGroupsMembershipID(Address coord_addr) {
-		super(coord_addr);
-	}
-	
 	public byte[] getBytes() throws JGCSException{
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-		ObjectOutputStream out = null;
+		DataOutputStream out = null;
 		try {
-			out = new ObjectOutputStream(byteStream);
-			super.writeExternal(out);
+			out = new DataOutputStream(byteStream);
+			id.writeTo(out);
 			out.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new JGCSException("Could not write to output stream", e);
 		}
 		return byteStream.toByteArray();
@@ -75,16 +68,18 @@ public class JGroupsMembershipID extends ViewId implements MembershipID {
 
 	public void fromBytes(byte[] bytes) throws JGCSException{
 		ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
-		ObjectInputStream in = null;
+		DataInputStream in = null;
 		try {
-			in = new ObjectInputStream(byteStream);
-			super.readExternal(in);
+			in = new DataInputStream(byteStream);
+			id.readFrom(in);
 			in.close();
-		} catch (IOException e) {
-			throw new JGCSException("Could not read from input stream", e);
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			throw new JGCSException("Could not read from input stream", e);
 		}
 	}
 
+	@Override
+	public int compareTo(Object other) {
+		return id.compareTo(((JGroupsMembershipID)other).id);
+	}
 }
