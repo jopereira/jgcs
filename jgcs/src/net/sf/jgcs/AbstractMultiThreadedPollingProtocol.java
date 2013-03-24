@@ -42,7 +42,7 @@ public abstract class AbstractMultiThreadedPollingProtocol extends
 		});
 	}
 	
-	protected void startReader(ProtocolReader worker){
+	protected void startReader(ProtocolReader<?> worker){
 		pool.execute(worker);
 	}
 	

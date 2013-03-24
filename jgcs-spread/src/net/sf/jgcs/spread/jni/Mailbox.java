@@ -24,7 +24,6 @@ import java.nio.ByteBuffer;
  * are referenced by native code in csrc/.
  */
 public abstract class Mailbox {
-	@SuppressWarnings("unused")
 	private int mailbox;
 	private String private_group;
 

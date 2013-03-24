@@ -72,17 +72,17 @@ public class ZKMembership implements Membership {
 
 	@Override
 	public List<SocketAddress> getJoinedMembers() {
-		return (List<SocketAddress>)Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	@Override
 	public List<SocketAddress> getLeavedMembers() {
-		return (List<SocketAddress>)Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	@Override
 	public List<SocketAddress> getFailedMembers() {
-		return (List<SocketAddress>)Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	@Override

@@ -4,8 +4,6 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
-
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.ExceptionListener;
@@ -26,8 +24,6 @@ public class BlockingReceiver {
 	private JGCSException exception = null;
 	private Object context = null;
 	private Mailbox<Message> mailbox = null;
-
-	private static Logger logger = Logger.getLogger(BlockingReceiver.class);
 
 	/**
 	 * This constructor registers it self as a listener for message and exception listeners.

@@ -22,6 +22,6 @@ package net.sf.jgcs.membership;
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public interface MembershipID extends Comparable {
+public interface MembershipID extends Comparable<MembershipID> {
 
 }

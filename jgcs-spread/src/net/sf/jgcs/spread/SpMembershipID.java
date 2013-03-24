@@ -22,7 +22,7 @@ public class SpMembershipID implements MembershipID {
 		this.id = id;
 	}
 	
-	public int compareTo(Object o) {
+	public int compareTo(MembershipID o) {
 		return 0;
 	}
 

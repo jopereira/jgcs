@@ -79,7 +79,7 @@ public class JGroupsMembershipID implements MembershipID {
 	}
 
 	@Override
-	public int compareTo(Object other) {
+	public int compareTo(MembershipID other) {
 		return id.compareTo(((JGroupsMembershipID)other).id);
 	}
 }

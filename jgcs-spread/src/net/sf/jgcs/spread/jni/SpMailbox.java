@@ -15,8 +15,6 @@ package net.sf.jgcs.spread.jni;
 
 import java.nio.ByteBuffer;
 
-import net.sf.jgcs.spread.jni.Mailbox.MulticastArgs;
-
 /**
  * Loads the native binding to Spread. 
  */
