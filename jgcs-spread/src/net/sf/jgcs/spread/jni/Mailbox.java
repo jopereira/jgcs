@@ -81,7 +81,7 @@ public abstract class Mailbox {
 	 * Additional information contained in membership messages.
 	 */
 	public static class ViewInfo {
-		public String group_id;
+		public int[] group_id;
 		public String[] vs_set;
 	}
 

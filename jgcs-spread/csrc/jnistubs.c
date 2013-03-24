@@ -69,7 +69,7 @@ JNIEXPORT jint JNICALL Java_net_sf_jgcs_spread_jni_Mailbox_C_1init
 
 	clazz=(*env)->FindClass(env, "net/sf/jgcs/spread/jni/Mailbox$ViewInfo");
 	fid_View_vs_set=(*env)->GetFieldID(env, clazz, "vs_set", "[Ljava/lang/String;");
-	fid_View_group_id=(*env)->GetFieldID(env, clazz, "group_id", "Ljava/lang/String;");
+	fid_View_group_id=(*env)->GetFieldID(env, clazz, "group_id", "[I");
 
 	clazz=(*env)->FindClass(env, "java/nio/ByteBuffer");
 	mid_ByteBuffer_isDirect=(*env)->GetMethodID(env, clazz, "isDirect", "()Z");
@@ -274,6 +274,7 @@ JNIEXPORT jint JNICALL Java_net_sf_jgcs_spread_jni_SpMailbox_C_1parseView
 	int ret=-1;
 	jarray marray;
 	int service;
+	jarray gidarray;
 	char gidstr[27];
 	jobjectArray grparr;
 
@@ -291,8 +292,9 @@ JNIEXPORT jint JNICALL Java_net_sf_jgcs_spread_jni_SpMailbox_C_1parseView
 	if ((ret=SP_get_memb_info(buf+pos, service, &minfo))<0)
 		goto out;
 
-	sprintf(gidstr,"%08x-%08x-%08x",minfo.gid.id[0],minfo.gid.id[1],minfo.gid.id[2]);
-	(*env)->SetObjectField(env, info, fid_View_group_id, (*env)->NewStringUTF(env, gidstr));
+	gidarray=(*env)->NewIntArray(env, 3);
+	(*env)->SetIntArrayRegion(env, gidarray, 0, 3, minfo.gid.id);
+	(*env)->SetObjectField(env, info, fid_View_group_id, gidarray);
 
 	if (service&CAUSED_BY_NETWORK) {
 		/* We use a nested block to allocate an array for group names. */

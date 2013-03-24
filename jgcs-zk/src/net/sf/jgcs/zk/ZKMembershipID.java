@@ -27,8 +27,10 @@ public class ZKMembershipID implements MembershipID {
 	}
 
 	@Override
-	public int compareTo(MembershipID arg0) {
-		return vid - ((ZKMembershipID) arg0).vid;
+	public int compareTo(MembershipID o) {
+		if (!(o instanceof ZKMembershipID))
+			return 0;
+		return Integer.compare(vid, ((ZKMembershipID) o).vid);
 	}
 
 	@Override

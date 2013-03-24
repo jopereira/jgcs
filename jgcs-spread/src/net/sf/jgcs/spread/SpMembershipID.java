@@ -13,20 +13,50 @@
 
 package net.sf.jgcs.spread;
 
+import java.util.Arrays;
+
 import net.sf.jgcs.membership.MembershipID;
 
 public class SpMembershipID implements MembershipID {
-	private String id;
+	private int[] id;
 
-	public SpMembershipID(String id) {
-		this.id = id;
+	public SpMembershipID(int[] group_id) {
+		this.id = group_id;
 	}
-	
+
+	@Override
 	public int compareTo(MembershipID o) {
-		return 0;
+		if (!(o instanceof SpMembershipID))
+			return 0;
+		SpMembershipID other = (SpMembershipID)o;
+		if (id[0]!=other.id[0] || id[1]!=other.id[1])
+			return 0;
+		return Integer.compare(id[2], other.id[2]);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(id);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SpMembershipID other = (SpMembershipID) obj;
+		if (!Arrays.equals(id, other.id))
+			return false;
+		return true;
 	}
 
 	public String toString() {
-		return id;
+		return id[0]+"-"+id[1]+"-"+id[2];
 	}
 }

@@ -13,13 +13,13 @@ public class SpMarshallable implements Marshallable {
 	}
 
 	public MembershipID getMembershipID(byte[] buffer) throws JGCSException {
-		return new SpMembershipID(new String(buffer));
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public byte[] getBytes(MembershipID id) throws JGCSException {
-		if ( ! (id instanceof SpMembershipID))
-			throw new JGCSException("MembershipID of type "+id.getClass().getName()+" is not supported.");
-		return id.toString().getBytes();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public SocketAddress getSocketAddress(byte[] buffer) throws JGCSException {

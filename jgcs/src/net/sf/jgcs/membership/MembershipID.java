@@ -1,4 +1,3 @@
-
 /*
  * JGCS - Group Communication Service.
  * Copyright (C) 2006 Nuno Carvalho, Universidade de Lisboa
@@ -10,17 +9,17 @@
  *
  * See COPYING for licensing details.
  */
+
 package net.sf.jgcs.membership;
 
 /**
- * This class defines a MembershipID.
- * It represents an ID of the membership, that must change 
- * and grow on every view change, according to the {@link java.lang.Comparable java.lang.Comparable} interface.
+ * Uniquely identifies each membership configuration shown to the application.
  * 
- * @see Comparable
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * With primary partition protocols, this identifier provides a total order
+ * on views. With partitionable protocols, views are not totally ordered and
+ * even the strict partial order cannot easily be captured. The usefulness
+ * the {@link java.lang.Comparable java.lang.Comparable} implementation is thus
+ * limited and should not be assumed.
  */
 public interface MembershipID extends Comparable<MembershipID> {
 
