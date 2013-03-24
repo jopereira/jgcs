@@ -266,7 +266,6 @@ JNIEXPORT jint JNICALL Java_net_sf_jgcs_spread_jni_SpMailbox_C_1receive
 	return ret;
 }
 
-#if SPREAD_VERSION >= 0x04000000
 JNIEXPORT jint JNICALL Java_net_sf_jgcs_spread_jni_SpMailbox_C_1parseView
   (JNIEnv *env, jobject self, jobject info, jobject rinfo, jobject mess) {
 	void* buf;
@@ -319,58 +318,6 @@ JNIEXPORT jint JNICALL Java_net_sf_jgcs_spread_jni_SpMailbox_C_1parseView
 
 	return ret;
 }
-#else
-JNIEXPORT jint JNICALL Java_net_sf_jgcs_spread_jni_SpMailbox_C_1
-
-  (JNIEnv *env, jobject self, jobject info, jobject rinfo, jobject mess) {
-	void* buf;
-	int i, len, pos, limit;
-	jobjectArray grparr;
-	int num_groups;
-	char (*vs_set)[MAX_GROUP_NAME];
-	group_id* gid;
-	char gidstr[27];
-	int ret=-1;
-	jarray marray;
-
-	pos=(*env)->CallIntMethod(env, mess, mid_ByteBuffer_get_position);
-	len=(*env)->CallIntMethod(env, mess, mid_ByteBuffer_get_limit)-pos;
-	if ((*env)->CallBooleanMethod(env, mess, mid_ByteBuffer_isDirect))
-		buf=(*env)->GetDirectBufferAddress(env, mess);
-	else {
-		marray=(*env)->CallObjectMethod(env, mess, mid_ByteBuffer_array);
-		pos+=(*env)->CallIntMethod(env, mess, mid_ByteBuffer_arrayOffset);
-		buf=(*env)->GetByteArrayElements(env, marray, NULL);
-	}
-
-	if (SP_get_num_vs_offset_memb_mess()+sizeof(int)>len)
-		goto out;
-
-	num_groups=*(int*)(buf+pos+SP_get_num_vs_offset_memb_mess());
-
-	if (SP_get_vs_set_offset_memb_mess()+(MAX_GROUP_NAME*num_groups)>len)
-		goto out;
-
-	vs_set=(char(*)[MAX_GROUP_NAME])(buf+pos+SP_get_vs_set_offset_memb_mess());
-
-	grparr=(*env)->NewObjectArray(env, num_groups, (*env)->FindClass(env, "java/lang/String"), NULL);
-	for(i=0;i<num_groups;i++)
-		(*env)->SetObjectArrayElement(env, grparr, i, (*env)->NewStringUTF(env, vs_set[i]));
-	(*env)->SetObjectField(env, info, fid_View_vs_set, grparr);
-	
-	gid=(group_id*)(buf+pos+SP_get_gid_offset_memb_mess());
-	sprintf(gidstr,"%08x-%08x-%08x",gid->id[0],gid->id[1],gid->id[2]);
-	(*env)->SetObjectField(env, info, fid_View_group_id, (*env)->NewStringUTF(env, gidstr));
-
-	ret=0;
-
- out:
-	if (!(*env)->CallBooleanMethod(env, mess, mid_ByteBuffer_isDirect))
-		(*env)->ReleaseByteArrayElements(env, marray, buf, JNI_ABORT);
-
-	return ret;
-}
-#endif
 
 /* FlushSpread */
 
