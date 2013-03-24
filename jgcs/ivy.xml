@@ -1,5 +1,5 @@
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-    <info organisation="net.sf.jgcs" module="jgcs" revision="0.6.3-SNAPSHOT"/>
+    <info organisation="net.sf.jgcs" module="jgcs" revision="0.7.0-SNAPSHOT"/>
 	<publications>
 		<artifact name="jgcs" ext="jar"/>
 		<artifact name="jgcs" type="javadoc" ext="jar" m:classifier="javadoc"/>

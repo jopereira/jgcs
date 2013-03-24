@@ -1,12 +1,12 @@
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-    <info organisation="net.sf.jgcs" module="jgcs-jgroups" revision="0.6.3-SNAPSHOT"/>
+    <info organisation="net.sf.jgcs" module="jgcs-jgroups" revision="0.7.0-SNAPSHOT"/>
 	<publications>
 		<artifact name="jgcs-jgroups" type="jar" ext="jar"/>
 		<artifact name="jgcs-jgroups" type="javadoc" ext="jar" m:classifier="javadoc"/>
 		<artifact name="jgcs-jgroups" type="source" ext="jar" m:classifier="sources"/>
 	</publications>
     <dependencies>
-		<dependency org="net.sf.jgcs" name="jgcs" rev="0.6.3-SNAPSHOT"/>
+		<dependency org="net.sf.jgcs" name="jgcs" rev="0.7.0-SNAPSHOT"/>
 		<dependency org="org.jgroups" name="jgroups" rev="3.2.7.Final"/>
     </dependencies>
 </ivy-module>

@@ -1,11 +1,11 @@
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-    <info organisation="net.sf.jgcs" module="jgcs-ip" revision="0.6.3-SNAPSHOT"/>
+    <info organisation="net.sf.jgcs" module="jgcs-ip" revision="0.7.0-SNAPSHOT"/>
 	<publications>
 		<artifact name="jgcs-ip" type="jar" ext="jar"/>
 		<artifact name="jgcs-ip" type="javadoc" ext="jar" m:classifier="javadoc"/>
 		<artifact name="jgcs-ip" type="source" ext="jar" m:classifier="sources"/>
 	</publications>
     <dependencies>
-		<dependency org="net.sf.jgcs" name="jgcs" rev="0.6.3-SNAPSHOT"/>
+		<dependency org="net.sf.jgcs" name="jgcs" rev="0.7.0-SNAPSHOT"/>
     </dependencies>
 </ivy-module>

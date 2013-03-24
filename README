@@ -1,17 +1,14 @@
 
-This is a simplified distribution of jGCS, the generic interface for 
+This is an evolution of jGCS, the generic interface for 
 group communication in Java, providing access to multiple toolkits, 
 such as Appia, JGroups, Corosync, or Spread, through a common interface.
 
-The original SVN repository and more information can be found at 
-http://jgcs.sf.net. Main changes are:
+The API is changed from version 0.6.x.  I still maintain a backwards
+compatible jGCS at http://github.com/jopereira/jgcs-0.6. The main
+changes are:
 
-	- migrated JGroups binding to 3.x (experimental)
-	- a new Corosync / Closed Process Group (CPG) binding using JNI
-	- a new ZooKeeper binding, usable only for membership
-	- new build system with Ivy for dependency resolution;
-	
-The API is unchanged from version 0.6.1.
+ - Java generics where appropriate
+ - simplification of the API, eliminating redundant functionality
 
 To compile and use:
 
