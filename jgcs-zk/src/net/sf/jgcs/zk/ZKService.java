@@ -17,7 +17,6 @@
 package net.sf.jgcs.zk;
 
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedServiceException;
 
 /**
  * Any service as long as it is... the default service. 
@@ -28,8 +27,7 @@ public class ZKService implements Service {
 	private static final long serialVersionUID = 2L;
 	
 	@Override
-	public int compare(Service service) throws UnsupportedServiceException {
-		return 0;
+	public boolean satisfies(Service service) {
+		return service instanceof ZKService;
 	}
-
 }

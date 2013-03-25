@@ -1,4 +1,3 @@
-
 /*
  * Spread implementation of JGCS - Group Communication Service.
  * Copyright (C) 2006 Jose' Orlando Pereira, Universidade do Minho
@@ -15,7 +14,6 @@
 package net.sf.jgcs.spread;
 
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedServiceException;
 
 public class SpService implements Service {
 
@@ -75,14 +73,9 @@ public class SpService implements Service {
 		return serviceFlags;
 	}
 
-	public int compare(Service service) throws UnsupportedServiceException {
-		SpService other;
-		try {
-			other=(SpService)service;
-		} catch(ClassCastException e) {
-			throw new UnsupportedServiceException("unsupported service "+service);
-		}
-		return serviceFlags-other.serviceFlags;
+	public boolean satisfies(Service service) {
+		if (!(service instanceof SpService))
+			return false;
+		return Integer.compare(serviceFlags, ((SpService)service).serviceFlags) >= 0;
 	}
-
 }

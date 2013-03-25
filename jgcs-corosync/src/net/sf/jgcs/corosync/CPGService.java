@@ -13,7 +13,6 @@
 package net.sf.jgcs.corosync;
 
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
 
 public class CPGService implements Service {
@@ -45,13 +44,9 @@ public class CPGService implements Service {
 		return guarantee;
 	}
 
-	public int compare(Service service) throws UnsupportedServiceException {
-		CPGService other;
-		try {
-			other=(CPGService)service;
-		} catch(ClassCastException e) {
-			throw new UnsupportedServiceException("unsupported service "+service);
-		}
-		return guarantee-other.guarantee;
+	public boolean satisfies(Service service) {
+		if (!(service instanceof CPGService))
+			return false;
+		return Integer.compare(guarantee, ((CPGService)service).guarantee) >= 0;
 	}
 }

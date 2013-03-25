@@ -34,13 +34,11 @@ import java.io.Serializable;
 public interface Service extends Serializable {
 	
 	/**
-	 * Compares two Services of the same protocol. return 0 if the services are the same,
-	 * -1 if the service has lower properties than the given service, 1 if the service has greater properties
-	 * than the given service.
-	 * @param service the service to compare.
-	 * @return 0 - same service, 1 greater service, -1 otherwise
-	 * @throws UnsupportedServiceException if the service is not comparable.
+	 * Compares two Services of the same protocol. This imposes a partial
+	 * order on Services.
+	 * 
+	 * @param target the service to compare.
+	 * @return true if this service is stronger or equal to the target 
 	 */
-	public int compare(Service service) throws UnsupportedServiceException;
-
+	public boolean satisfies(Service target);
 }

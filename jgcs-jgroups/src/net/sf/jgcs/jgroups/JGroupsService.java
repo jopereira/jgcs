@@ -1,4 +1,3 @@
-
 /*
  *
  * JGroups implementation of JGCS - Group Communication Service
@@ -32,7 +31,6 @@
 package net.sf.jgcs.jgroups;
 
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedServiceException;
 
 public class JGroupsService implements Service {
 
@@ -42,10 +40,7 @@ public class JGroupsService implements Service {
 		FIFO("vsc+fifo"),
 		TOTAL("vsc+total"),
 		TOTAL_SERVICES("vsc+total+services"),
-		CAUSAL("vsc+causal"),
-		SETO_TOTAL_ORDER("seto_total_order"),
-		REGULAR_TOTAL_ORDER("regular_total_order"),
-		UNIFORM_TOTAL_ORDER("uniform_total_order");
+		CAUSAL("vsc+causal");
 		private String service_name;
 		Services(String service){
 			this.service_name = service;
@@ -71,12 +66,6 @@ public class JGroupsService implements Service {
 			myService = Services.TOTAL_SERVICES;
 		else if(Services.FIFO.service_name.equals(service_name))
 			myService = Services.FIFO;
-		else if(service_name.equals(Services.SETO_TOTAL_ORDER.service_name))
-			myService = Services.SETO_TOTAL_ORDER;
-		else if(service_name.equals(Services.REGULAR_TOTAL_ORDER.service_name))
-			myService = Services.REGULAR_TOTAL_ORDER;
-		else if(service_name.equals(Services.UNIFORM_TOTAL_ORDER.service_name))
-			myService = Services.UNIFORM_TOTAL_ORDER;
 	}
 	
 	public String getService() {
@@ -87,11 +76,11 @@ public class JGroupsService implements Service {
 		myService = service;
 	}
 
-	public int compare(Service service) throws UnsupportedServiceException {
+	public boolean satisfies(Service service) {
 		if(! (service instanceof JGroupsService))
-			throw new UnsupportedServiceException("Service not valid: "+service.getClass().getName());
+			return false;
 		JGroupsService as = (JGroupsService) service;
-		return as.myService.compareTo(myService);
+		return as.myService.compareTo(myService) >= 0;
 	}
 	
 	@Override

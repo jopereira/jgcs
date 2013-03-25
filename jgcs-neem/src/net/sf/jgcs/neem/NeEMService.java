@@ -1,4 +1,3 @@
-
 /*
  * NeEM implementation of JGCS - Group Communication Service.
  * Copyright (C) 2006 Jose' Orlando Pereira, Universidade do Minho
@@ -15,13 +14,12 @@
 package net.sf.jgcs.neem;
 
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedServiceException;
 
 public class NeEMService implements Service {
 	
 	private static final long serialVersionUID = 2L;
 	
-	public int compare(Service service) throws UnsupportedServiceException {
-		return 0;
+	public boolean satisfies(Service service) {
+		return service instanceof NeEMService;
 	}
 }

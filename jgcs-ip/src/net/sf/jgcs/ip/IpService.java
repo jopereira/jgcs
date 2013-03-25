@@ -31,7 +31,7 @@ public class IpService implements Service {
 	public void setTtl(int ttl) {
 		this.ttl = ttl;
 	}
-	public int compare(Service service) throws UnsupportedServiceException {
-		return 0;
+	public boolean satisfies(Service service) {
+		return service instanceof IpService;
 	}
 }
