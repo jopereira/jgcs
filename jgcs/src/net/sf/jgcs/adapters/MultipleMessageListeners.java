@@ -33,54 +33,29 @@ public class MultipleMessageListeners {
 	private class MyListener implements MessageListener {
 		public Object onMessage(Message msg) {
 			Object cookie = null, currentCookie = null;
+			// FIXME: A single callback cookie for all listeners? Not good.
 			for(MessageListener listener : listeners){				
-				if(conservative){
-					Message m;
-					try {
-						m = copyMessage(msg);
-						currentCookie = listener.onMessage(m);
-					} catch (ClosedSessionException e) {
-						e.printStackTrace();
-					}
-				}
-				else
-					currentCookie = listener.onMessage(msg);
+				currentCookie = listener.onMessage(msg);
 				if(currentCookie != null)
 					cookie = currentCookie;
 			}
 			return cookie;
-		}
-		
-		private Message copyMessage(Message msg) throws ClosedSessionException{
-			Message copy = session.createMessage();
-			byte[] payload = new byte[msg.getPayload().length];
-			System.arraycopy(msg.getPayload(),0,payload,0,payload.length);
-			copy.setPayload(payload);
-			copy.setSenderAddress(msg.getSenderAddress());
-			return copy;
-		}
+		}		
 	}
 	
 	private List<MessageListener>listeners;
 	private MyListener myListener;
-	private boolean conservative;
-	private DataSession session;
 
 	/**
-	 * Creates a new Adapter instance. It needs the instance of the DataSession and a boolean
-	 * that indicates if messages should be delivered on conservative mode (copies of messages to
-	 * each listener) or not conservative (the same message instance to all listeners).
+	 * Creates a new Adapter instance. Note that the same message instance to all listeners.
 	 * @param session the DataSession where the Messages will be delivered.
-	 * @param conservative true if messages shoud be delivared on conservative mode.
 	 * @throws ClosedSessionException if the given DataSession is closed.
 	 */
-	public MultipleMessageListeners(DataSession session, boolean conservative) throws ClosedSessionException {
+	public MultipleMessageListeners(DataSession session) throws ClosedSessionException {
 		super();
 		myListener = new MyListener();
 		session.setMessageListener(myListener);
-		this.session = session;
 		listeners = new ArrayList<MessageListener>();
-		this.conservative = conservative;
 	}
 	
 	/**
