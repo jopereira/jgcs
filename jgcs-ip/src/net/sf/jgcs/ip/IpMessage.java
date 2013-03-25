@@ -45,8 +45,4 @@ class IpMessage implements Message {
 	public SocketAddress getSenderAddress() {
 		return sender;
 	}
-
-	public void setSenderAddress(SocketAddress sender) {
-		this.sender = sender;
-	}
 }

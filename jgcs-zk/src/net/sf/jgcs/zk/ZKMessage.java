@@ -47,8 +47,4 @@ public class ZKMessage implements Message {
 	public SocketAddress getSenderAddress() {
 		return null;
 	}
-
-	@Override
-	public void setSenderAddress(SocketAddress sender) {
-	}
 }

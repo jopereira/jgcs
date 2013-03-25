@@ -57,8 +57,7 @@ public class SpDataSession extends AbstractDataSession {
 	}
 
 	void deliverMessage(Mailbox.ReceiveArgs info, ByteBuffer mess) {
-		Message msg = new SpMessage(mess);
-		msg.setSenderAddress(new SpGroup(info.sender));
+		SpMessage msg = new SpMessage(mess, new SpGroup(info.sender));
 		Object cookie = notifyMessageListeners(msg);
 		if(cookie != null)
 			notifyServiceListeners(cookie,new SpService(info.service_type));

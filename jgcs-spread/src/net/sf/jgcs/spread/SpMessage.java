@@ -19,7 +19,6 @@ import java.nio.ByteBuffer;
 
 import net.sf.jgcs.Message;
 
-
 class SpMessage implements Message {
 
 	private static final long serialVersionUID = 2L;
@@ -30,7 +29,7 @@ class SpMessage implements Message {
 	SpMessage() {
 	}
 	
-	SpMessage(ByteBuffer buf) {
+	SpMessage(ByteBuffer buf, SocketAddress sender) {
 		payload=new byte[buf.remaining()];
 		buf.get(payload);
 	}
@@ -46,9 +45,4 @@ class SpMessage implements Message {
 	public SocketAddress getSenderAddress() {
 		return new SpGroup(sender);
 	}
-
-	public void setSenderAddress(SocketAddress sender) {
-		this.sender = ((SpGroup)sender).getGroup();
-	}
-
 }

@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.net.SocketAddress;
 
 /**
- * 
  * This class defines a Message.
  * Messages exchanged using the underlying toolkit must implement this interface.
  * Instances of this interface must be retrieved from the 
@@ -46,10 +45,4 @@ public interface Message extends Serializable {
 	 * @return the sender address
 	 */
 	public SocketAddress getSenderAddress();
-	
-	/**
-	 * Sets the sender address.
-	 * @param sender the sender address.
-	 */
-	public void setSenderAddress(SocketAddress sender);
 }

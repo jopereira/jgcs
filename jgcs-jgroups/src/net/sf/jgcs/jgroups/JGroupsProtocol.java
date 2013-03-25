@@ -88,15 +88,13 @@ public class JGroupsProtocol extends AbstractProtocol {
 
 				@Override
 				public void receive(Message msg) {
-					JGroupsMessage message = new JGroupsMessage();
 					byte[] jgroupsBuffer = ((org.jgroups.Message) msg).getBuffer();
 					if(jgroupsBuffer == null)
 						return;
 					byte[] buffer = new byte[jgroupsBuffer.length];
 					// FIXME? This makes the gap on the DOA results.
 					System.arraycopy(jgroupsBuffer,0,buffer,0,buffer.length);
-					message.setPayload(buffer);
-					message.setSenderAddress(new JGroupsSocketAddress(((org.jgroups.Message) msg).getSrc()));
+					JGroupsMessage message = new JGroupsMessage(buffer, new JGroupsSocketAddress(((org.jgroups.Message) msg).getSrc()));
 					Object cookie = ds.notifyMessageListeners(message);
 					/* FIXME: These notifications are _so_ wrong. The application should get 
 					 * only get one notification and compare the Service given with what's expected.
