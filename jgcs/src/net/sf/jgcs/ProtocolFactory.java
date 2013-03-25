@@ -20,7 +20,6 @@ import java.io.Serializable;
  * 
  * This factory must be used to create instances of Protocols. It should be stateless and represents
  * one toolkit.
- * @assoc 1 Creates 1..* Protocol
  * 
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0

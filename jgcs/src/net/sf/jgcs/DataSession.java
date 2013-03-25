@@ -21,11 +21,6 @@ import java.net.SocketAddress;
  * 
  * This Session must be used to send and receive messages to/from the group. An instance of a DataSession
  * must be created on the Protocol interface.
- * @assoc 1 Notifies 1 MessageListener
- * @assoc 1 Notifies 1 ServiceListener
- * @assoc 1 Notifies 1 ExceptionListener
- * @assoc 1 Creates 0..* Message
-
  * 
  * @see Protocol
  * 

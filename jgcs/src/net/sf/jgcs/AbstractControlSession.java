@@ -51,8 +51,8 @@ public abstract class AbstractControlSession implements ControlSession {
 	}
 
 	/**
-	 * Returns true if all listeners are registered.
-	 * @return
+	 * Verifies listener registratioVerifies listener registration.
+	 * @return true if all listeners are registered
 	 */
 	protected synchronized boolean hasAllListeners(){
 		return ctrlListener != null;

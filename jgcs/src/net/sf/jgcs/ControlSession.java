@@ -20,9 +20,6 @@ import java.net.SocketAddress;
  * An instance of this session must be created by the Protocol interface.
  * @see Protocol
  * 
- * @assoc 1 Notifies 1 ControlListener
- * @assoc 1 Notifies 1 ExceptionListener
- * 
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */

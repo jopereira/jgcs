@@ -22,9 +22,6 @@ import java.net.SocketAddress;
  * Instances of this interface must be retrieved from the 
  * {@link DataSession DataSession}.
  * 
- * @composed 1 Defines 1 byte[]
- * @composed 1 SenderAddress 1 java.net.SocketAddress
- * 
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */

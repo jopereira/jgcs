@@ -21,8 +21,6 @@ import net.sf.jgcs.NotJoinedException;
  * This session should be used by toolkits that implement Group Communication 
  * with flush of messages before a view change.
  * 
- * @assoc 1 Notifies 1 BlockListener
- * 
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */

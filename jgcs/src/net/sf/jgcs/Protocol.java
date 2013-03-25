@@ -22,10 +22,6 @@ package net.sf.jgcs;
  * @see ControlSession
  * @see GroupConfiguration
  * 
- * @assoc 1 Uses 1..* GroupConfiguration
- * @composed 1 Defines 1 DataSession
- * @composed 1 Defines 1 ControlSession
- * 
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
