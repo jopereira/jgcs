@@ -17,7 +17,9 @@ import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
 
 public class CPGService implements Service {
-	
+
+	private static final long serialVersionUID = 2L;
+
 	private int guarantee;
 
 	public CPGService(int guarantee) {

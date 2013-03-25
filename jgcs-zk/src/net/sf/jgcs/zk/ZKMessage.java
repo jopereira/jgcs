@@ -22,6 +22,8 @@ import net.sf.jgcs.Message;
 
 public class ZKMessage implements Message {
 
+	private static final long serialVersionUID = 2L;
+	
 	private byte[] data;
 
 	ZKMessage() {

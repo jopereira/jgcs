@@ -27,6 +27,8 @@ import net.sf.jgcs.zk.ZKException;
  * @author jop
  */
 public class ApplicationException extends ZKException {
+	private static final long serialVersionUID = 5735154401650469938L;
+
 	/**
 	 * Wrap an exception.
 	 * 
@@ -35,6 +37,4 @@ public class ApplicationException extends ZKException {
 	public ApplicationException(Throwable cause) {
 		super("unrecoverable application exception", cause);
 	}
-
-	private static final long serialVersionUID = 1L;
 }

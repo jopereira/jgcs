@@ -20,6 +20,9 @@ import net.sf.jgcs.ProtocolFactory;
 import net.sf.jgcs.spread.jni.Mailbox;
 
 public class SpProtocolFactory implements ProtocolFactory {
+	
+	private static final long serialVersionUID = 2L;
+	
 	private String daemonAddress = "4803@localhost";
 	private String processName;
 	private String mailboxClass = "net.sf.jgcs.spread.jni.SpMailbox";

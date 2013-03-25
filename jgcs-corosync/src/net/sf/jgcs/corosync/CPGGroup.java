@@ -15,6 +15,9 @@ package net.sf.jgcs.corosync;
 import net.sf.jgcs.GroupConfiguration;
 
 public class CPGGroup implements GroupConfiguration {
+
+	private static final long serialVersionUID = 2L;
+	
 	private String group;
 	
 	public CPGGroup(String group) {

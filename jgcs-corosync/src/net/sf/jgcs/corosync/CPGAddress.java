@@ -15,6 +15,9 @@ package net.sf.jgcs.corosync;
 import java.net.SocketAddress;
 
 public class CPGAddress extends SocketAddress {
+
+	private static final long serialVersionUID = 2L;
+	
 	private int nodeid, pid;
 
 	CPGAddress(int nodeid, int pid) {

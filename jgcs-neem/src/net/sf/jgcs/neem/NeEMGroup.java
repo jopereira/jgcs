@@ -19,6 +19,9 @@ import java.net.*;
 import net.sf.jgcs.GroupConfiguration;
 
 public class NeEMGroup implements GroupConfiguration {
+
+	private static final long serialVersionUID = 2L;
+	
 	private InetSocketAddress localAddress;
 
 	private InetSocketAddress[] peers;

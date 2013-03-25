@@ -18,6 +18,9 @@ import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
 
 public class SpService implements Service {
+
+	private static final long serialVersionUID = 2L;
+	
 	// Service types for regular messages
 	public static final int REGULAR_MESS=0x0000003f;
 

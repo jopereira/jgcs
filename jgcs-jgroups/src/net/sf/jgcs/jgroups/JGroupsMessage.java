@@ -1,4 +1,3 @@
-
 /*
  *
  * JGroups implementation of JGCS - Group Communication Service
@@ -31,9 +30,13 @@
  
 package net.sf.jgcs.jgroups;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.net.SocketAddress;
 
-public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.Message {
+public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.Message, Externalizable {
 	
 	private SocketAddress sender;
 
@@ -60,4 +63,23 @@ public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.M
 		this.sender = sender;
 	}
 
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		try {
+			super.readFrom(in);
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+		sender = (SocketAddress) in.readObject();
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		try {
+			super.writeTo(out);
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+		out.writeObject(sender);
+	}	
 }

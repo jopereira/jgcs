@@ -21,7 +21,7 @@ package net.sf.jgcs;
  */
 public class NotJoinedException extends JGCSException {
 
-	private static final long serialVersionUID = -7408610280397915892L;
+	private static final long serialVersionUID = 5069170460259403046L;
 
 	/**
 	 * 

@@ -20,7 +20,7 @@ package net.sf.jgcs;
  */
 public class ClosedSessionException extends JGCSException {
 
-	private static final long serialVersionUID = 3204404038042076904L;
+	private static final long serialVersionUID = 6541033485787104167L;
 
 	public ClosedSessionException() {
 		super();

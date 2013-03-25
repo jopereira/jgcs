@@ -18,6 +18,9 @@ import java.util.Arrays;
 import net.sf.jgcs.membership.MembershipID;
 
 public class SpMembershipID implements MembershipID {
+
+	private static final long serialVersionUID = 2L;
+	
 	private int[] id;
 
 	public SpMembershipID(int[] group_id) {

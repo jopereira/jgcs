@@ -17,6 +17,9 @@ import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 
 public class CPGProtocolFactory implements ProtocolFactory {
+	
+	private static final long serialVersionUID = 2L;
+
 	public Protocol createProtocol() throws JGCSException {
 		return new CPGProtocol();
 	}

@@ -20,6 +20,8 @@ import net.sf.jgcs.membership.MembershipID;
 
 public class ZKMembershipID implements MembershipID {
 
+	private static final long serialVersionUID = 2L;
+	
 	private int vid;
 
 	ZKMembershipID(int vid) {

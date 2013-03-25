@@ -17,6 +17,9 @@ import java.net.SocketAddress;
 import net.sf.jgcs.Message;
 
 class CPGMessage implements Message {
+
+	private static final long serialVersionUID = 2L;
+	
 	private byte[] payload;
 	private SocketAddress sender;
 	

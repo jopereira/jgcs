@@ -24,6 +24,9 @@ import net.sf.jgcs.UnsupportedServiceException;
  * @author jop
  */
 public class ZKService implements Service {
+	
+	private static final long serialVersionUID = 2L;
+	
 	@Override
 	public int compare(Service service) throws UnsupportedServiceException {
 		return 0;

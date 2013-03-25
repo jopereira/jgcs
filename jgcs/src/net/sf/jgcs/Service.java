@@ -12,6 +12,8 @@
  */
 package net.sf.jgcs;
 
+import java.io.Serializable;
+
 /**
  * 
  * This class defines a Service.
@@ -29,7 +31,7 @@ package net.sf.jgcs;
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public interface Service {
+public interface Service extends Serializable {
 	
 	/**
 	 * Compares two Services of the same protocol. return 0 if the services are the same,

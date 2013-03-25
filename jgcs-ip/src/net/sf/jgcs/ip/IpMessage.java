@@ -20,6 +20,8 @@ import net.sf.jgcs.Message;
 
 class IpMessage implements Message {
 
+	private static final long serialVersionUID = 2L;
+	
 	private byte[] payload;
 	private SocketAddress sender;
 

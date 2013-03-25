@@ -21,6 +21,9 @@ import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 
 public class ZKProtocolFactory implements ProtocolFactory {
+	
+	private static final long serialVersionUID = 2L;
+
 	private String connectString = "localhost";
 	private int sessionTimeout = 3000;
 

@@ -37,6 +37,8 @@ import net.sf.jgcs.ProtocolFactory;
 
 public class JGroupsProtocolFactory implements ProtocolFactory {
 
+	private static final long serialVersionUID = 2L;
+
 	public JGroupsProtocolFactory() {
 		super();
 	}

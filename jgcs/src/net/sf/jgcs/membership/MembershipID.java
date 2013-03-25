@@ -12,6 +12,8 @@
 
 package net.sf.jgcs.membership;
 
+import java.io.Serializable;
+
 /**
  * Uniquely identifies each membership configuration shown to the application.
  * 
@@ -21,6 +23,6 @@ package net.sf.jgcs.membership;
  * the {@link java.lang.Comparable java.lang.Comparable} implementation is thus
  * limited and should not be assumed.
  */
-public interface MembershipID extends Comparable<MembershipID> {
+public interface MembershipID extends Comparable<MembershipID>, Serializable {
 
 }

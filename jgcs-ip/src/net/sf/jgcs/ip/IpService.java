@@ -18,6 +18,9 @@ import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
 
 public class IpService implements Service {
+	
+	private static final long serialVersionUID = 2L;
+	
 	private int ttl;
 	public IpService(String ttl) {
 		this.ttl=Integer.parseInt(ttl);

@@ -22,7 +22,8 @@ import java.io.IOException;
  */
 public class JGCSException extends IOException {
 
-	private static final long serialVersionUID = 5024598044594867669L;
+	private static final long serialVersionUID = 4648084660091950711L;
+
 	private int errorCode;
 
 	/**

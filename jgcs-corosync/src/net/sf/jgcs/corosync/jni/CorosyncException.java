@@ -15,6 +15,8 @@ package net.sf.jgcs.corosync.jni;
 import net.sf.jgcs.JGCSException;
 
 public class CorosyncException extends JGCSException {
+	private static final long serialVersionUID = 8111489446009578137L;
+
 	private CorosyncException(String string) {
 		super(string);
 	}	

@@ -20,7 +20,9 @@ import net.sf.jgcs.GroupConfiguration;
 
 
 public class SpGroup extends SocketAddress implements GroupConfiguration {
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 2L;
+	
 	private String group;
 	
 	public SpGroup(String group) {

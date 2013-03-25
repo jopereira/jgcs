@@ -1,4 +1,3 @@
-
 /*
  * JGCS - Group Communication Service.
  * Copyright (C) 2006 Nuno Carvalho, Universidade de Lisboa
@@ -10,8 +9,10 @@
  *
  * See COPYING for licensing details.
  */
+
 package net.sf.jgcs;
 
+import java.io.Serializable;
 import java.net.SocketAddress;
 
 /**
@@ -27,7 +28,7 @@ import java.net.SocketAddress;
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public interface Message {
+public interface Message extends Serializable {
 
 	/**
 	 * Sets the payload for the message.

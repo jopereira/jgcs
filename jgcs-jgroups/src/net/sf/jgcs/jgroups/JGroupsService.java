@@ -36,6 +36,8 @@ import net.sf.jgcs.UnsupportedServiceException;
 
 public class JGroupsService implements Service {
 
+	private static final long serialVersionUID = 2L;
+	
 	public enum Services{
 		FIFO("vsc+fifo"),
 		TOTAL("vsc+total"),

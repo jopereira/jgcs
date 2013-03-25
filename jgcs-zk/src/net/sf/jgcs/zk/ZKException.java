@@ -26,9 +26,9 @@ import net.sf.jgcs.JGCSException;
  * @author jop
  */
 public class ZKException extends JGCSException {
+	private static final long serialVersionUID = -3526423319319274589L;
+
 	public ZKException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
-	private static final long serialVersionUID = 1L;
 }

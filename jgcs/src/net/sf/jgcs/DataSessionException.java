@@ -21,7 +21,7 @@ package net.sf.jgcs;
  */
 public class DataSessionException extends JGCSException {
 
-	private static final long serialVersionUID = -5456368119040106302L;
+	private static final long serialVersionUID = 7343293749674618228L;
 
 	/**
 	 * 

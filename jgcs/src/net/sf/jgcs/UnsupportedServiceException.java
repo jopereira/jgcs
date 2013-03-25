@@ -21,7 +21,7 @@ package net.sf.jgcs;
  */
 public class UnsupportedServiceException extends JGCSException {
 
-	private static final long serialVersionUID = -1665250751731240056L;
+	private static final long serialVersionUID = -8332539718709043101L;
 
 	/**
 	 * 

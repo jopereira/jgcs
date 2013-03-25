@@ -21,6 +21,9 @@ import net.sf.jgcs.Message;
 
 
 class SpMessage implements Message {
+
+	private static final long serialVersionUID = 2L;
+	
 	private byte[] payload;
 	private String sender;
 	

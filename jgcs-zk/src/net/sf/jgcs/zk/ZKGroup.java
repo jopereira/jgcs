@@ -19,6 +19,9 @@ package net.sf.jgcs.zk;
 import net.sf.jgcs.GroupConfiguration;
 
 public class ZKGroup implements GroupConfiguration {
+
+	private static final long serialVersionUID = 2L;
+	
 	private String groupId;
 	
 	public ZKGroup() {		

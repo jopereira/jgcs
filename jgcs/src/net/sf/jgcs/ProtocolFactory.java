@@ -12,6 +12,8 @@
  */
 package net.sf.jgcs;
 
+import java.io.Serializable;
+
 /**
  * 
  * This class defines a ProtocolFactory
@@ -23,7 +25,7 @@ package net.sf.jgcs;
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public interface ProtocolFactory {
+public interface ProtocolFactory extends Serializable {
 
 	/**
 	 * Creates a new Protocol that represents a toolkit.

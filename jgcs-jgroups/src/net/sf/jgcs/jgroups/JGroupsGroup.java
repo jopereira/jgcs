@@ -36,6 +36,8 @@ import net.sf.jgcs.GroupConfiguration;
 
 public class JGroupsGroup implements GroupConfiguration {
 
+	private static final long serialVersionUID = 2L;
+	
 	private String config, groupName;
 	
 	public JGroupsGroup() {
