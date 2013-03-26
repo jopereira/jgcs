@@ -1,5 +1,8 @@
 package net.sf.jgcs.adapters;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -10,7 +13,6 @@ import net.sf.jgcs.ExceptionListener;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.MessageListener;
-import net.sf.jgcs.utils.Mailbox;
 
 /**
  * This adapter implements a receive() method on top of the given DataSession.
@@ -23,7 +25,7 @@ public class BlockingReceiver {
 	private MyListener myListener;
 	private JGCSException exception = null;
 	private Object context = null;
-	private Mailbox<Message> mailbox = null;
+	private BlockingQueue<Message> mailbox = null;
 
 	/**
 	 * This constructor registers it self as a listener for message and exception listeners.
@@ -32,7 +34,7 @@ public class BlockingReceiver {
 	 */
 	public BlockingReceiver(DataSession session) throws ClosedSessionException {
 		super();
-		mailbox = new Mailbox<Message>();
+		mailbox = new LinkedBlockingQueue<Message>();
 		myListener = new MyListener(mailbox);
 		session.setMessageListener(myListener);
 		session.setExceptionListener(myListener);
@@ -43,8 +45,9 @@ public class BlockingReceiver {
 	 * @param context the context to be passed to the group communication.
 	 * @return the received message.
 	 * @throws JGCSException
+	 * @throws InterruptedException 
 	 */
-	public Message receive(Object context) throws JGCSException {
+	public Message receive(Object context) throws JGCSException, InterruptedException {
 		myListener.lock.lock();
 		try{
 			this.context = context;
@@ -52,7 +55,7 @@ public class BlockingReceiver {
 		finally{
 			myListener.lock.unlock();
 		}
-		Message msg=mailbox.removeNext();
+		Message msg=mailbox.take();
 		if(msg == null && exception != null){
 			JGCSException ex = null;
 			myListener.lock.lock();
@@ -73,8 +76,9 @@ public class BlockingReceiver {
 	 * Receives a message for the group.
 	 * @return the received message.
 	 * @throws JGCSException
+	 * @throws InterruptedException 
 	 */
-	public Message receive() throws JGCSException {
+	public Message receive() throws JGCSException, InterruptedException {
 		return receive(null);
 	}
 
@@ -85,8 +89,9 @@ public class BlockingReceiver {
 	 * @param timeout the time to block (in milliseconds)
 	 * @return the received message or null if no message was received.
 	 * @throws JGCSException
+	 * @throws InterruptedException 
 	 */
-	public Message receive(long timeout, Object context) throws JGCSException {
+	public Message receive(long timeout, Object context) throws JGCSException, InterruptedException {
 		myListener.lock.lock();
 		try{
 			this.context = context;
@@ -94,7 +99,7 @@ public class BlockingReceiver {
 		finally{
 			myListener.lock.unlock();
 		}
-		Message msg=mailbox.removeNext(timeout);
+		Message msg=mailbox.poll(timeout, TimeUnit.MILLISECONDS);
 		if(msg == null && exception != null){
 			JGCSException ex = null;
 			myListener.lock.lock();
@@ -114,12 +119,12 @@ public class BlockingReceiver {
 	
 	private class MyListener  implements MessageListener, ExceptionListener {
 
-		private Mailbox<Message> mbox;
+		private BlockingQueue<Message> mbox;
 		private final Lock lock = new ReentrantLock();
 		private final Condition condition = lock.newCondition();
 		
-		public MyListener(Mailbox<Message> m){
-			mbox = m;
+		public MyListener(BlockingQueue<Message> mailbox){
+			mbox = mailbox;
 		}
 		
 		public Object onMessage(Message msg) {

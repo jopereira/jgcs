@@ -15,7 +15,6 @@
 package net.sf.jgcs.ip;
 
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedServiceException;
 
 public class IpService implements Service {
 	
