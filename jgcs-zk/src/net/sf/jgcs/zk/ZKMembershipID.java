@@ -18,7 +18,7 @@ package net.sf.jgcs.zk;
 
 import net.sf.jgcs.membership.MembershipID;
 
-public class ZKMembershipID implements MembershipID {
+public class ZKMembershipID implements MembershipID, Comparable<MembershipID> {
 
 	private static final long serialVersionUID = 2L;
 	
@@ -30,8 +30,6 @@ public class ZKMembershipID implements MembershipID {
 
 	@Override
 	public int compareTo(MembershipID o) {
-		if (!(o instanceof ZKMembershipID))
-			return 0;
 		return Integer.compare(vid, ((ZKMembershipID) o).vid);
 	}
 

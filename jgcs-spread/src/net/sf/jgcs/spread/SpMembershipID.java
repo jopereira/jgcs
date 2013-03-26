@@ -28,16 +28,6 @@ public class SpMembershipID implements MembershipID {
 	}
 
 	@Override
-	public int compareTo(MembershipID o) {
-		if (!(o instanceof SpMembershipID))
-			return 0;
-		SpMembershipID other = (SpMembershipID)o;
-		if (id[0]!=other.id[0] || id[1]!=other.id[1])
-			return 0;
-		return Integer.compare(id[2], other.id[2]);
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

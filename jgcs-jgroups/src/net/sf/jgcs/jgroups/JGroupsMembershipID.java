@@ -56,13 +56,6 @@ public class JGroupsMembershipID implements MembershipID {
 	}
 
 	@Override
-	public int compareTo(MembershipID other) {
-		if (!(other instanceof JGroupsMembershipID))
-			return 0;
-		return id.compareTo(((JGroupsMembershipID)other).id);
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

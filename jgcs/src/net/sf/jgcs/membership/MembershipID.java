@@ -19,10 +19,8 @@ import java.io.Serializable;
  * 
  * With primary partition protocols, this identifier provides a total order
  * on views. With partitionable protocols, views are not totally ordered and
- * even the strict partial order cannot easily be captured. The usefulness
- * the {@link java.lang.Comparable java.lang.Comparable} implementation is thus
- * limited and should not be assumed.
+ * even the strict partial order cannot easily be captured. The implementation
+ * of {@link java.lang.Comparable java.lang.Comparable} should not be assumed.
  */
-public interface MembershipID extends Comparable<MembershipID>, Serializable {
-
+public interface MembershipID extends Serializable {
 }
