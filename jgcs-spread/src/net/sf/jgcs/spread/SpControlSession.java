@@ -56,8 +56,7 @@ public class SpControlSession extends AbstractBlockSession {
             this.notifyBlock();
             return;
 		} else if ((info.service_type & SpService.REG_MEMB_MESS)==0) {
-			//TODO: is this correct (notify)??
-			notifyLeave(getLocalAddress());
+			notifyRemoved();
 			current=null;
 			return;
 		}
@@ -68,18 +67,7 @@ public class SpControlSession extends AbstractBlockSession {
 			throw new IllegalArgumentException("buffer too short");
 
 		current=new SpMembership(mb.getPrivateGroup(), info, view);
-		notifyAndSetMembership(current);
-		
-		if ((info.service_type & SpService.CAUSED_BY_JOIN) != 0) {
-			notifyJoin(new SpGroup(view.vs_set[0]));
-		}
-		else if ((info.service_type & SpService.CAUSED_BY_LEAVE) != 0) {
-			notifyLeave(new SpGroup(view.vs_set[0]));
-		}
-		else if ((info.service_type & SpService.CAUSED_BY_DISCONNECT) != 0 || 
-				(info.service_type & SpService.CAUSED_BY_NETWORK) != 0) {
-			notifyFailed(new SpGroup(view.vs_set[0]));
-		}
+		notifyAndSetMembership(current);		
 	}
 
 	public synchronized void handleClose() {

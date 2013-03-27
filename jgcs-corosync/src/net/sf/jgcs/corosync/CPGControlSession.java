@@ -51,11 +51,5 @@ public class CPGControlSession extends AbstractMembershipSession {
 	void install(CPGAddress[] members, CPGAddress[] left, int[] lr, CPGAddress[] joined, int[] jr) {
 		CPGMembership memb = new CPGMembership(localid, members, left, lr, joined);
 		notifyAndSetMembership(memb);
-		for(SocketAddress addr: memb.getLeavedMembers())
-			notifyLeave(addr);
-		for(SocketAddress addr: memb.getFailedMembers())
-			notifyFailed(addr);
-		for(SocketAddress addr: memb.getJoinedMembers())
-			notifyJoin(addr);
 	}
 }

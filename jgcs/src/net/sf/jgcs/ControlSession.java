@@ -50,13 +50,6 @@ public interface ControlSession {
 	public SocketAddress getLocalAddress();
 	
 	/**
-	 * Adds a listener to deliver group membership notifications. 
-	 * 
-	 * @param listener The listener to be bound to the membership service.
-	 */
-	public void setControlListener(ControlListener listener);
-
-	/**
 	 * Adds a listener to deliver exceptions related to message reception and membership notifications.
 	 * @param exception the exception thrown by the implementation of the interface.
 	 */

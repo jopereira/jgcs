@@ -13,11 +13,8 @@
 
 package net.sf.jgcs.test;
 
-import java.net.SocketAddress;
-
 import net.sf.jgcs.BlockListener;
 import net.sf.jgcs.BlockSession;
-import net.sf.jgcs.ControlListener;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
@@ -35,7 +32,7 @@ import net.sf.jgcs.Service;
  * Sample application. This sample uses virtual synchrony and implements all the listeners
  * used to receive messages, exceptions and membership notifications.
  */
-public class Application implements MessageListener, ControlListener,
+public class Application implements MessageListener,
 	MembershipListener, BlockListener, Runnable {
 
 	private static final int NUM_MESSAGES=10;
@@ -67,7 +64,6 @@ public class Application implements MessageListener, ControlListener,
 		/// group communication toolkit.
 		////
 		data.setMessageListener(this);
-		control.setControlListener(this);
 		if (control instanceof MembershipSession)
 			((MembershipSession) control).setMembershipListener(this);
 		if (control instanceof BlockSession)
@@ -117,22 +113,6 @@ public class Application implements MessageListener, ControlListener,
 		System.out.println("Message from "+msg.getSenderAddress()
 				+": "+new String(msg.getPayload()));
 		return null;
-	}
-	////
-	/// These call backs are used to notify the application that some member has
-	/// joined, left or failed. This is not necessary if the application is using a Membership
-	/// or Block sessions.
-	////
-	public void onJoin(SocketAddress peer) {
-		System.out.println("-- JOIN: " + peer);
-	}
-
-	public void onLeave(SocketAddress peer) {
-		System.out.println("-- LEAVE: " + peer);
-	}
-
-	public void onFailed(SocketAddress peer) {
-		System.out.println("-- FAILED: " + peer);
 	}
 	////
 	/// This notification is issued every time that the group membership changes.

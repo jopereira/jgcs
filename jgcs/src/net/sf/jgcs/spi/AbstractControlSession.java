@@ -12,9 +12,6 @@
  */
 package net.sf.jgcs.spi;
 
-import java.net.SocketAddress;
-
-import net.sf.jgcs.ControlListener;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.ExceptionListener;
 import net.sf.jgcs.JGCSException;
@@ -29,7 +26,6 @@ import net.sf.jgcs.JGCSException;
  * @version 1.0
  */
 public abstract class AbstractControlSession implements ControlSession {
-	private ControlListener ctrlListener;
 	private ExceptionListener exceptionListener;
 
 	/**
@@ -37,14 +33,6 @@ public abstract class AbstractControlSession implements ControlSession {
 	 *
 	 */
 	protected void boot() {
-	}
-
-	/**
-	 * Sets the control listener.
-	 */
-	public synchronized void setControlListener(ControlListener listener) {
-		boot();
-		ctrlListener = listener;
 	}
 
 	/**
@@ -60,7 +48,7 @@ public abstract class AbstractControlSession implements ControlSession {
 	 * @return true if all listeners are registered
 	 */
 	protected synchronized boolean hasAllListeners(){
-		return ctrlListener != null;
+		return exceptionListener != null;
 	}
 
 	/**
@@ -71,32 +59,4 @@ public abstract class AbstractControlSession implements ControlSession {
 		if(exceptionListener != null)
 			exceptionListener.onException(exception);
 	}
-
-	/**
-	 * Notifies the control listener of a new member in the group.
-	 * @param peer the address of the new member.
-	 */
-	protected synchronized void notifyJoin(SocketAddress peer) {
-		if(ctrlListener != null)
-			ctrlListener.onJoin(peer);
-	}
-
-	/**
-	 * Notifies the control listener of a leaved member.
-	 * @param peer the address of the old member.
-	 */
-	protected synchronized void notifyLeave(SocketAddress peer) {
-		if(ctrlListener != null)
-			ctrlListener.onLeave(peer);
-	}
-
-	/**
-	 * Notifies the control listener that a member has failed.
-	 * @param peer the address of the old member.
-	 */	
-	protected synchronized void notifyFailed(SocketAddress peer) {
-		if(ctrlListener != null)
-			ctrlListener.onFailed(peer);
-	}
-
 }
