@@ -15,7 +15,7 @@ package net.sf.jgcs.spread;
 
 import java.util.Arrays;
 
-import net.sf.jgcs.membership.MembershipID;
+import net.sf.jgcs.MembershipID;
 
 public class SpMembershipID implements MembershipID {
 

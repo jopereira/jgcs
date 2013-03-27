@@ -34,11 +34,11 @@ package net.sf.jgcs.jgroups;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import net.sf.jgcs.AbstractProtocol;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.spi.AbstractProtocol;
 
 import org.jgroups.Address;
 import org.jgroups.JChannel;

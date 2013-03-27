@@ -37,7 +37,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
 import net.sf.jgcs.JGCSException;
-import net.sf.jgcs.membership.MembershipID;
+import net.sf.jgcs.MembershipID;
 
 import org.jgroups.ViewId;
 

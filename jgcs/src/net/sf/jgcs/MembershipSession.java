@@ -10,10 +10,8 @@
  *
  * See COPYING for licensing details.
  */
-package net.sf.jgcs.membership;
+package net.sf.jgcs;
 
-import net.sf.jgcs.ControlSession;
-import net.sf.jgcs.NotJoinedException;
 
 /**
  * This class defines a MembershipSession.

@@ -17,11 +17,11 @@ package net.sf.jgcs.neem;
 import java.io.IOException;
 
 import net.sf.neem.MulticastChannel;
-import net.sf.jgcs.AbstractProtocol;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.spi.AbstractProtocol;
 
 public class NeEMProtocol extends AbstractProtocol {
 	private synchronized void createSessions(NeEMGroup group) throws JGCSException {

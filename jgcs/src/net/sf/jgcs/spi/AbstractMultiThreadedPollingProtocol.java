@@ -10,11 +10,13 @@
  *
  * See COPYING for licensing details.
  */
-package net.sf.jgcs;
+package net.sf.jgcs.spi;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+
+import net.sf.jgcs.GroupConfiguration;
 
 /**
  * This class defines a AbstractMultiThreadedPollingProtocol.

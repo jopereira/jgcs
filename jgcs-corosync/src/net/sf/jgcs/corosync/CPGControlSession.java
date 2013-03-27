@@ -16,7 +16,7 @@ import java.net.SocketAddress;
 
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.JGCSException;
-import net.sf.jgcs.membership.AbstractMembershipSession;
+import net.sf.jgcs.spi.AbstractMembershipSession;
 
 public class CPGControlSession extends AbstractMembershipSession {
 	private CPGGroup group;

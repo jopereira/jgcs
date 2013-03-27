@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 
-import net.sf.jgcs.AbstractDataSession;
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
+import net.sf.jgcs.spi.AbstractDataSession;
 import net.sf.jgcs.spread.jni.Mailbox;
 
 public class SpDataSession extends AbstractDataSession {

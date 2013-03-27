@@ -1,9 +1,8 @@
-package net.sf.jgcs.membership;
+package net.sf.jgcs;
 
 import java.net.SocketAddress;
 import java.util.List;
 
-import net.sf.jgcs.NotJoinedException;
 
 /**
  * This class defines a Membership.

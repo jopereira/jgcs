@@ -35,8 +35,6 @@ import java.io.IOException;
 import java.net.SocketAddress;
 import java.util.HashMap;
 
-import net.sf.jgcs.AbstractDataSession;
-import net.sf.jgcs.AbstractProtocol;
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.GroupConfiguration;
@@ -44,6 +42,8 @@ import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
+import net.sf.jgcs.spi.AbstractDataSession;
+import net.sf.jgcs.spi.AbstractProtocol;
 
 import org.apache.log4j.Logger;
 import org.jgroups.JChannel;

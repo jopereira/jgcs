@@ -10,7 +10,16 @@
  *
  * See COPYING for licensing details.
  */
-package net.sf.jgcs;
+package net.sf.jgcs.spi;
+
+import net.sf.jgcs.DataSession;
+import net.sf.jgcs.ExceptionListener;
+import net.sf.jgcs.GroupConfiguration;
+import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.Message;
+import net.sf.jgcs.MessageListener;
+import net.sf.jgcs.Service;
+import net.sf.jgcs.ServiceListener;
 
 /**
  * This class defines a AbstractDataSession. 

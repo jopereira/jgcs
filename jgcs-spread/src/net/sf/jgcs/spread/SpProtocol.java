@@ -16,12 +16,12 @@ package net.sf.jgcs.spread;
 
 import java.nio.ByteBuffer;
 
-import net.sf.jgcs.AbstractControlSession;
-import net.sf.jgcs.AbstractPollingProtocol;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.spi.AbstractControlSession;
+import net.sf.jgcs.spi.AbstractPollingProtocol;
 import net.sf.jgcs.spread.jni.Mailbox;
 
 public class SpProtocol extends AbstractPollingProtocol {

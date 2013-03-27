@@ -12,7 +12,6 @@
 	  
 package net.sf.jgcs.corosync;
 
-import net.sf.jgcs.AbstractPollingProtocol;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
@@ -20,6 +19,7 @@ import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup.Callbacks;
 import net.sf.jgcs.corosync.jni.CorosyncException;
+import net.sf.jgcs.spi.AbstractPollingProtocol;
 
 public class CPGProtocol extends AbstractPollingProtocol {
 	

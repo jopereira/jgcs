@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.sf.jgcs.Membership;
+import net.sf.jgcs.MembershipID;
 import net.sf.jgcs.NotJoinedException;
-import net.sf.jgcs.membership.Membership;
-import net.sf.jgcs.membership.MembershipID;
 
 public class ZKMembership implements Membership {
 

@@ -10,12 +10,16 @@
  *
  * See COPYING for licensing details.
  */
-package net.sf.jgcs;
+package net.sf.jgcs.spi;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+
+import net.sf.jgcs.GroupConfiguration;
+import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.Message;
 
 
 /**

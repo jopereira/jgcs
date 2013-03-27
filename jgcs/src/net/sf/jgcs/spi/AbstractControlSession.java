@@ -10,9 +10,14 @@
  *
  * See COPYING for licensing details.
  */
-package net.sf.jgcs;
+package net.sf.jgcs.spi;
 
 import java.net.SocketAddress;
+
+import net.sf.jgcs.ControlListener;
+import net.sf.jgcs.ControlSession;
+import net.sf.jgcs.ExceptionListener;
+import net.sf.jgcs.JGCSException;
 
 /**
  * 

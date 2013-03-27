@@ -18,11 +18,11 @@ package net.sf.jgcs.zk;
 
 import java.io.IOException;
 
-import net.sf.jgcs.AbstractProtocol;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.spi.AbstractProtocol;
 import net.sf.jgcs.zk.groupz.Application;
 import net.sf.jgcs.zk.groupz.Endpoint;
 

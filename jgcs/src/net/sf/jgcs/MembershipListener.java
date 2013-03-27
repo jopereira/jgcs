@@ -10,7 +10,7 @@
  *
  * See COPYING for licensing details.
  */
-package net.sf.jgcs.membership;
+package net.sf.jgcs;
 
 /**
  * 

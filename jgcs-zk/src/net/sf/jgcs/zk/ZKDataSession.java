@@ -19,12 +19,12 @@ package net.sf.jgcs.zk;
 import java.io.IOException;
 import java.net.SocketAddress;
 
-import net.sf.jgcs.AbstractDataSession;
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
+import net.sf.jgcs.spi.AbstractDataSession;
 import net.sf.jgcs.zk.groupz.Endpoint;
 
 public class ZKDataSession extends AbstractDataSession {	

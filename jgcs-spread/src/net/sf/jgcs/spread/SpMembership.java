@@ -18,8 +18,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 
-import net.sf.jgcs.membership.Membership;
-import net.sf.jgcs.membership.MembershipID;
+import net.sf.jgcs.Membership;
+import net.sf.jgcs.MembershipID;
 import net.sf.jgcs.spread.jni.Mailbox;
 
 public class SpMembership implements Membership {

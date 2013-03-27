@@ -21,7 +21,7 @@ import java.net.SocketAddress;
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.NotJoinedException;
-import net.sf.jgcs.membership.AbstractBlockSession;
+import net.sf.jgcs.spi.AbstractBlockSession;
 import net.sf.jgcs.zk.groupz.Endpoint;
 
 public class ZKControlSession extends AbstractBlockSession {

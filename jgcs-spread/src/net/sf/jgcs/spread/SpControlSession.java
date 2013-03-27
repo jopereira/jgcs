@@ -18,9 +18,9 @@ import java.nio.ByteBuffer;
 
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.MembershipID;
 import net.sf.jgcs.NotJoinedException;
-import net.sf.jgcs.membership.AbstractBlockSession;
-import net.sf.jgcs.membership.MembershipID;
+import net.sf.jgcs.spi.AbstractBlockSession;
 import net.sf.jgcs.spread.jni.Mailbox;
 
 public class SpControlSession extends AbstractBlockSession {

@@ -15,12 +15,12 @@ package net.sf.jgcs.corosync;
 import java.io.IOException;
 import java.net.SocketAddress;
 
-import net.sf.jgcs.AbstractDataSession;
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
+import net.sf.jgcs.spi.AbstractDataSession;
 
 public class CPGDataSession extends AbstractDataSession {
 	private CPGProtocol protocol; // FIXME: could be removed, if superclass was generic

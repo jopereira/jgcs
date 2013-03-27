@@ -16,7 +16,7 @@
 
 package net.sf.jgcs.zk;
 
-import net.sf.jgcs.membership.MembershipID;
+import net.sf.jgcs.MembershipID;
 
 public class ZKMembershipID implements MembershipID, Comparable<MembershipID> {
 

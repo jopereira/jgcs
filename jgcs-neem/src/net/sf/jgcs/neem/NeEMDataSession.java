@@ -19,11 +19,11 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 
 import net.sf.neem.MulticastChannel;
-import net.sf.jgcs.AbstractPollingDataSession;
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
+import net.sf.jgcs.spi.AbstractPollingDataSession;
 
 public class NeEMDataSession extends AbstractPollingDataSession {
 	private MulticastChannel sock;

@@ -17,11 +17,11 @@ package net.sf.jgcs.ip;
 import java.io.IOException;
 import java.net.MulticastSocket;
 
-import net.sf.jgcs.AbstractProtocol;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.spi.AbstractProtocol;
 
 
 public class IpProtocol extends AbstractProtocol {

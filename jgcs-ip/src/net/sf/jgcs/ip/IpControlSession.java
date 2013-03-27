@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.net.MulticastSocket;
 import java.net.SocketAddress;
 
-import net.sf.jgcs.AbstractControlSession;
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.spi.AbstractControlSession;
 
 
 public class IpControlSession extends AbstractControlSession {

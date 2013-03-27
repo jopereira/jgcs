@@ -37,9 +37,9 @@ import java.util.Iterator;
 import java.util.List;
 
 
+import net.sf.jgcs.Membership;
+import net.sf.jgcs.MembershipID;
 import net.sf.jgcs.NotJoinedException;
-import net.sf.jgcs.membership.Membership;
-import net.sf.jgcs.membership.MembershipID;
 
 import org.jgroups.Address;
 import org.jgroups.JChannel;

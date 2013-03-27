@@ -10,10 +10,14 @@
  *
  * See COPYING for licensing details.
  */
-package net.sf.jgcs.membership;
+package net.sf.jgcs.spi;
 
-import net.sf.jgcs.AbstractControlSession;
+import net.sf.jgcs.Membership;
+import net.sf.jgcs.MembershipID;
+import net.sf.jgcs.MembershipListener;
+import net.sf.jgcs.MembershipSession;
 import net.sf.jgcs.NotJoinedException;
+
 
 public abstract class AbstractMembershipSession extends AbstractControlSession implements MembershipSession {
 

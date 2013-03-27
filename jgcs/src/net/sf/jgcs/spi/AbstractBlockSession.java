@@ -10,9 +10,12 @@
  *
  * See COPYING for licensing details.
  */
-package net.sf.jgcs.membership;
+package net.sf.jgcs.spi;
 
+import net.sf.jgcs.BlockListener;
+import net.sf.jgcs.BlockSession;
 import net.sf.jgcs.JGCSException;
+
 
 
 public abstract class AbstractBlockSession extends AbstractMembershipSession implements BlockSession {

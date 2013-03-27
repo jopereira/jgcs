@@ -18,8 +18,8 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 import net.sf.neem.MulticastChannel;
-import net.sf.jgcs.AbstractControlSession;
 import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.spi.AbstractControlSession;
 
 public class NeEMControlSession extends AbstractControlSession {
 	private MulticastChannel sock;

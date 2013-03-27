@@ -15,21 +15,21 @@ package net.sf.jgcs.test;
 
 import java.net.SocketAddress;
 
+import net.sf.jgcs.BlockListener;
+import net.sf.jgcs.BlockSession;
 import net.sf.jgcs.ControlListener;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.MembershipListener;
+import net.sf.jgcs.MembershipSession;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.MessageListener;
 import net.sf.jgcs.NotJoinedException;
 import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 import net.sf.jgcs.Service;
-import net.sf.jgcs.membership.BlockListener;
-import net.sf.jgcs.membership.BlockSession;
-import net.sf.jgcs.membership.MembershipListener;
-import net.sf.jgcs.membership.MembershipSession;
 
 /**
  * Sample application. This sample uses virtual synchrony and implements all the listeners

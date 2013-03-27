@@ -21,11 +21,11 @@ import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.net.SocketAddress;
 
-import net.sf.jgcs.AbstractPollingDataSession;
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
+import net.sf.jgcs.spi.AbstractPollingDataSession;
 
 
 public class IpDataSession extends AbstractPollingDataSession {

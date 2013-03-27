@@ -10,10 +10,8 @@
  *
  * See COPYING for licensing details.
  */
-package net.sf.jgcs.membership;
+package net.sf.jgcs;
 
-import net.sf.jgcs.JGCSException;
-import net.sf.jgcs.NotJoinedException;
 
 /**
  * 

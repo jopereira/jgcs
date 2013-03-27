@@ -10,10 +10,13 @@
  *
  * See COPYING for licensing details.
  */
-package net.sf.jgcs;
+package net.sf.jgcs.spi;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import net.sf.jgcs.GroupConfiguration;
+import net.sf.jgcs.Protocol;
 
 /**
  * 

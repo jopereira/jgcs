@@ -38,7 +38,7 @@ import java.util.List;
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.NotJoinedException;
-import net.sf.jgcs.membership.AbstractMembershipSession;
+import net.sf.jgcs.spi.AbstractMembershipSession;
 
 import org.apache.log4j.Logger;
 import org.jgroups.Address;

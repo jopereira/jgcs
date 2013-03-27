@@ -10,7 +10,7 @@
  *
  * See COPYING for licensing details.
  */
-package net.sf.jgcs;
+package net.sf.jgcs.spi;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
