@@ -1,18 +1,23 @@
 
-This is a simplified distribution of jGCS, the generic interface for 
+------------------------------------------------------------------------------
+WARNING! An updated but not fully compatible version of jGCS is available
+at https://github.com/jopereira/jgcs (master branch). Please use that instead.
+------------------------------------------------------------------------------
+
+This is a maintanance distribution of jGCS 0.6, the generic interface for 
 group communication in Java, providing access to multiple toolkits, 
 such as Appia, JGroups, Corosync, or Spread, through a common interface.
 
-The original SVN repository and more information can be found at 
-http://jgcs.sf.net. Main changes are:
+This version is available at https://github.com/jopereira/jgcs (branch
+compat-0.6.x), based on the original SVN repository at http://jgcs.sf.net.
+The API is unchanged from version 0.6.1. Main changes since 0.6.1 available
+at SourceForge are:
 
 	- a new Corosync / Closed Process Group (CPG) binding using JNI
 	- a new ZooKeeper binding, usable only for membership
 	- minor changes to bindings to use updated versions of protocols
 	- new build system with Ivy for dependency resolution;
 	
-The API is unchanged from version 0.6.1.
-
 To compile and use:
 
  - execute ant publish in jgcs/
@@ -20,8 +25,6 @@ To compile and use:
  
 Desired artifacts are then available at your local Ivy repository. 
 See samples/ directory for an usage example.
-
-Current source is at https://github.com/jopereira/jgcs.
 
 Licenses for each sub-package differ and can be found in each 
 sub-directory.
