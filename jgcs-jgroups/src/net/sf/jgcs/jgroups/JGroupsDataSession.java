@@ -32,7 +32,6 @@
 package net.sf.jgcs.jgroups;
 
 import java.io.IOException;
-import java.net.SocketAddress;
 import java.util.HashMap;
 
 import net.sf.jgcs.Annotation;
@@ -42,6 +41,7 @@ import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
+import net.sf.jgcs.annotation.PointToPoint;
 import net.sf.jgcs.spi.AbstractDataSession;
 import net.sf.jgcs.spi.AbstractProtocol;
 
@@ -72,7 +72,7 @@ public class JGroupsDataSession extends AbstractDataSession {
 	public void multicast(Message msg, Service service, Object cookie,
 			Annotation... annotation) throws IOException,
 			UnsupportedServiceException {
-		// TODO: cookie and annotations are NOT used...
+		// TODO: cookies are NOT used...
 		logger.debug("Service on send: "+((JGroupsService)service).getService());
 		if( ! (service instanceof JGroupsService))
 			throw new UnsupportedServiceException("Service "+service+" is not supported.");
@@ -82,27 +82,9 @@ public class JGroupsDataSession extends AbstractDataSession {
 		JChannel channel = channelsMap.get(service);
 		if(channel == null)
 			throw new UnsupportedServiceException("There is no JGroups channel for the service "+service);
-		try {
-			channel.send((org.jgroups.Message) msg);
-		} catch (Exception e) {
-			throw new JGCSException("Cannot send message.",e);
-		}
-	}
-
-	public void send(Message msg, Service service, Object cookie,
-			SocketAddress destination, Annotation... annotation)
-			throws IOException, UnsupportedServiceException {
-		// TODO: cookie and annotations are NOT used...
-		logger.debug("Service on send: "+((JGroupsService)service).getService());
-		if( ! (service instanceof JGroupsService))
-			throw new UnsupportedServiceException("Service "+service+" is not supported.");
-		//FIXME: THIS IS NOT CORRECT!
-		// I have to get some how the service that is provided by the channel and compare
-		// this service with the incoming service.
-		JChannel channel = channelsMap.get(service);
-		if(channel == null)
-			throw new UnsupportedServiceException("There is no JGroups channel for the service "+service);
-		((org.jgroups.Message) msg).setDest(((JGroupsSocketAddress)destination).getAddress());		
+		for(Annotation a: annotation)
+			if (a instanceof PointToPoint)
+				((org.jgroups.Message) msg).setDest(((JGroupsSocketAddress)((PointToPoint)a).getDestination()).getAddress());		
 		try {
 			channel.send((org.jgroups.Message) msg);
 		} catch (Exception e) {

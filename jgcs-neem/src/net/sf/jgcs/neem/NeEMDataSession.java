@@ -15,15 +15,14 @@
 package net.sf.jgcs.neem;
 
 import java.io.IOException;
-import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 
-import net.sf.neem.MulticastChannel;
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.spi.AbstractPollingDataSession;
+import net.sf.neem.MulticastChannel;
 
 public class NeEMDataSession extends AbstractPollingDataSession {
 	private MulticastChannel sock;
@@ -37,10 +36,6 @@ public class NeEMDataSession extends AbstractPollingDataSession {
 		return new NeEMMessage();
 	}
 
-	public void send(Message msg, Service service, Object cookie, SocketAddress destination, Annotation... annotation) throws IOException, UnsupportedServiceException {
-		throw new UnsupportedServiceException();
-	}
-	
 	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException, UnsupportedServiceException {
 		sock.write(ByteBuffer.wrap(msg.getPayload()));
 	}

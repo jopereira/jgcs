@@ -29,7 +29,10 @@ public class SpService implements Service {
 	public static final int RELIABLE_MESS=0x00000002;
 	public static final int UNRELIABLE_MESS=0x00000001;
 
-	// Service types for membership messages
+    public static final int SELF_DISCARD=0x00000040;
+    public static final int DROP_RECV=0x01000000;
+
+    // Service types for membership messages
 	public static final int MEMBERSHIP_MESS=0x00003f00;
 
 	public static final int TRANSITION_MESS=0x00002000;
@@ -43,7 +46,8 @@ public class SpService implements Service {
     public static final int DONT_BLOCK=0x10000000;
     public static final int FLUSH_REQ_MESS=0x20000000;
     public static final int SUBGROUP_CAST=0x40000000;
-	
+
+        
 	private int serviceFlags;
 
 	public SpService(int service) {

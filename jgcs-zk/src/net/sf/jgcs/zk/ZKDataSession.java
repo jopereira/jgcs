@@ -17,7 +17,6 @@
 package net.sf.jgcs.zk;
 
 import java.io.IOException;
-import java.net.SocketAddress;
 
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.ClosedSessionException;
@@ -43,11 +42,6 @@ public class ZKDataSession extends AbstractDataSession {
 	@Override
 	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException, UnsupportedServiceException {
 		endpoint.send(msg.getPayload());
-	}
-
-	@Override
-	public void send(Message msg, Service service, Object cookie, SocketAddress destination, Annotation... annotation) throws IOException, UnsupportedServiceException {
-		// TODO Auto-generated method stub
 	}
 
 	void receive(byte[] data) {

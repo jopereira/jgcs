@@ -16,15 +16,14 @@ package net.sf.jgcs.ip;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
-import java.net.SocketAddress;
 
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
+import net.sf.jgcs.annotation.PointToPoint;
 import net.sf.jgcs.spi.AbstractPollingDataSession;
 
 
@@ -40,17 +39,18 @@ public class IpDataSession extends AbstractPollingDataSession {
 		return new IpMessage();
 	}
 
-	public void send(Message msg, Service service, Object cookie, SocketAddress destination, Annotation... annotation) throws IOException, UnsupportedServiceException {
-		InetSocketAddress iaddr=(InetSocketAddress)destination;
-		send(msg.getPayload(), ((IpService)service).getTtl(), iaddr.getAddress(), iaddr.getPort());
-	}
-	
 	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException, UnsupportedServiceException {
-		send(msg.getPayload(), ((IpService)service).getTtl(), ((IpGroup)getGroup()).getGroupAddress(), ((IpGroup)getGroup()).getPort());
+		InetSocketAddress iaddr=((IpGroup)getGroup()).getAddress();
+		
+		for(Annotation a: annotation)
+			if (a instanceof PointToPoint)
+				iaddr = (InetSocketAddress)((PointToPoint)a).getDestination();
+		
+		send(msg.getPayload(), ((IpService)service).getTtl(), iaddr);
 	}
 	
-	private synchronized void send(byte[] bs, int ttl, InetAddress dest, int port) throws IOException {
-		DatagramPacket dgram=new DatagramPacket(bs, bs.length, dest, port);
+	private synchronized void send(byte[] bs, int ttl, InetSocketAddress dest) throws IOException {
+		DatagramPacket dgram=new DatagramPacket(bs, bs.length, dest);
 		int old=sock.getTimeToLive();
 		sock.setTimeToLive(ttl);
 		sock.send(dgram);

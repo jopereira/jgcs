@@ -13,7 +13,6 @@
 package net.sf.jgcs;
 
 import java.io.IOException;
-import java.net.SocketAddress;
 
 /**
  * 
@@ -83,19 +82,4 @@ public interface DataSession {
 	 */
 	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) 
 		throws IOException, UnsupportedServiceException;
-
-	/**
-	 * <p>Sends a message to one particular member of the group.</p>
-	 * @param msg The message to be sent.
-	 * @param service the service needed by the application for message delivery (e.g. total order)
-	 * or null to use the default channel service.
-	 * @param cookie a cookie used to identify the message in the future (e.g. service notifications).
-	 * @param destination the destination of the message.
-	 * @param annotation semantic information provided by the application 
-	 * to be used by communication protocols (e.g. semantic reliability).
-	 * @throws IOException 
-	 */
-	public void send(Message msg, Service service, Object cookie, SocketAddress destination, 
-			Annotation... annotation) throws IOException, UnsupportedServiceException;
-
 }

@@ -22,19 +22,20 @@ public class IpGroup implements GroupConfiguration {
 	
 	private static final long serialVersionUID = 2L;
 	
-	private InetAddress groupAddress;
-	private int port;
+	private InetSocketAddress address;
 
 	public IpGroup(String group) throws UnknownHostException {
 		String[] peer=group.split(":");
-		port = Integer.parseInt(peer[1]);
-		groupAddress = InetAddress.getByName(peer[0]);
+		address = new InetSocketAddress(peer[0], Integer.parseInt(peer[1]));
 	}
 	public InetAddress getGroupAddress() {
-		return groupAddress;
+		return address.getAddress();
 	}
 	public int getPort() {
-		return port;
+		return address.getPort();
+	}
+	public InetSocketAddress getAddress() {
+		return address;
 	}
 }
 

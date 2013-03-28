@@ -15,7 +15,6 @@
 package net.sf.jgcs.spread;
 
 import java.io.IOException;
-import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 
 import net.sf.jgcs.Annotation;
@@ -23,6 +22,8 @@ import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
+import net.sf.jgcs.annotation.PointToPoint;
+import net.sf.jgcs.annotation.SelfDelivery;
 import net.sf.jgcs.spi.AbstractDataSession;
 import net.sf.jgcs.spread.jni.Mailbox;
 
@@ -39,20 +40,24 @@ public class SpDataSession extends AbstractDataSession {
 	}
 
 	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException, UnsupportedServiceException {
+		int ret = 0;
 		int qos=((SpService)service).getService();
-		String dest=((SpGroup)getGroup()).getGroup();
-		Mailbox.MulticastArgs info=new Mailbox.MulticastArgs(qos, ((SpGroup)getGroup()).getGroup(), new String[]{dest}, (short) 0);
+		String dest = null;
+		for(Annotation a: annotation)
+			if (a instanceof PointToPoint)
+				dest = ((SpGroup)((PointToPoint)a).getDestination()).getGroup();
+			else if (a.equals(SelfDelivery.DISCARD))
+				qos = qos | SpService.SELF_DISCARD;
 		ByteBuffer mess=ByteBuffer.wrap(msg.getPayload());
-		int ret=mb.C_multicast(info, mess);
-		if (ret<0) throw new SpException(ret, null);
-	}
 
-	public void send(Message msg, Service service, Object cookie, SocketAddress destination, Annotation... annotation) throws IOException, UnsupportedServiceException {
-		int qos=((SpService)service).getService();
-		String dest=((SpGroup)destination).getGroup();
-		Mailbox.MulticastArgs info=new Mailbox.MulticastArgs(qos, ((SpGroup)getGroup()).getGroup(), new String[]{dest}, (short) 0);
-		ByteBuffer mess=ByteBuffer.wrap(msg.getPayload());
-		int ret=mb.C_subgroupcast(info, mess);
+		if (dest == null) {
+			dest=((SpGroup)getGroup()).getGroup();
+			Mailbox.MulticastArgs info=new Mailbox.MulticastArgs(qos, ((SpGroup)getGroup()).getGroup(), new String[]{dest}, (short) 0);
+			ret=mb.C_multicast(info, mess);
+		} else {
+			Mailbox.MulticastArgs info=new Mailbox.MulticastArgs(qos, ((SpGroup)getGroup()).getGroup(), new String[]{dest}, (short) 0);
+			ret=mb.C_subgroupcast(info, mess);
+		}
 		if (ret<0) throw new SpException(ret, null);
 	}
 

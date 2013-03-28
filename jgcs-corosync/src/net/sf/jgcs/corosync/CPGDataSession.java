@@ -13,7 +13,6 @@
 package net.sf.jgcs.corosync;
 
 import java.io.IOException;
-import java.net.SocketAddress;
 
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.ClosedSessionException;
@@ -43,10 +42,6 @@ public class CPGDataSession extends AbstractDataSession {
 			throw new UnsupportedServiceException(e.toString());
 		}
 		protocol.cpg.multicast(guarantee.getGuarantee(), msg.getPayload());
-	}
-
-	public void send(Message msg, Service service, Object cookie, SocketAddress destination, Annotation... annotation) throws IOException, UnsupportedServiceException {
-		throw new UnsupportedServiceException("sending to processes not supported");
 	}
 
 	void deliver(int nodeid, int pid, byte[] msg) {
