@@ -26,8 +26,12 @@ import net.sf.jgcs.GroupConfiguration;
  * @author Jose Pereira
  * @version 1.0
  */
-public abstract class AbstractMultiThreadedPollingProtocol extends
-		AbstractProtocol {
+public abstract class AbstractMultiThreadedPollingProtocol<
+		P extends AbstractMultiThreadedPollingProtocol<P,DS,CS,G>,
+		DS extends AbstractDataSession<P,DS,CS,G>,
+		CS extends AbstractControlSession<P,DS,CS,G>,
+		G extends GroupConfiguration>
+		extends AbstractProtocol<P,DS,CS,G> {
 
 	private ExecutorService pool;
 	

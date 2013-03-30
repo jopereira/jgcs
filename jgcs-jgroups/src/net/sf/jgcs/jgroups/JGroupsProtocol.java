@@ -34,9 +34,6 @@ package net.sf.jgcs.jgroups;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import net.sf.jgcs.ControlSession;
-import net.sf.jgcs.DataSession;
-import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.spi.AbstractProtocol;
 
@@ -46,32 +43,14 @@ import org.jgroups.Message;
 import org.jgroups.Receiver;
 import org.jgroups.View;
 
-public class JGroupsProtocol extends AbstractProtocol {
+public class JGroupsProtocol extends AbstractProtocol<JGroupsProtocol,JGroupsDataSession,JGroupsControlSession,JGroupsGroup> {
 
 	public JGroupsProtocol() {
 		super();
 	}
-
-	public DataSession openDataSession(GroupConfiguration group) throws JGCSException {
-		DataSession data=lookupDataSession(group);
-		if (data==null) {
-			createSessions(group);
-			data = lookupDataSession(group);
-		}
-		return data;
-	}
-
-	public ControlSession openControlSession(GroupConfiguration group)
-			throws JGCSException {
-		ControlSession control = lookupControlSession(group);
-		if (control==null){
-			createSessions(group);
-			control = lookupControlSession(group);
-		}
-		return control;
-	}
 	
-	private synchronized void createSessions(GroupConfiguration g) throws JGCSException{
+	@Override
+	protected synchronized void createSessions(JGroupsGroup g) throws JGCSException {
 		if( !(g instanceof JGroupsGroup))
 			throw new JGCSException("Wrong type of the given Group: "+g.getClass().getName()+
 					"should be of type "+JGroupsGroup.class.getName());
@@ -80,8 +59,8 @@ public class JGroupsProtocol extends AbstractProtocol {
 
 		try {
 			JChannel channel = new JChannel(group.getConfigName());
-			final JGroupsControlSession cs = new JGroupsControlSession(channel,group.getGroupName());
-			final JGroupsDataSession ds= new JGroupsDataSession(this, channel, group);
+			final JGroupsControlSession cs = new JGroupsControlSession(channel);
+			final JGroupsDataSession ds= new JGroupsDataSession(channel);
 			putSessions(group, cs,ds);
 			
 			Receiver recv = new Receiver() {
@@ -95,15 +74,8 @@ public class JGroupsProtocol extends AbstractProtocol {
 					// FIXME? This makes the gap on the DOA results.
 					System.arraycopy(jgroupsBuffer,0,buffer,0,buffer.length);
 					JGroupsMessage message = new JGroupsMessage(buffer, new JGroupsSocketAddress(((org.jgroups.Message) msg).getSrc()));
-					Object cookie = ds.notifyMessageListeners(message);
-					/* FIXME: These notifications are _so_ wrong. The application should get 
-					 * only get one notification and compare the Service given with what's expected.
-					 */
-					if(cookie != null){
-						ds.notifyServiceListeners(cookie,new JGroupsService("seto_total_order"));
-						ds.notifyServiceListeners(cookie,new JGroupsService("regular_total_order"));
-						ds.notifyServiceListeners(cookie,new JGroupsService("uniform_total_order"));
-					}
+					// FIXME? Service notification?
+					ds.deliver(message);
 				}
 
 				@Override
@@ -142,9 +114,5 @@ public class JGroupsProtocol extends AbstractProtocol {
 		} catch (Exception e) {
 			throw new JGCSException("Could not create JGroups channel. ",e);
 		}
-	}
-	
-	protected synchronized void removeSessions(GroupConfiguration group) {
-		super.removeSessions(group);
 	}
 }

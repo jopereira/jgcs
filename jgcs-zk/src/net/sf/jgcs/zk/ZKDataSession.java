@@ -26,13 +26,9 @@ import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.spi.AbstractDataSession;
 import net.sf.jgcs.zk.groupz.Endpoint;
 
-public class ZKDataSession extends AbstractDataSession {	
+public class ZKDataSession extends AbstractDataSession<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {	
 
 	Endpoint endpoint;
-
-	ZKDataSession(ZKProtocol zkProtocol, ZKGroup group) {
-		super(zkProtocol, group);
-	}
 
 	@Override
 	public Message createMessage() throws ClosedSessionException {

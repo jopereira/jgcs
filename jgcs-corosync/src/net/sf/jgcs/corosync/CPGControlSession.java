@@ -18,15 +18,8 @@ import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.spi.AbstractMembershipSession;
 
-public class CPGControlSession extends AbstractMembershipSession {
-	private CPGGroup group;
-	private CPGProtocol protocol;
+public class CPGControlSession extends AbstractMembershipSession<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
 	private SocketAddress localid;
-
-	public CPGControlSession(CPGProtocol protocol, CPGGroup group) {
-		this.group = group;
-		this.protocol = protocol;
-	}
 
 	@Override
 	public void join() throws ClosedSessionException, JGCSException {

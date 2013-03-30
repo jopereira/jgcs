@@ -21,22 +21,22 @@ import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.Message;
 
-
 /**
  * Data session that directly polls I/O. This is often used for simple
  * protocols that do not have associated control sessions. It probably should
  * not be used with AbstractPollingProtocol.
  * @author Jose Pereira
  */
-public abstract class AbstractPollingDataSession extends AbstractDataSession {
+public abstract class AbstractPollingDataSession<
+		P extends AbstractProtocol<P,DS,CS,G>,
+		DS extends AbstractPollingDataSession<P,DS,CS,G>,
+		CS extends AbstractControlSession<P,DS,CS,G>,
+		G extends GroupConfiguration>
+		extends AbstractDataSession<P,DS,CS,G> {
 	private boolean closed;
 	protected ExecutorService pool;
 	protected Runnable task;
 
-	protected AbstractPollingDataSession(AbstractProtocol protocol, GroupConfiguration group) {
-		super(protocol, group);
-	}
-	
 	protected void boot() {
 		if (task!=null)
 			return;

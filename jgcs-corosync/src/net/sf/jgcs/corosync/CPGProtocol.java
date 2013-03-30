@@ -12,16 +12,13 @@
 	  
 package net.sf.jgcs.corosync;
 
-import net.sf.jgcs.ControlSession;
-import net.sf.jgcs.DataSession;
-import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup.Callbacks;
 import net.sf.jgcs.corosync.jni.CorosyncException;
 import net.sf.jgcs.spi.AbstractPollingProtocol;
 
-public class CPGProtocol extends AbstractPollingProtocol {
+public class CPGProtocol extends AbstractPollingProtocol<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
 	
 	ClosedProcessGroup cpg;
 
@@ -45,32 +42,11 @@ public class CPGProtocol extends AbstractPollingProtocol {
 		}, 0);
 	}
 
-	private synchronized void createSessions(CPGGroup group) {
-		putSessions(group, new CPGControlSession(this, group), new CPGDataSession(this, group));
+	@Override
+	protected synchronized void createSessions(CPGGroup group) {
+		putSessions(group, new CPGControlSession(), new CPGDataSession());
 	}
 	
-	protected synchronized void removeSessions(GroupConfiguration group) {
-		super.removeSessions(group);
-	}
-
-	public DataSession openDataSession(GroupConfiguration group) throws JGCSException {
-		DataSession data=lookupDataSession(group);
-		if (data==null) {
-			createSessions((CPGGroup)group);
-			data=lookupDataSession(group);
-		}
-		return data;
-	}
-
-	public ControlSession openControlSession(GroupConfiguration group) throws JGCSException {
-		ControlSession control=lookupControlSession(group);
-		if (control==null) {
-			createSessions((CPGGroup)group);
-			control=lookupControlSession(group);
-		}
-		return control;
-	}
-
 	@Override
 	protected void read() {
 		try {

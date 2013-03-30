@@ -21,14 +21,8 @@ import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.spi.AbstractDataSession;
 
-public class CPGDataSession extends AbstractDataSession {
-	private CPGProtocol protocol; // FIXME: could be removed, if superclass was generic
+public class CPGDataSession extends AbstractDataSession<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
 	
-	CPGDataSession(CPGProtocol protocol, CPGGroup group) {
-		super(protocol, group);
-		this.protocol = protocol;
-	}
-
 	public Message createMessage() throws ClosedSessionException {
 		return new CPGMessage();
 	}

@@ -24,15 +24,12 @@ import net.sf.jgcs.NotJoinedException;
 import net.sf.jgcs.spi.AbstractBlockSession;
 import net.sf.jgcs.zk.groupz.Endpoint;
 
-public class ZKControlSession extends AbstractBlockSession {
+public class ZKControlSession extends AbstractBlockSession<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {
 
 	Endpoint endpoint;
 	private ZKAddress localid;
 	private ZKMembership current;
 	private boolean blocked;
-
-	ZKControlSession(ZKProtocol zkProtocol, ZKGroup group) throws ZKException {
-	}
 
 	@Override
 	public void blockOk() throws NotJoinedException, JGCSException {

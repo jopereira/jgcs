@@ -23,15 +23,13 @@ import net.sf.jgcs.NotJoinedException;
 import net.sf.jgcs.spi.AbstractBlockSession;
 import net.sf.jgcs.spread.jni.Mailbox;
 
-public class SpControlSession extends AbstractBlockSession {
+public class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSession,SpControlSession,SpGroup> {
 	private Mailbox mb;
-	private SpGroup group;
 	private boolean blocked = true;
 	private SpMembership current;
 
-	public SpControlSession(Mailbox mb, SpGroup group) {
+	public SpControlSession(Mailbox mb) {
 		this.mb = mb;
-		this.group = group;
 	}
 
 	public void join() throws ClosedSessionException, JGCSException {

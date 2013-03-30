@@ -14,6 +14,7 @@ package net.sf.jgcs.spi;
 
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.ExceptionListener;
+import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
 
 /**
@@ -25,9 +26,18 @@ import net.sf.jgcs.JGCSException;
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public abstract class AbstractControlSession implements ControlSession {
-	private ExceptionListener exceptionListener;
+public abstract class AbstractControlSession<
+	P extends AbstractProtocol<P,DS,CS,G>,
+	DS extends AbstractDataSession<P,DS,CS,G>,
+	CS extends AbstractControlSession<P,DS,CS,G>,
+	G extends GroupConfiguration>
+			implements ControlSession {
+	protected P protocol;
+	protected DS dataSession;
+	protected G group;
 
+	private ExceptionListener exceptionListener;
+	
 	/**
 	 * Initializes any variables needed by this session.
 	 *

@@ -23,14 +23,12 @@ import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.spi.AbstractControlSession;
 
 
-public class IpControlSession extends AbstractControlSession {
+public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSession,IpControlSession,IpGroup> {
 	private MulticastSocket sock;
-	private IpGroup group;
 	private boolean joined;
 
-	public IpControlSession(MulticastSocket sock, IpGroup group) {
+	public IpControlSession(MulticastSocket sock) {
 		this.sock=sock;
-		this.group=group;
 		this.joined=false;
 	}
 

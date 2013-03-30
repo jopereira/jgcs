@@ -21,14 +21,12 @@ import net.sf.neem.MulticastChannel;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.spi.AbstractControlSession;
 
-public class NeEMControlSession extends AbstractControlSession {
+public class NeEMControlSession extends AbstractControlSession<NeEMProtocol,NeEMDataSession,NeEMControlSession,NeEMGroup> {
 	private MulticastChannel sock;
-	private NeEMGroup group;
 	private boolean joined;
 
-	public NeEMControlSession(MulticastChannel channel, NeEMGroup group) {
+	public NeEMControlSession(MulticastChannel channel) {
 		this.sock=channel;
-		this.group=group;
 		this.joined = false;
 	}
 

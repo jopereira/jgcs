@@ -12,6 +12,7 @@
  */
 package net.sf.jgcs.spi;
 
+import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.Membership;
 import net.sf.jgcs.MembershipID;
 import net.sf.jgcs.MembershipListener;
@@ -19,7 +20,12 @@ import net.sf.jgcs.MembershipSession;
 import net.sf.jgcs.NotJoinedException;
 
 
-public abstract class AbstractMembershipSession extends AbstractControlSession implements MembershipSession {
+public abstract class AbstractMembershipSession<
+		P extends AbstractProtocol<P,DS,CS,G>,
+		DS extends AbstractDataSession<P,DS,CS,G>,
+		CS extends AbstractMembershipSession<P,DS,CS,G>,
+		G extends GroupConfiguration>
+	extends AbstractControlSession<P,DS,CS,G> implements MembershipSession {
 
 	private MembershipListener membListener;	
 	private transient Membership membership;

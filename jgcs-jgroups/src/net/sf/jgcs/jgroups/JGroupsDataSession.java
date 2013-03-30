@@ -36,27 +36,23 @@ import java.util.HashMap;
 
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.ClosedSessionException;
-import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.annotation.PointToPoint;
 import net.sf.jgcs.spi.AbstractDataSession;
-import net.sf.jgcs.spi.AbstractProtocol;
 
 import org.apache.log4j.Logger;
 import org.jgroups.JChannel;
 
-public class JGroupsDataSession extends AbstractDataSession {
+public class JGroupsDataSession extends AbstractDataSession<JGroupsProtocol,JGroupsDataSession,JGroupsControlSession,JGroupsGroup> {
 
 	private static Logger logger = Logger.getLogger(JGroupsDataSession.class);
 	
 	private HashMap<JGroupsService,JChannel> channelsMap;
 	
-	public JGroupsDataSession(AbstractProtocol proto, JChannel channel, GroupConfiguration group) 
-	throws JGCSException {
-		super(proto,group);
+	public JGroupsDataSession(JChannel channel)	throws JGCSException {
 		channelsMap = new HashMap<JGroupsService,JChannel>();
 		channelsMap.put(new JGroupsService("vsc+total"),channel);
 	}
@@ -91,17 +87,8 @@ public class JGroupsDataSession extends AbstractDataSession {
 			throw new JGCSException("Cannot send message.",e);
 		}
 	}
-	
-	public void notifyExceptionListeners(JGCSException exception) {
-		super.notifyExceptionListeners(exception);
-	}
 
-	public Object notifyMessageListeners(Message msg) {
-		return super.notifyMessageListeners(msg);
+	Object deliver(JGroupsMessage message) {
+		return notifyMessageListeners(message);
 	}
-	
-	public void notifyServiceListeners(Object context, Service service) {
-		super.notifyServiceListeners(context,service);
-	}
-
 }

@@ -45,22 +45,20 @@ import org.jgroups.Address;
 import org.jgroups.JChannel;
 import org.jgroups.View;
 
-public class JGroupsControlSession extends AbstractMembershipSession {
+public class JGroupsControlSession extends AbstractMembershipSession<JGroupsProtocol,JGroupsDataSession,JGroupsControlSession,JGroupsGroup> {
 
 	private static Logger logger = Logger.getLogger(JGroupsControlSession.class);
 
 	private JChannel channel;
-	private String groupName;
 
-	public JGroupsControlSession(JChannel ch, String group_name) {
+	public JGroupsControlSession(JChannel ch) {
 		super();
 		this.channel = ch;
-		this.groupName = group_name;
 	}
 
 	public void join() throws JGCSException {
 		try {
-			channel.connect(groupName);
+			channel.connect(group.getGroupName());
 		} catch (Exception e) {
 			throw new JGCSException("Could not connect JGroups Channel.",e);
 		}

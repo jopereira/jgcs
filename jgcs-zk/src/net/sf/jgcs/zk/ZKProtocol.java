@@ -18,9 +18,6 @@ package net.sf.jgcs.zk;
 
 import java.io.IOException;
 
-import net.sf.jgcs.ControlSession;
-import net.sf.jgcs.DataSession;
-import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.spi.AbstractProtocol;
 import net.sf.jgcs.zk.groupz.Application;
@@ -28,7 +25,7 @@ import net.sf.jgcs.zk.groupz.Endpoint;
 
 import org.apache.zookeeper.ZooKeeper;
 
-public class ZKProtocol extends AbstractProtocol {
+public class ZKProtocol extends AbstractProtocol<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {
 	private ZooKeeper zk;
 
 	ZKProtocol(String connectString, int sessionTimeout) throws JGCSException {
@@ -39,9 +36,10 @@ public class ZKProtocol extends AbstractProtocol {
 		}
 	}
 
-	private synchronized void createSessions(ZKGroup group) throws ZKException {
-		final ZKControlSession cs = new ZKControlSession(this, group);
-		final ZKDataSession ds = new ZKDataSession(this, group);
+	@Override
+	protected synchronized void createSessions(ZKGroup group) throws ZKException {
+		final ZKControlSession cs = new ZKControlSession();
+		final ZKDataSession ds = new ZKDataSession();
 		
 		Endpoint ep = new Endpoint(zk, group.getGroupId(), new Application() {
 			
@@ -66,25 +64,5 @@ public class ZKProtocol extends AbstractProtocol {
 		ds.endpoint = ep;
 		
 		putSessions(group, cs, ds);
-	}
-
-	@Override
-	public DataSession openDataSession(GroupConfiguration group) throws JGCSException {
-		DataSession data=lookupDataSession(group);
-		if (data==null) {
-			createSessions((ZKGroup)group);
-			data=lookupDataSession(group);
-		}
-		return data;
-	}
-
-	@Override
-	public ControlSession openControlSession(GroupConfiguration group) throws JGCSException {
-		ControlSession control=lookupControlSession(group);
-		if (control==null) {
-			createSessions((ZKGroup)group);
-			control=lookupControlSession(group);
-		}
-		return control;
 	}
 }

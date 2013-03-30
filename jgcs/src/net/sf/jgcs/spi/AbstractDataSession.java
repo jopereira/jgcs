@@ -29,18 +29,20 @@ import net.sf.jgcs.ServiceListener;
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public abstract class AbstractDataSession implements DataSession {
+public abstract class AbstractDataSession<
+	P extends AbstractProtocol<P,DS,CS,G>,
+	DS extends AbstractDataSession<P,DS,CS,G>,
+	CS extends AbstractControlSession<P,DS,CS,G>,
+	G extends GroupConfiguration>
+	implements DataSession {
+	protected P protocol;
+	protected CS controlSession;
+	protected G group;
+	
 	private MessageListener msgListener;
 	private ExceptionListener excpListener;
 	private ServiceListener srvcListener;
-	private AbstractProtocol protocol;
-	private GroupConfiguration group;
 
-	protected AbstractDataSession(AbstractProtocol protocol, GroupConfiguration group) {
-		this.protocol=protocol;
-		this.group=group;
-	}
-	
 	protected void boot() {
 	}
 

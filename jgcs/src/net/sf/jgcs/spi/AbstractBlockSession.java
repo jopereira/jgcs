@@ -14,11 +14,16 @@ package net.sf.jgcs.spi;
 
 import net.sf.jgcs.BlockListener;
 import net.sf.jgcs.BlockSession;
+import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
 
+public abstract class AbstractBlockSession<
+		P extends AbstractProtocol<P,DS,CS,G>,
+		DS extends AbstractDataSession<P,DS,CS,G>,
+		CS extends AbstractBlockSession<P,DS,CS,G>,
+		G extends GroupConfiguration>
+		extends AbstractMembershipSession<P,DS,CS,G> implements BlockSession {
 
-
-public abstract class AbstractBlockSession extends AbstractMembershipSession implements BlockSession {
 	private BlockListener blkListener;
 	private boolean joined = false;
 	
