@@ -40,7 +40,7 @@ public abstract class AbstractMembershipSession<
 	}
 	
 	protected synchronized boolean hasAllListeners(){
-		return membListener != null ;
+		return super.hasAllListeners() && membListener != null ;
 	}
 
 	protected synchronized void notifyAndSetMembership(Membership m) {

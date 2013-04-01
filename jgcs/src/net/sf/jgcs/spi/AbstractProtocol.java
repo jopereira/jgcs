@@ -133,4 +133,9 @@ public abstract class AbstractProtocol<
 	public boolean isClosed() {
 		return closed;
 	}
+	
+	protected void notifyExceptionListeners(JGCSException exception) {
+		for(CS c: controlSessions.values())
+			c.notifyExceptionListeners(exception);
+	}
 }

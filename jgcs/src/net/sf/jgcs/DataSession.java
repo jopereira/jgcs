@@ -51,13 +51,6 @@ public interface DataSession extends Closeable {
 		throws ClosedSessionException;
 	
 	/**
-	 * Adds a listener to deliver exceptions related to message reception.
-	 * @param exception the exception thrown by the implementation of the interface.
-	 */
-	public void setExceptionListener(ExceptionListener exception)
-		throws ClosedSessionException;
-	
-	/**
 	 * Closes the session. All resources that the session holds
 	 * should be freed and therefore no subsequent communication
 	 * can be done.

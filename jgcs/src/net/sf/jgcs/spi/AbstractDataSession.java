@@ -13,7 +13,6 @@
 package net.sf.jgcs.spi;
 
 import net.sf.jgcs.DataSession;
-import net.sf.jgcs.ExceptionListener;
 import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.Message;
@@ -40,7 +39,6 @@ public abstract class AbstractDataSession<
 	protected G group;
 	
 	private MessageListener msgListener;
-	private ExceptionListener excpListener;
 	private ServiceListener srvcListener;
 	
 	private boolean closed;
@@ -68,20 +66,13 @@ public abstract class AbstractDataSession<
 		msgListener = listener;
 	}
 
-	public synchronized void setExceptionListener(ExceptionListener listener) {
-		boot();
-		excpListener = listener;
-		
-	}
-
 	public synchronized void setServiceListener(ServiceListener listener) {
 		boot();
 		srvcListener = listener;
 	}
 
-	protected synchronized void notifyExceptionListeners(JGCSException exception) {
-		if(excpListener != null)
-			excpListener.onException(exception);
+	protected void notifyExceptionListeners(JGCSException exception) {
+		controlSession.notifyExceptionListeners(exception);
 	}
 
 	protected synchronized Object notifyMessageListeners(Message msg) {
