@@ -37,12 +37,34 @@ public abstract class AbstractControlSession<
 	protected G group;
 
 	private ExceptionListener exceptionListener;
+
+	private boolean closed;
 	
 	/**
 	 * Initializes any variables needed by this session.
 	 *
 	 */
 	protected void boot() {
+	}
+
+	protected synchronized void cleanup() {
+		if (closed)
+			return;
+		closed = true;
+		try {
+			leave();
+		} catch (JGCSException e) {
+			// don't care, as the session is already closed
+		}
+	}
+
+	@Override
+	public void close() throws JGCSException {
+		protocol.removeSessions(group);
+	}
+	
+	public synchronized boolean isClosed() {
+		return closed;
 	}
 
 	/**

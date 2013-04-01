@@ -33,7 +33,6 @@ public abstract class AbstractPollingDataSession<
 		CS extends AbstractControlSession<P,DS,CS,G>,
 		G extends GroupConfiguration>
 		extends AbstractDataSession<P,DS,CS,G> {
-	private boolean closed;
 	protected ExecutorService pool;
 	protected Runnable task;
 
@@ -57,28 +56,30 @@ public abstract class AbstractPollingDataSession<
 	}
 	
 	private void poll() {
+		if (isClosed())
+			return;
 		Message msg;
 		try {
 			msg=read();
 		} catch (IOException e) {
+			if (isClosed())
+				return;
 			JGCSException je=new JGCSException("I/O exception", e);
 			notifyExceptionListeners(je);			
-			close();
+			try {
+				close();
+			} catch (JGCSException ce) {
+			}
 			return;
 		}
 		notifyMessageListeners(msg);
-		pool.execute(task);
+		if (!isClosed())
+			pool.execute(task);
 	}
 
-	public synchronized void close() {
-		if (closed)
-			return;
-		super.close();
-		closed=true;
-		cleanup();
+	protected void cleanup() {
 		pool.shutdown();
 	}
 
 	protected abstract Message read() throws IOException;
-	protected abstract void cleanup();
 }

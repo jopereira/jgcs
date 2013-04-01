@@ -25,14 +25,22 @@ public class CPGProtocol extends AbstractPollingProtocol<CPGProtocol,CPGDataSess
 	CPGProtocol() throws JGCSException {
 		cpg = new ClosedProcessGroup(new Callbacks() {
 			public void deliver(String group, int nodeid, int pid, byte[] msg) {
-				CPGDataSession data=(CPGDataSession) lookupDataSession(new CPGGroup(group));
-				data.deliver(nodeid, pid, msg);
+				try {
+					CPGDataSession data=(CPGDataSession) lookupDataSession(new CPGGroup(group));
+					data.deliver(nodeid, pid, msg);
+				} catch(JGCSException e) {
+					// Session not found. Discard message.
+				}
 			}
 			
 			@Override
 			public void configurationChange(String group, CPGAddress[] members, CPGAddress[] left, int[] lr, CPGAddress[] joined, int[] jr) {
-				CPGControlSession control=(CPGControlSession) lookupControlSession(new CPGGroup(group));
-				control.install(members, left, lr, joined, jr);
+				try {
+					CPGControlSession control=(CPGControlSession) lookupControlSession(new CPGGroup(group));
+					control.install(members, left, lr, joined, jr);
+				} catch(JGCSException e) {
+					// Session not found. Discard change.
+				}
 			}
 
 			@Override
@@ -52,6 +60,7 @@ public class CPGProtocol extends AbstractPollingProtocol<CPGProtocol,CPGDataSess
 		try {
 			cpg.dispatch(ClosedProcessGroup.CS_DISPATCH_ONE);
 		} catch (CorosyncException e) {
+			// We really need a protocol exception listener
 			e.printStackTrace();
 		}
 	}

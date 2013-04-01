@@ -125,7 +125,6 @@ public class Application implements MessageListener,
 				((MembershipSession) control).getMembership());
 		} catch (NotJoinedException e) {
 			e.printStackTrace();
-			data.close();
 		}			
 	}
 	////

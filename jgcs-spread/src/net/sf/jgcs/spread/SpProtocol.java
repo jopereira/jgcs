@@ -14,6 +14,7 @@
 	  
 package net.sf.jgcs.spread;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import net.sf.jgcs.GroupConfiguration;
@@ -32,18 +33,19 @@ public class SpProtocol extends AbstractPollingProtocol<SpProtocol,SpDataSession
 		int ret=mb.C_connect(daemonAddress, processName, false, true);
 		if (ret<0) throw new SpException(ret, null);
 	}
+	
+	@Override
+	public synchronized void close() throws IOException {
+		super.close();
+		mb.C_disconnect();
+		mb = null;
+	}
 
 	protected synchronized void createSessions(SpGroup group) {
 		putSessions(group, new SpControlSession(mb), new SpDataSession(mb));
 	}
 	
-	protected synchronized void removeSessions(SpGroup group) {
-		SpControlSession control=(SpControlSession)lookupControlSession(group);
-		control.handleClose();
-		super.removeSessions(group);
-	}
-
-	protected void read() {
+	protected void read() throws JGCSException {
 		Mailbox.ReceiveArgs info=new Mailbox.ReceiveArgs();
 		int allocate_size = 1024, ret=-1;
 		ByteBuffer mess=null;

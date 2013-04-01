@@ -12,6 +12,9 @@
  */
 package net.sf.jgcs;
 
+import java.io.Closeable;
+import java.io.IOException;
+
 /**
  * 
  * This interface defines a Protocol represents an instance of the toolkit 
@@ -25,7 +28,7 @@ package net.sf.jgcs;
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public interface Protocol {
+public interface Protocol extends Closeable {
 
 	/**
 	 * Creates e new Data Session. This session must be used to send messages and to register a listener
@@ -45,4 +48,16 @@ public interface Protocol {
 	 */
 	public ControlSession openControlSession(GroupConfiguration group) throws JGCSException;
 	
+	/**
+	 * Close this protocol. This will close all existing associated sessions and prevent any
+	 * other from being opened. 
+	 */
+	@Override
+	public void close() throws IOException;
+	
+	/**
+	 * Check if this protocol has been closed.
+	 * @return true if already closed
+	 */
+	public boolean isClosed();
 }

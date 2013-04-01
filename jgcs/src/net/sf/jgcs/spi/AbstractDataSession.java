@@ -42,12 +42,25 @@ public abstract class AbstractDataSession<
 	private MessageListener msgListener;
 	private ExceptionListener excpListener;
 	private ServiceListener srvcListener;
+	
+	private boolean closed;
 
 	protected void boot() {
 	}
+	
+	protected synchronized void cleanup() {
+		if (closed)
+			return;
+		closed = true;
+	}
 
-	public void close() {
+	@Override
+	public void close() throws JGCSException {
 		protocol.removeSessions(group);
+	}
+	
+	public synchronized boolean isClosed() {
+		return closed;
 	}
 
 	public synchronized void setMessageListener(MessageListener listener) {

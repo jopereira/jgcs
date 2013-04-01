@@ -12,11 +12,13 @@
  */
 package net.sf.jgcs.spi;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 import net.sf.jgcs.GroupConfiguration;
+import net.sf.jgcs.JGCSException;
 
 /**
  * 
@@ -35,9 +37,8 @@ public abstract class AbstractPollingProtocol<
 		extends AbstractProtocol<P,DS,CS,G> {
 	private ExecutorService pool;
 	private Runnable task;
-	protected void boot() {
-		if (task!=null)
-			return;
+
+	protected void boot() throws JGCSException {
 		super.boot();
 		pool = Executors.newFixedThreadPool(1, new ThreadFactory() {
 			public Thread newThread(Runnable r) {
@@ -55,9 +56,25 @@ public abstract class AbstractPollingProtocol<
 	}
 	
 	private void poll() {
-		read();
+		if (isClosed())
+			return;
+		try {
+			read();
+		} catch (JGCSException e) {
+			try {
+				close();
+			} catch (IOException ce) {
+			}
+			return;
+		}
 		pool.execute(task);
 	}
 	
-	protected abstract void read();
+	protected abstract void read() throws JGCSException;
+
+	@Override
+	public void close() throws IOException {
+		pool.shutdown();
+		super.close();
+	}
 }

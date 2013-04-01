@@ -12,6 +12,7 @@
  */
 package net.sf.jgcs;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 /**
@@ -26,7 +27,7 @@ import java.io.IOException;
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public interface DataSession {
+public interface DataSession extends Closeable {
 
 	/**
 	 * Gets the group associated with this session.
@@ -61,8 +62,15 @@ public interface DataSession {
 	 * should be freed and therefore no subsequent communication
 	 * can be done.
 	 */
-	public void close();
+	@Override
+	public void close() throws IOException;
 	
+	/**
+	 * Check if this session has been closed.
+	 * @return true if already closed
+	 */
+	public boolean isClosed();
+
 	/**
 	 * Creates an empty message that can be used (transmitted) through the session.
 	 * 

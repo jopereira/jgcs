@@ -12,6 +12,8 @@
  */
 package net.sf.jgcs;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.net.SocketAddress;
 
 /**
@@ -23,19 +25,19 @@ import java.net.SocketAddress;
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public interface ControlSession {
+public interface ControlSession extends Closeable {
 
 	/**
 	 * Joins the group. It must block until the join process is finished.
 	 *
 	 */
-	public void join() throws ClosedSessionException, JGCSException;
+	public void join() throws JGCSException;
 	
 	/**
 	 * Leaves the group. It must block until the leave process is finished.
 	 *
 	 */
-	public void leave() throws ClosedSessionException, JGCSException;
+	public void leave() throws JGCSException;
 	
 	/**
 	 * Verifies if the member belongs to a group.
@@ -56,4 +58,15 @@ public interface ControlSession {
 	public void setExceptionListener(ExceptionListener exception)
 		throws ClosedSessionException;
 
+	/**
+	 * Close this session. This will close the corresponding data sessions, if any. 
+	 */
+	@Override
+	public void close() throws IOException;
+	
+	/**
+	 * Check if this session has been closed.
+	 * @return true if already closed
+	 */
+	public boolean isClosed();
 }

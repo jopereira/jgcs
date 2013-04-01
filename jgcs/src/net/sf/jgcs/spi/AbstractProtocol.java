@@ -12,9 +12,12 @@
  */
 package net.sf.jgcs.spi;
 
+import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.jgcs.ClosedProtocolException;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
@@ -38,8 +41,12 @@ public abstract class AbstractProtocol<
 			implements Protocol {
 	protected Map<G,CS> controlSessions;
 	protected Map<G,DS> dataSessions;
+	
+	private boolean closed;
 
-	protected void boot() {
+	protected synchronized void boot() throws JGCSException {
+		if (closed)
+			throw new ClosedProtocolException();
 		if (controlSessions!=null)
 			return;
 		controlSessions=new HashMap<G,CS>();
@@ -62,9 +69,17 @@ public abstract class AbstractProtocol<
 		dataSessions.put(g, data);
 	}
 
-	protected synchronized void removeSessions(G g) {
-		controlSessions.remove(g);
-		dataSessions.remove(g);
+	protected void removeSessions(G g) {
+		CS control;
+		DS data;
+		synchronized (this) {
+			control = controlSessions.remove(g);
+			data = dataSessions.remove(g);			
+		}
+		if (control!=null)
+			control.cleanup();
+		if (data!=null)
+			data.cleanup();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -89,13 +104,33 @@ public abstract class AbstractProtocol<
 		return control;
 	}
 
-	protected synchronized CS lookupControlSession(GroupConfiguration g) {
+	protected synchronized CS lookupControlSession(GroupConfiguration g) throws JGCSException {
 		boot();
 		return controlSessions.get(g);
 	}
 
-	protected synchronized DS lookupDataSession(GroupConfiguration g) {
+	protected synchronized DS lookupDataSession(GroupConfiguration g) throws JGCSException {
 		boot();
 		return dataSessions.get(g);
+	}
+
+	@Override
+	public synchronized void close() throws IOException {
+		Collection<CS> css;
+		synchronized(this) {
+			css = controlSessions.values();
+			controlSessions = null;
+			dataSessions = null;
+			closed = true;
+		}
+		for(CS c: css) {
+			c.cleanup();
+			c.dataSession.cleanup();
+		}
+	}
+	
+	@Override
+	public boolean isClosed() {
+		return closed;
 	}
 }

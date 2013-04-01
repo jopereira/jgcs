@@ -27,12 +27,6 @@ public abstract class AbstractBlockSession<
 	private BlockListener blkListener;
 	private boolean joined = false;
 	
-	protected void boot() {
-//		if (blkListeners!=null)
-//			return;
-		super.boot();
-	}
-	
 	public void setBlockListener(BlockListener listener) throws JGCSException {
 		boot();
 		if(joined && listener == null)
