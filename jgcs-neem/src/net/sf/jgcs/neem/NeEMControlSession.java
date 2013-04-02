@@ -30,15 +30,17 @@ public class NeEMControlSession extends AbstractControlSession<NeEMProtocol,NeEM
 		this.joined = false;
 	}
 
-	public void join() throws JGCSException {
+	public synchronized void join() throws JGCSException {
+		onEntry();
 		for(InetSocketAddress peer: group.getPeers())
 			sock.connect(peer);
 		joined = true;
 	}
 
-	public void leave() throws JGCSException {
+	public synchronized void leave() throws JGCSException {
+		onEntry();
 		joined = false;
-		//TODO??
+		sock.close();
 	}
 
 	public SocketAddress getLocalAddress() {

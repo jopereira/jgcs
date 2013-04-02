@@ -32,7 +32,8 @@ public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSe
 		this.joined=false;
 	}
 
-	public void join() throws JGCSException {
+	public synchronized void join() throws JGCSException {
+		onEntry();
 		try {
 			sock.joinGroup(group.getGroupAddress());
 			joined = true;
@@ -41,7 +42,8 @@ public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSe
 		}
 	}
 
-	public void leave() throws ClosedSessionException, JGCSException {
+	public synchronized void leave() throws ClosedSessionException, JGCSException {
+		onEntry();
 		try {
 			sock.leaveGroup(group.getGroupAddress());
 			joined = false;

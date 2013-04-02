@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import net.sf.jgcs.Annotation;
+import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.spi.AbstractPollingDataSession;
 import net.sf.neem.MulticastChannel;
 
@@ -29,13 +29,16 @@ public class NeEMDataSession extends AbstractPollingDataSession<NeEMProtocol,NeE
 	
 	NeEMDataSession(MulticastChannel sock) {
 		this.sock=sock;
+		boot();
 	}
 
-	public Message createMessage() {
+	public Message createMessage() throws JGCSException {
+		onEntry();
 		return new NeEMMessage();
 	}
 
-	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException, UnsupportedServiceException {
+	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException {
+		onEntry();
 		sock.write(ByteBuffer.wrap(msg.getPayload()));
 	}
 	

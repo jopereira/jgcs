@@ -69,7 +69,7 @@ public interface DataSession extends Closeable {
 	 * 
 	 * @return The message created.
 	 */
-	public Message createMessage() throws ClosedSessionException;
+	public Message createMessage() throws JGCSException;
 		
 	/**
 	 * <p>Sends a message to the group.</p>
@@ -81,6 +81,5 @@ public interface DataSession extends Closeable {
 	 * to be used by communication protocols (e.g. semantic reliability).
 	 * @throws IOException 
 	 */
-	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) 
-		throws IOException, UnsupportedServiceException;
+	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException;
 }

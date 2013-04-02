@@ -44,19 +44,29 @@ public abstract class AbstractProtocol<
 	
 	private boolean closed;
 
-	protected synchronized void boot() throws JGCSException {
-		if (closed)
-			throw new ClosedProtocolException();
-		if (controlSessions!=null)
-			return;
+	protected AbstractProtocol() {
 		controlSessions=new HashMap<G,CS>();
-		dataSessions=new HashMap<G,DS>();
+		dataSessions=new HashMap<G,DS>();		
 	}
 	
+	/**
+	 * Called when a session is required for a previously unused group configuration.
+	 * 
+	 * @param group group configuration
+	 * @throws JGCSException if sessions cannot be created
+	 */
 	protected abstract void createSessions(G group) throws JGCSException;
 
+	/**
+	 * This should be called only by derived classes within the createSession() method
+	 * to register new sessions for the given group.
+	 * 
+	 * @param g group configuration
+	 * @param control control session
+	 * @param data data session
+	 */
 	@SuppressWarnings("unchecked")
-	protected synchronized void putSessions(G g, CS control, DS data) {
+	protected void putSessions(G g, CS control, DS data) {
 		control.protocol = (P)this;
 		control.dataSession = data;
 		control.group = g;
@@ -84,40 +94,44 @@ public abstract class AbstractProtocol<
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public DataSession openDataSession(GroupConfiguration group) throws JGCSException {
-		DataSession data=lookupDataSession(group);
+	public synchronized DataSession openDataSession(GroupConfiguration group) throws JGCSException {
+		onEntry();
+		DataSession data=dataSessions.get(group);
 		if (data==null) {
 			createSessions((G)group);
-			data=lookupDataSession(group);
+			data=dataSessions.get(group);
 		}
 		return data;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ControlSession openControlSession(GroupConfiguration group) throws JGCSException {
-		ControlSession control=lookupControlSession(group);
+	public synchronized ControlSession openControlSession(GroupConfiguration group) throws JGCSException {
+		onEntry();
+		ControlSession control=controlSessions.get(group);
 		if (control==null) {
 			createSessions((G)group);
-			control=lookupControlSession(group);
+			control=controlSessions.get(group);
 		}
 		return control;
 	}
-
+	
 	protected synchronized CS lookupControlSession(GroupConfiguration g) throws JGCSException {
-		boot();
+		onEntry();
 		return controlSessions.get(g);
 	}
 
 	protected synchronized DS lookupDataSession(GroupConfiguration g) throws JGCSException {
-		boot();
+		onEntry();
 		return dataSessions.get(g);
 	}
-
+	
 	@Override
-	public synchronized void close() throws IOException {
+	public void close() throws IOException {
 		Collection<CS> css;
 		synchronized(this) {
+			if (isClosed())
+				return;
 			css = controlSessions.values();
 			controlSessions = null;
 			dataSessions = null;
@@ -133,9 +147,18 @@ public abstract class AbstractProtocol<
 	public boolean isClosed() {
 		return closed;
 	}
-	
+
+	// FIXME: should not callback within synchronized
 	protected void notifyExceptionListeners(JGCSException exception) {
 		for(CS c: controlSessions.values())
 			c.notifyExceptionListeners(exception);
+	}
+	
+	/**
+	 * Check if the protocol has not been closed.
+	 * @throws JGCSException
+	 */
+	protected void onEntry() throws JGCSException {
+		if (isClosed()) throw new ClosedProtocolException();
 	}
 }

@@ -21,7 +21,7 @@ import net.sf.jgcs.spi.AbstractPollingProtocol;
 public class CPGProtocol extends AbstractPollingProtocol<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
 	
 	ClosedProcessGroup cpg;
-
+	
 	CPGProtocol() throws JGCSException {
 		cpg = new ClosedProcessGroup(new Callbacks() {
 			public void deliver(String group, int nodeid, int pid, byte[] msg) {
@@ -48,6 +48,7 @@ public class CPGProtocol extends AbstractPollingProtocol<CPGProtocol,CPGDataSess
 				// TODO Auto-generated method stub
 			}
 		}, 0);
+		boot();
 	}
 
 	@Override

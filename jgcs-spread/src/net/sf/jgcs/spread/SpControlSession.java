@@ -32,17 +32,21 @@ public class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSess
 		this.mb = mb;
 	}
 
-	public void join() throws ClosedSessionException, JGCSException {
+	public synchronized void join() throws JGCSException {
+		onEntry();
 		int ret=mb.C_join(group.getGroup());
 		if (ret<0) throw new SpException(ret, null);
 	}
 
-	public void leave() throws ClosedSessionException, JGCSException {
+	public synchronized void leave() throws JGCSException {
+		onEntry();
 		int ret=mb.C_leave(group.getGroup());
 		if (ret<0) throw new SpException(ret, null);
 	}
 
-	public SocketAddress getLocalAddress() {
+	public synchronized SocketAddress getLocalAddress() {
+		if (isClosed())
+			return null;
 		return new SpGroup(mb.getPrivateGroup());
 	}
 
@@ -66,19 +70,6 @@ public class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSess
 
 		current=new SpMembership(mb.getPrivateGroup(), info, view);
 		notifyAndSetMembership(current);		
-	}
-
-	public synchronized void handleClose() {
-		if (isJoined())
-			try {
-				leave();
-			} catch (ClosedSessionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JGCSException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 	}
 
 	public boolean isJoined() {

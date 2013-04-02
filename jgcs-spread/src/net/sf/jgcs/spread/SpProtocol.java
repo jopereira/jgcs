@@ -32,6 +32,7 @@ public class SpProtocol extends AbstractPollingProtocol<SpProtocol,SpDataSession
 			processName=""+System.nanoTime()/1000%100000000;
 		int ret=mb.C_connect(daemonAddress, processName, false, true);
 		if (ret<0) throw new SpException(ret, null);
+		boot();
 	}
 	
 	@Override

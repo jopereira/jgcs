@@ -14,7 +14,6 @@ package net.sf.jgcs.corosync;
 
 import java.net.SocketAddress;
 
-import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.spi.AbstractMembershipSession;
 
@@ -22,12 +21,14 @@ public class CPGControlSession extends AbstractMembershipSession<CPGProtocol,CPG
 	private SocketAddress localid;
 
 	@Override
-	public void join() throws ClosedSessionException, JGCSException {
+	public synchronized void join() throws JGCSException {
+		onEntry();
 		protocol.cpg.join(group.getGroup());
 	}
 
 	@Override
-	public void leave() throws ClosedSessionException, JGCSException {
+	public synchronized void leave() throws JGCSException {
+		onEntry();
 		protocol.cpg.leave(group.getGroup());
 	}
 

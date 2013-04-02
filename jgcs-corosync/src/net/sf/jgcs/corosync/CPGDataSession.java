@@ -15,7 +15,7 @@ package net.sf.jgcs.corosync;
 import java.io.IOException;
 
 import net.sf.jgcs.Annotation;
-import net.sf.jgcs.ClosedSessionException;
+import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
@@ -23,17 +23,18 @@ import net.sf.jgcs.spi.AbstractDataSession;
 
 public class CPGDataSession extends AbstractDataSession<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
 	
-	public Message createMessage() throws ClosedSessionException {
+	public Message createMessage() throws JGCSException {
+		onEntry();
 		return new CPGMessage();
 	}
 
-	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException, UnsupportedServiceException {
+	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException {
+		onEntry();
 		CPGService guarantee;
 		try {
 			guarantee = (CPGService) service;
 		} catch(ClassCastException e) {
-			// FIXME: missing nested exception
-			throw new UnsupportedServiceException(e.toString());
+			throw new UnsupportedServiceException(service.toString());
 		}
 		protocol.cpg.multicast(guarantee.getGuarantee(), msg.getPayload());
 	}

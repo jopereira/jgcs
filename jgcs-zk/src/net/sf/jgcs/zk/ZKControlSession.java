@@ -46,13 +46,15 @@ public class ZKControlSession extends AbstractBlockSession<ZKProtocol,ZKDataSess
 	}
 
 	@Override
-	public void join() throws ClosedSessionException, JGCSException {
+	public synchronized void join() throws JGCSException {
+		onEntry();
 		endpoint.join();
 		localid = new ZKAddress(endpoint.getProcessId());
 	}
 
 	@Override
-	public void leave() throws ClosedSessionException, JGCSException {
+	public synchronized void leave() throws JGCSException {
+		onEntry();
 		endpoint.leave();
 	}
 

@@ -57,17 +57,20 @@ public class JGroupsDataSession extends AbstractDataSession<JGroupsProtocol,JGro
 		channelsMap.put(new JGroupsService("vsc+total"),channel);
 	}
 
-	public void close() {
-		//channel.disconnect();
+	@Override
+	public void cleanup() {
+		for(JChannel channel: channelsMap.values())
+			channel.disconnect();
 	}
 
-	public Message createMessage() throws ClosedSessionException {
+	public Message createMessage() throws JGCSException {
+		onEntry();
 		return new JGroupsMessage();
 	}
 
 	public void multicast(Message msg, Service service, Object cookie,
-			Annotation... annotation) throws IOException,
-			UnsupportedServiceException {
+			Annotation... annotation) throws IOException {
+		onEntry();
 		// TODO: cookies are NOT used...
 		logger.debug("Service on send: "+((JGroupsService)service).getService());
 		if( ! (service instanceof JGroupsService))

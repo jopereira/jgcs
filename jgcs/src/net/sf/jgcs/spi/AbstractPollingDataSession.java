@@ -36,10 +36,7 @@ public abstract class AbstractPollingDataSession<
 	protected ExecutorService pool;
 	protected Runnable task;
 
-	protected void boot() {
-		if (task!=null)
-			return;
-		super.boot();
+	protected AbstractPollingDataSession() {
 		pool = Executors.newFixedThreadPool(1, new ThreadFactory() {
 			public Thread newThread(Runnable r) {
 				Thread t=new Thread(r);
@@ -51,7 +48,15 @@ public abstract class AbstractPollingDataSession<
 			public void run() {
 				poll();
 			}
-		};
+		};		
+	}
+	
+	/**
+	 * Start polling for input. This should be executed after the object is
+	 * fully initialized and before any invocations. Most likely, as the last
+	 * operation of the constructor in a derived concrete class.
+	 */
+	protected void boot() {
 		pool.execute(task);		
 	}
 	

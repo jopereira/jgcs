@@ -38,8 +38,7 @@ public abstract class AbstractPollingProtocol<
 	private ExecutorService pool;
 	private Runnable task;
 
-	protected void boot() throws JGCSException {
-		super.boot();
+	protected AbstractPollingProtocol() {
 		pool = Executors.newFixedThreadPool(1, new ThreadFactory() {
 			public Thread newThread(Runnable r) {
 				Thread t=new Thread(r);
@@ -52,6 +51,14 @@ public abstract class AbstractPollingProtocol<
 				poll();
 			}
 		};
+	}
+	
+	/**
+	 * Start polling for input. This should be executed after the object is
+	 * fully initialized and before any invocations. Most likely, as the last
+	 * operation of the constructor in a derived concrete class.
+	 */
+	protected void boot() {
 		pool.execute(task);		
 	}
 	

@@ -12,6 +12,7 @@
  */
 package net.sf.jgcs.spi;
 
+import net.sf.jgcs.ClosedProtocolException;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
@@ -43,9 +44,6 @@ public abstract class AbstractDataSession<
 	
 	private boolean closed;
 
-	protected void boot() {
-	}
-	
 	protected synchronized void cleanup() {
 		if (closed)
 			return;
@@ -62,12 +60,10 @@ public abstract class AbstractDataSession<
 	}
 
 	public synchronized void setMessageListener(MessageListener listener) {
-		boot();
 		msgListener = listener;
 	}
 
 	public synchronized void setServiceListener(ServiceListener listener) {
-		boot();
 		srvcListener = listener;
 	}
 
@@ -89,5 +85,13 @@ public abstract class AbstractDataSession<
 
 	public GroupConfiguration getGroup() {
 		return group;
+	}
+	
+	/**
+	 * Check if the protocol has not been closed.
+	 * @throws JGCSException
+	 */
+	protected void onEntry() throws JGCSException {
+		if (isClosed()) throw new ClosedProtocolException();
 	}
 }

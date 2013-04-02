@@ -20,6 +20,7 @@ import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 
 import net.sf.jgcs.Annotation;
+import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedServiceException;
@@ -32,13 +33,17 @@ public class IpDataSession extends AbstractPollingDataSession<IpProtocol,IpDataS
 	
 	IpDataSession(MulticastSocket sock) {
 		this.sock=sock;
+		boot();
 	}
 
-	public Message createMessage() {
+	public Message createMessage() throws JGCSException {
+		onEntry();
 		return new IpMessage();
 	}
 
-	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException, UnsupportedServiceException {
+	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException {
+		onEntry();
+		
 		InetSocketAddress iaddr=((IpGroup)getGroup()).getAddress();
 		
 		for(Annotation a: annotation)

@@ -18,10 +18,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import net.sf.jgcs.Annotation;
-import net.sf.jgcs.ClosedSessionException;
+import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.annotation.PointToPoint;
 import net.sf.jgcs.annotation.SelfDelivery;
 import net.sf.jgcs.spi.AbstractDataSession;
@@ -34,11 +33,13 @@ public class SpDataSession extends AbstractDataSession<SpProtocol,SpDataSession,
 		this.mb=mb;
 	}
 
-	public Message createMessage() throws ClosedSessionException {
+	public Message createMessage() throws JGCSException {
+		onEntry();
 		return new SpMessage();
 	}
 
-	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException, UnsupportedServiceException {
+	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException {
+		onEntry();
 		int ret = 0;
 		int qos=((SpService)service).getService();
 		String dest = null;

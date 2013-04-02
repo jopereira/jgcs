@@ -12,6 +12,7 @@
  */
 package net.sf.jgcs.spi;
 
+import net.sf.jgcs.ClosedProtocolException;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.ExceptionListener;
 import net.sf.jgcs.GroupConfiguration;
@@ -50,11 +51,13 @@ public abstract class AbstractControlSession<
 	protected synchronized void cleanup() {
 		if (closed)
 			return;
-		closed = true;
 		try {
-			leave();
+			if (isJoined())
+				leave();
 		} catch (JGCSException e) {
 			// don't care, as the session is already closed
+		} finally {
+			closed = true;
 		}
 	}
 
@@ -90,5 +93,13 @@ public abstract class AbstractControlSession<
 	protected void notifyExceptionListeners(JGCSException exception) {
 		if(exceptionListener != null)
 			exceptionListener.onException(exception);
+	}
+
+	/**
+	 * Check if the protocol has not been closed.
+	 * @throws JGCSException
+	 */
+	protected void onEntry() throws JGCSException {
+		if (isClosed()) throw new ClosedProtocolException();
 	}
 }
