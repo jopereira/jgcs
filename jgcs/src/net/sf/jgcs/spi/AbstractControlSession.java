@@ -12,6 +12,8 @@
  */
 package net.sf.jgcs.spi;
 
+import java.util.concurrent.locks.Lock;
+
 import net.sf.jgcs.ClosedProtocolException;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.ExceptionListener;
@@ -36,6 +38,7 @@ public abstract class AbstractControlSession<
 	protected P protocol;
 	protected DS dataSession;
 	protected G group;
+	protected Lock lock;
 
 	private ExceptionListener exceptionListener;
 
@@ -48,10 +51,9 @@ public abstract class AbstractControlSession<
 	protected void boot() {
 	}
 
-	protected synchronized void cleanup() {
-		if (closed)
-			return;
+	protected void cleanup() {
 		try {
+			exceptionListener = null;
 			if (isJoined())
 				leave();
 		} catch (JGCSException e) {
@@ -66,23 +68,32 @@ public abstract class AbstractControlSession<
 		protocol.removeSessions(group);
 	}
 	
-	public synchronized boolean isClosed() {
-		return closed;
+	public boolean isClosed() {
+		try {
+			lock.lock();
+			return closed;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	/**
 	 * Sets the exception listener.
 	 */
-	public synchronized void setExceptionListener(ExceptionListener listener) {
-		boot();
-		exceptionListener = listener;		
+	public void setExceptionListener(ExceptionListener listener) {
+		try {
+			lock.lock();
+			exceptionListener = listener;		
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	/**
 	 * Verifies listener registratioVerifies listener registration.
 	 * @return true if all listeners are registered
 	 */
-	protected synchronized boolean hasAllListeners(){
+	protected boolean hasAllListeners() {
 		return exceptionListener != null;
 	}
 
@@ -91,8 +102,19 @@ public abstract class AbstractControlSession<
 	 * @param exception the exception to notify.
 	 */
 	protected void notifyExceptionListeners(JGCSException exception) {
-		if(exceptionListener != null)
-			exceptionListener.onException(exception);
+		/* Avoid NPE but invoke callback outside the lock.
+		 * This means that there can be callbacks after close(),
+		 * but avoids deadlocks.
+		 */
+		ExceptionListener listener = null;
+		try {
+			lock.lock();
+			listener = exceptionListener;		
+		} finally {
+			lock.unlock();
+		}
+		if(listener != null)
+			listener.onException(exception);
 	}
 
 	/**

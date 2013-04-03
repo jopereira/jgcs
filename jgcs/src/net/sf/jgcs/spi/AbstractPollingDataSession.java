@@ -19,11 +19,10 @@ import java.util.concurrent.ThreadFactory;
 
 import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
-import net.sf.jgcs.Message;
 
 /**
  * Data session that directly polls I/O. This is often used for simple
- * protocols that do not have associated control sessions. It probably should
+ * protocols that do not have associated membership sessions. It probably should
  * not be used with AbstractPollingProtocol.
  * @author Jose Pereira
  */
@@ -63,28 +62,23 @@ public abstract class AbstractPollingDataSession<
 	private void poll() {
 		if (isClosed())
 			return;
-		Message msg;
 		try {
-			msg=read();
+			read();
 		} catch (IOException e) {
 			if (isClosed())
 				return;
 			JGCSException je=new JGCSException("I/O exception", e);
 			notifyExceptionListeners(je);			
-			try {
-				close();
-			} catch (JGCSException ce) {
-			}
 			return;
 		}
-		notifyMessageListeners(msg);
 		if (!isClosed())
 			pool.execute(task);
 	}
 
 	protected void cleanup() {
+		super.cleanup();
 		pool.shutdown();
 	}
-
-	protected abstract Message read() throws IOException;
+	
+	protected abstract void read() throws IOException;
 }

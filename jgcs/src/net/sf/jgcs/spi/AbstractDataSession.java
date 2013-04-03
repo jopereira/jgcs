@@ -12,7 +12,9 @@
  */
 package net.sf.jgcs.spi;
 
-import net.sf.jgcs.ClosedProtocolException;
+import java.util.concurrent.locks.Lock;
+
+import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.JGCSException;
@@ -38,16 +40,14 @@ public abstract class AbstractDataSession<
 	protected P protocol;
 	protected CS controlSession;
 	protected G group;
+	protected Lock lock;
 	
 	private MessageListener msgListener;
 	private ServiceListener srvcListener;
 	
-	private boolean closed;
-
-	protected synchronized void cleanup() {
-		if (closed)
-			return;
-		closed = true;
+	protected void cleanup() {
+		msgListener = null;
+		srvcListener = null;
 	}
 
 	@Override
@@ -55,36 +55,78 @@ public abstract class AbstractDataSession<
 		protocol.removeSessions(group);
 	}
 	
-	public synchronized boolean isClosed() {
-		return closed;
+	public boolean isClosed() {
+		return controlSession.isClosed();
 	}
 
-	public synchronized void setMessageListener(MessageListener listener) {
-		msgListener = listener;
+	public void setMessageListener(MessageListener listener) {
+		try {
+			lock.lock();
+			msgListener = listener;
+		} finally {
+			lock.unlock();
+		}
 	}
 
-	public synchronized void setServiceListener(ServiceListener listener) {
-		srvcListener = listener;
+	public void setServiceListener(ServiceListener listener) {
+		try {
+			lock.lock();
+			srvcListener = listener;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	protected void notifyExceptionListeners(JGCSException exception) {
 		controlSession.notifyExceptionListeners(exception);
 	}
 
-	protected synchronized Object notifyMessageListeners(Message msg) {
-		if(msgListener != null)
-			return msgListener.onMessage(msg);
-		else
-			return null;
+	protected Object notifyMessageListeners(Message msg) {
+		/* Avoid NPE but invoke callback outside the lock.
+		 * This means that there can be callbacks after close(),
+		 * but avoids deadlocks.
+		 */
+		MessageListener listener = null;
+		try {
+			lock.lock();
+			listener = msgListener;		
+		} finally {
+			lock.unlock();
+		}
+		if(listener != null)
+			return listener.onMessage(msg);
+		return null;
 	}
 	
-	protected synchronized void notifyServiceListeners(Object context, Service service) {
-		if(srvcListener != null)
-			srvcListener.onServiceEnsured(context,service);
+	protected void notifyServiceListeners(Object context, Service service) {
+		/* Avoid NPE but invoke callback outside the lock.
+		 * This means that there can be callbacks after close(),
+		 * but avoids deadlocks.
+		 */
+		ServiceListener listener = null;
+		try {
+			lock.lock();
+			listener = srvcListener;		
+		} finally {
+			lock.unlock();
+		}
+		if(listener != null)
+			listener.onServiceEnsured(context,service);
 	}
 
+	protected void notifyListeners(Message msg, Service service) {
+		Object cookie = notifyMessageListeners(msg);
+		if(cookie !=  null)
+			notifyServiceListeners(cookie, service); 		
+	}
+	
 	public GroupConfiguration getGroup() {
-		return group;
+		try {
+			lock.lock();
+			return group;
+		} finally {
+			lock.unlock();
+		}
 	}
 	
 	/**
@@ -92,6 +134,6 @@ public abstract class AbstractDataSession<
 	 * @throws JGCSException
 	 */
 	protected void onEntry() throws JGCSException {
-		if (isClosed()) throw new ClosedProtocolException();
+		if (isClosed()) throw new ClosedSessionException();
 	}
 }

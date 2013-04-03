@@ -19,7 +19,6 @@ import net.sf.jgcs.MembershipListener;
 import net.sf.jgcs.MembershipSession;
 import net.sf.jgcs.NotJoinedException;
 
-
 public abstract class AbstractMembershipSession<
 		P extends AbstractProtocol<P,DS,CS,G>,
 		DS extends AbstractDataSession<P,DS,CS,G>,
@@ -30,47 +29,81 @@ public abstract class AbstractMembershipSession<
 	private MembershipListener membListener;	
 	private transient Membership membership;
 	
-	protected void boot() {
-		super.boot();
-	}
-	
-	public void setMembershipListener(MembershipListener listener) {
-		boot();
-		membListener = listener;
-	}
-	
-	protected synchronized boolean hasAllListeners(){
-		return super.hasAllListeners() && membListener != null ;
-	}
-
-	protected synchronized void notifyAndSetMembership(Membership m) {
-		boot();		
-		membership = m;
-		if(membListener != null)
-			membListener.onMembershipChange();
-	}
-
-	protected synchronized void notifyRemoved() {
-		boot();		
-		membership = null;
-		if(membListener != null)
-			membListener.onExcluded();
-	}
-
-	public Membership getMembership() throws NotJoinedException{
-		if(membership == null)
-			throw new NotJoinedException("Membership does not exist.");
-		return membership;
-	}
-
 	protected void setMembership(Membership m) {
 		membership = m;
 	}
 
-	public MembershipID getMembershipID() throws NotJoinedException{
-		if(membership == null)
-			throw new NotJoinedException("Membership does not exist.");
-		return membership.getMembershipID();
+	protected void notifyAndSetMembership(Membership m) {
+		membership = m;
+		/* Avoid NPE but invoke callback outside the lock.
+		 * This means that there can be callbacks after close(),
+		 * but avoids deadlocks.
+		 */
+		MembershipListener listener = null;
+		try {
+			lock.lock();
+			listener = membListener;		
+		} finally {
+			lock.unlock();
+		}
+		if(listener != null)
+			listener.onMembershipChange();
 	}
 
+	protected void notifyRemoved() {
+		membership = null;
+		/* Avoid NPE but invoke callback outside the lock.
+		 * This means that there can be callbacks after close(),
+		 * but avoids deadlocks.
+		 */
+		MembershipListener listener = null;
+		try {
+			lock.lock();
+			listener = membListener;		
+		} finally {
+			lock.unlock();
+		}
+		if(listener != null)
+			listener.onExcluded();
+	}
+
+	public void setMembershipListener(MembershipListener listener) {
+		try {
+			lock.lock();
+			membListener = listener;
+		} finally {
+			lock.unlock();
+		}
+	}
+	
+	protected boolean hasAllListeners(){
+		return super.hasAllListeners() && membListener != null ;
+	}
+
+	public Membership getMembership() throws NotJoinedException {
+		try {
+			lock.lock();
+			if(membership == null)
+				throw new NotJoinedException("Membership does not exist.");
+			return membership;
+		} finally {
+			lock.unlock();
+		}				
+	}
+
+	public MembershipID getMembershipID() throws NotJoinedException {
+		try {
+			lock.lock();
+			if(membership == null)
+				throw new NotJoinedException("Membership does not exist.");
+			return membership.getMembershipID();
+		} finally {
+			lock.unlock();
+		}				
+	}
+	
+	protected void cleanup() {
+		super.cleanup();
+		membListener = null;
+	}
 }

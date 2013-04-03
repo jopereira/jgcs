@@ -13,9 +13,12 @@
 package net.sf.jgcs.spi;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import net.sf.jgcs.ClosedProtocolException;
 import net.sf.jgcs.ControlSession;
@@ -67,13 +70,17 @@ public abstract class AbstractProtocol<
 	 */
 	@SuppressWarnings("unchecked")
 	protected void putSessions(G g, CS control, DS data) {
+		Lock lock = new ReentrantLock();
+		
 		control.protocol = (P)this;
 		control.dataSession = data;
 		control.group = g;
+		control.lock = lock;
 		
 		data.protocol = (P)this;
 		data.controlSession = control;
 		data.group = g;
+		data.lock = lock;
 		
 		controlSessions.put(g, control);
 		dataSessions.put(g, data);
@@ -86,10 +93,13 @@ public abstract class AbstractProtocol<
 			control = controlSessions.remove(g);
 			data = dataSessions.remove(g);			
 		}
-		if (control!=null)
+		/* Might happen if being closed concurrently by two threads. */
+		if (control!=null) {
+			control.lock.lock();
 			control.cleanup();
-		if (data!=null)
 			data.cleanup();
+			control.lock.unlock();
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -127,20 +137,24 @@ public abstract class AbstractProtocol<
 	}
 	
 	@Override
-	public void close() throws IOException {
+	public synchronized void close() throws IOException {
+		if (isClosed())
+			return;
+		cleanup();
+	}
+	
+	protected void cleanup() {
 		Collection<CS> css;
-		synchronized(this) {
-			if (isClosed())
-				return;
-			css = controlSessions.values();
-			controlSessions = null;
-			dataSessions = null;
-			closed = true;
-		}
+		css = controlSessions.values();
+		controlSessions = null;
+		dataSessions = null;
+		closed = true;
 		for(CS c: css) {
+			c.lock.lock();
 			c.cleanup();
 			c.dataSession.cleanup();
-		}
+			c.lock.unlock();
+		}		
 	}
 	
 	@Override
@@ -148,9 +162,13 @@ public abstract class AbstractProtocol<
 		return closed;
 	}
 
-	// FIXME: should not callback within synchronized
-	protected void notifyExceptionListeners(JGCSException exception) {
-		for(CS c: controlSessions.values())
+	protected void notifyExceptionListeners(JGCSException exception) { 
+		Collection<CS> css;
+		synchronized(this) {
+			css = new ArrayList<CS>(); 
+			css.addAll(controlSessions.values());
+		}
+		for(CS c: css)
 			c.notifyExceptionListeners(exception);
 	}
 	

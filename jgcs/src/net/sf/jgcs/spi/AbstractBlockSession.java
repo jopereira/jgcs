@@ -1,4 +1,3 @@
-
 /*
  * JGCS - Group Communication Service.
  * Copyright (C) 2006 Nuno Carvalho, Universidade de Lisboa
@@ -10,6 +9,7 @@
  *
  * See COPYING for licensing details.
  */
+
 package net.sf.jgcs.spi;
 
 import net.sf.jgcs.BlockListener;
@@ -25,29 +25,45 @@ public abstract class AbstractBlockSession<
 		extends AbstractMembershipSession<P,DS,CS,G> implements BlockSession {
 
 	private BlockListener blkListener;
-	private boolean joined = false;
 	
 	public void setBlockListener(BlockListener listener) throws JGCSException {
-		boot();
-		if(joined && listener == null)
-			throw new JGCSException("Cannot unset block listener while in the group.");
-		blkListener = listener;
-	}
-
-	protected synchronized boolean hasAllListeners(){
-		return super.hasAllListeners() && blkListener != null;
-	}
-
-	protected synchronized void notifyBlock() {
-		if(blkListener != null)
-			blkListener.onBlock();
-		else {
-			notifyExceptionListeners(new JGCSException("BlockListener not registered. A BlockListener should be registered, "+
-				"otherwise the view could not change."));
+		try {
+			lock.lock();
+			if(isJoined() && listener == null)
+				throw new JGCSException("Cannot unset block listener while in the group.");
+			blkListener = listener;
+		} finally {
+			lock.unlock();
 		}
 	}
 
-	protected synchronized void setJoined(boolean joined) {
-		this.joined = joined;
+	protected boolean hasAllListeners(){
+		return super.hasAllListeners() && blkListener != null;
 	}
+
+	protected void notifyBlock() {
+		/* Avoid NPE but invoke callback outside the lock.
+		 * This means that there can be callbacks after close(),
+		 * but avoids deadlocks.
+		 */
+		BlockListener listener = null;
+		try {
+			lock.lock();
+			listener = blkListener;		
+		} finally {
+			lock.unlock();
+		}
+		if(listener != null)
+			listener.onBlock();
+		else
+			notifyExceptionListeners(new JGCSException("BlockListener not registered. A BlockListener should be registered, "+
+				"otherwise the view could not change."));
+	}
+	
+	
+	protected void cleanup() {
+		super.cleanup();
+		blkListener = null;
+	}
+
 }

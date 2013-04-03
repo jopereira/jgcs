@@ -12,7 +12,6 @@
  */
 package net.sf.jgcs.spi;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -68,10 +67,10 @@ public abstract class AbstractPollingProtocol<
 		try {
 			read();
 		} catch (JGCSException e) {
-			try {
-				close();
-			} catch (IOException ce) {
-			}
+			if (isClosed())
+				return;
+			JGCSException je=new JGCSException("I/O exception", e);
+			notifyExceptionListeners(je);			
 			return;
 		}
 		pool.execute(task);
@@ -80,8 +79,8 @@ public abstract class AbstractPollingProtocol<
 	protected abstract void read() throws JGCSException;
 
 	@Override
-	public void close() throws IOException {
+	protected synchronized void cleanup() {
 		pool.shutdown();
-		super.close();
+		super.cleanup();
 	}
 }
