@@ -17,16 +17,16 @@ package net.sf.jgcs.ip;
 import java.io.IOException;
 import java.net.MulticastSocket;
 
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.spi.AbstractProtocol;
 
 public class IpProtocol extends AbstractProtocol<IpProtocol,IpDataSession,IpControlSession,IpGroup> {
-	protected synchronized void createSessions(IpGroup group) throws JGCSException {
+	protected void createSessions(IpGroup group) throws GroupException {
 		MulticastSocket sock;
 		try {
 			sock=new MulticastSocket(group.getPort());
 		} catch (IOException e) {
-			throw new JGCSException("protocol exception", e);
+			throw new GroupException("protocol exception", e);
 		}
 		putSessions(group, new IpControlSession(sock), new IpDataSession(sock));
 	}	

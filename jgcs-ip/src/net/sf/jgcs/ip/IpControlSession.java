@@ -18,10 +18,9 @@ import java.io.IOException;
 import java.net.MulticastSocket;
 import java.net.SocketAddress;
 
-import net.sf.jgcs.ClosedSessionException;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.InvalidStateException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.spi.AbstractControlSession;
-
 
 public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSession,IpControlSession,IpGroup> {
 	private MulticastSocket sock;
@@ -32,23 +31,29 @@ public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSe
 		this.joined=false;
 	}
 
-	public synchronized void join() throws JGCSException {
+	public void join() throws GroupException {
+		lock.lock();
 		onEntry();
 		try {
 			sock.joinGroup(group.getGroupAddress());
 			joined = true;
 		} catch (IOException e) {
-			throw new JGCSException("I/O exception", e);
+			throw new InvalidStateException("cannot join group", e);
+		} finally {
+			lock.unlock();
 		}
 	}
 
-	public synchronized void leave() throws ClosedSessionException, JGCSException {
+	public void leave() throws GroupException {
+		lock.lock();
 		onEntry();
 		try {
-			sock.leaveGroup(group.getGroupAddress());
 			joined = false;
+			sock.leaveGroup(group.getGroupAddress());
 		} catch (IOException e) {
-			throw new JGCSException("I/O exception", e);
+			throw new InvalidStateException("cannot leave group", e);
+		} finally {
+			lock.unlock();
 		}
 	}
 
