@@ -14,11 +14,11 @@ package net.sf.jgcs.spi;
 
 import java.util.concurrent.locks.Lock;
 
-import net.sf.jgcs.ClosedProtocolException;
+import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.ExceptionListener;
 import net.sf.jgcs.GroupConfiguration;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 
 /**
  * 
@@ -56,7 +56,7 @@ public abstract class AbstractControlSession<
 			exceptionListener = null;
 			if (isJoined())
 				leave();
-		} catch (JGCSException e) {
+		} catch (GroupException e) {
 			// don't care, as the session is already closed
 		} finally {
 			closed = true;
@@ -64,7 +64,7 @@ public abstract class AbstractControlSession<
 	}
 
 	@Override
-	public void close() throws JGCSException {
+	public void close() throws GroupException {
 		protocol.removeSessions(group);
 	}
 	
@@ -101,7 +101,7 @@ public abstract class AbstractControlSession<
 	 * Notifies the exception listener.
 	 * @param exception the exception to notify.
 	 */
-	protected void notifyExceptionListeners(JGCSException exception) {
+	protected void notifyExceptionListeners(GroupException exception) {
 		/* Avoid NPE but invoke callback outside the lock.
 		 * This means that there can be callbacks after close(),
 		 * but avoids deadlocks.
@@ -118,10 +118,10 @@ public abstract class AbstractControlSession<
 	}
 
 	/**
-	 * Check if the protocol has not been closed.
-	 * @throws JGCSException
+	 * Check if the session has not been closed.
+	 * @throws GroupException
 	 */
-	protected void onEntry() throws JGCSException {
-		if (isClosed()) throw new ClosedProtocolException();
+	protected void onEntry() throws GroupException {
+		if (isClosed()) throw new ClosedSessionException();
 	}
 }

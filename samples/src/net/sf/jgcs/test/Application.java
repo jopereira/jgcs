@@ -18,12 +18,12 @@ import net.sf.jgcs.BlockSession;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.MembershipListener;
 import net.sf.jgcs.MembershipSession;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.MessageListener;
-import net.sf.jgcs.NotJoinedException;
+import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 import net.sf.jgcs.Service;
@@ -40,7 +40,7 @@ public class Application implements MessageListener,
 	private DataSession data;
 	private Service service;
 
-	public Application(ProtocolFactory pf, GroupConfiguration g, Service service) throws JGCSException {
+	public Application(ProtocolFactory pf, GroupConfiguration g, Service service) throws GroupException {
 		////
 		/// A protocol can now be created. This object represents an instance
 		/// of the toolkit that will be used for group communication.
@@ -123,7 +123,7 @@ public class Application implements MessageListener,
 		try {
 			System.out.println("-- NEW MEMBERSHIP: " + 
 				((MembershipSession) control).getMembership());
-		} catch (NotJoinedException e) {
+		} catch (InvalidStateException e) {
 			e.printStackTrace();
 		}			
 	}
@@ -137,7 +137,7 @@ public class Application implements MessageListener,
 	public void onBlock() {
 		try {
 			((BlockSession) control).blockOk();
-		} catch (JGCSException e) {
+		} catch (GroupException e) {
 			e.printStackTrace();
 		}
 	}

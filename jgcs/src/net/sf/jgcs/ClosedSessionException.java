@@ -18,7 +18,7 @@ package net.sf.jgcs;
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public class ClosedSessionException extends JGCSException {
+public class ClosedSessionException extends GroupException {
 
 	private static final long serialVersionUID = 6541033485787104167L;
 

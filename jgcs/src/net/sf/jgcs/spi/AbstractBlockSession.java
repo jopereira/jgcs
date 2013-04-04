@@ -15,7 +15,7 @@ package net.sf.jgcs.spi;
 import net.sf.jgcs.BlockListener;
 import net.sf.jgcs.BlockSession;
 import net.sf.jgcs.GroupConfiguration;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 
 public abstract class AbstractBlockSession<
 		P extends AbstractProtocol<P,DS,CS,G>,
@@ -26,11 +26,11 @@ public abstract class AbstractBlockSession<
 
 	private BlockListener blkListener;
 	
-	public void setBlockListener(BlockListener listener) throws JGCSException {
+	public void setBlockListener(BlockListener listener) throws GroupException {
 		try {
 			lock.lock();
 			if(isJoined() && listener == null)
-				throw new JGCSException("Cannot unset block listener while in the group.");
+				throw new GroupException("Cannot unset block listener while in the group.");
 			blkListener = listener;
 		} finally {
 			lock.unlock();
@@ -56,7 +56,7 @@ public abstract class AbstractBlockSession<
 		if(listener != null)
 			listener.onBlock();
 		else
-			notifyExceptionListeners(new JGCSException("BlockListener not registered. A BlockListener should be registered, "+
+			notifyExceptionListeners(new GroupException("BlockListener not registered. A BlockListener should be registered, "+
 				"otherwise the view could not change."));
 	}
 	

@@ -69,7 +69,7 @@ public interface DataSession extends Closeable {
 	 * 
 	 * @return The message created.
 	 */
-	public Message createMessage() throws JGCSException;
+	public Message createMessage() throws GroupException;
 		
 	/**
 	 * <p>Sends a message to the group.</p>

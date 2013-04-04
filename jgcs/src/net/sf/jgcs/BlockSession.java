@@ -29,23 +29,23 @@ public interface BlockSession extends MembershipSession {
 	 * notification and flushed all pending messages.
 	 * After calling this method, the application cannot send any more messages until it receives
 	 * a notification of a membership change.
-	 * @throws NotJoinedException if the member is not in a group.
-	 * @throws JGCSException if an error ocurs.
+	 * @throws InvalidStateException if the member is not in a group.
+	 * @throws GroupException if an error ocurs.
 	 */
-	public void blockOk() throws NotJoinedException, JGCSException;
+	public void blockOk() throws InvalidStateException, GroupException;
 	
 	/**
 	 * Verifies if the group is blocked or not.
 	 * @return true if the group is blocked, false otherwise.
-	 * @throws NotJoinedException if the member is not in a group.
+	 * @throws InvalidStateException if the member is not in a group.
 	 */
-	public boolean isBlocked()  throws NotJoinedException;
+	public boolean isBlocked()  throws InvalidStateException;
 	
 	/**
 	 * Registers a listener for the block notification.
 	 * @param listener the listener to register.
-	 * @throws JGCSException if an error ocurs.
+	 * @throws GroupException if an error ocurs.
 	 */
-	public void setBlockListener(BlockListener listener) throws JGCSException;
+	public void setBlockListener(BlockListener listener) throws GroupException;
 	
 }

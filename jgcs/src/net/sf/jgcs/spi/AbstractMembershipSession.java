@@ -17,7 +17,7 @@ import net.sf.jgcs.Membership;
 import net.sf.jgcs.MembershipID;
 import net.sf.jgcs.MembershipListener;
 import net.sf.jgcs.MembershipSession;
-import net.sf.jgcs.NotJoinedException;
+import net.sf.jgcs.InvalidStateException;
 
 public abstract class AbstractMembershipSession<
 		P extends AbstractProtocol<P,DS,CS,G>,
@@ -80,22 +80,22 @@ public abstract class AbstractMembershipSession<
 		return super.hasAllListeners() && membListener != null ;
 	}
 
-	public Membership getMembership() throws NotJoinedException {
+	public Membership getMembership() throws InvalidStateException {
 		try {
 			lock.lock();
 			if(membership == null)
-				throw new NotJoinedException("Membership does not exist.");
+				throw new InvalidStateException("Membership does not exist.");
 			return membership;
 		} finally {
 			lock.unlock();
 		}				
 	}
 
-	public MembershipID getMembershipID() throws NotJoinedException {
+	public MembershipID getMembershipID() throws InvalidStateException {
 		try {
 			lock.lock();
 			if(membership == null)
-				throw new NotJoinedException("Membership does not exist.");
+				throw new InvalidStateException("Membership does not exist.");
 			return membership.getMembershipID();
 		} finally {
 			lock.unlock();

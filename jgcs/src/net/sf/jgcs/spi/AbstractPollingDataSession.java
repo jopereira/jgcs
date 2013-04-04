@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 import net.sf.jgcs.GroupConfiguration;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 
 /**
  * Data session that directly polls I/O. This is often used for simple
@@ -67,7 +67,7 @@ public abstract class AbstractPollingDataSession<
 		} catch (IOException e) {
 			if (isClosed())
 				return;
-			JGCSException je=new JGCSException("I/O exception", e);
+			GroupException je=new GroupException("I/O exception", e);
 			notifyExceptionListeners(je);			
 			return;
 		}

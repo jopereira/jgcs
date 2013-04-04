@@ -13,20 +13,25 @@
 package net.sf.jgcs;
 
 /**
- * 
- * This class defines a ExceptionListener.
- * This listener must be used to receive exceptions that could occour on message reception.
+ * This class defines a ClosedSessionException. 
  * 
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public interface ExceptionListener {
+public class ClosedProtocolException extends GroupException {
 
-	/**
-	 * Notification of an exception that occurred when the underlying implementation
-	 * was receiving a message.
-	 * @param exception the exception.
-	 */
-	public void onException(GroupException exception);
+	private static final long serialVersionUID = 6541033485787104167L;
+
+	public ClosedProtocolException() {
+		super();
+	}
+
+	public ClosedProtocolException(String s, Throwable t) {
+		super(s, t);
+	}
+
+	public ClosedProtocolException(String s) {
+		super(s);
+	}
 
 }

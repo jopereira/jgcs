@@ -24,8 +24,9 @@ import net.sf.jgcs.ClosedProtocolException;
 import net.sf.jgcs.ControlSession;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Protocol;
+import net.sf.jgcs.UnsupportedGroupException;
 
 /**
  * 
@@ -56,9 +57,10 @@ public abstract class AbstractProtocol<
 	 * Called when a session is required for a previously unused group configuration.
 	 * 
 	 * @param group group configuration
-	 * @throws JGCSException if sessions cannot be created
+	 * @throws GroupException if sessions cannot be created
+	 * @throws ClassCastException if the group cannot be cast to the right class
 	 */
-	protected abstract void createSessions(G group) throws JGCSException;
+	protected abstract void createSessions(G group) throws GroupException, ClassCastException;
 
 	/**
 	 * This should be called only by derived classes within the createSession() method
@@ -104,34 +106,42 @@ public abstract class AbstractProtocol<
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized DataSession openDataSession(GroupConfiguration group) throws JGCSException {
+	public synchronized DataSession openDataSession(GroupConfiguration group) throws GroupException {
 		onEntry();
 		DataSession data=dataSessions.get(group);
 		if (data==null) {
-			createSessions((G)group);
-			data=dataSessions.get(group);
+			try {
+				createSessions((G)group);
+				data=dataSessions.get(group);
+			} catch(ClassCastException cce) {
+				throw new UnsupportedGroupException(group);
+			}
 		}
 		return data;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized ControlSession openControlSession(GroupConfiguration group) throws JGCSException {
+	public synchronized ControlSession openControlSession(GroupConfiguration group) throws GroupException {
 		onEntry();
 		ControlSession control=controlSessions.get(group);
 		if (control==null) {
-			createSessions((G)group);
-			control=controlSessions.get(group);
+			try {
+				createSessions((G)group);
+				control=controlSessions.get(group);
+			} catch(ClassCastException cce) {
+				throw new UnsupportedGroupException(group);
+			}
 		}
 		return control;
 	}
 	
-	protected synchronized CS lookupControlSession(GroupConfiguration g) throws JGCSException {
+	protected synchronized CS lookupControlSession(GroupConfiguration g) throws GroupException {
 		onEntry();
 		return controlSessions.get(g);
 	}
 
-	protected synchronized DS lookupDataSession(GroupConfiguration g) throws JGCSException {
+	protected synchronized DS lookupDataSession(GroupConfiguration g) throws GroupException {
 		onEntry();
 		return dataSessions.get(g);
 	}
@@ -162,7 +172,7 @@ public abstract class AbstractProtocol<
 		return closed;
 	}
 
-	protected void notifyExceptionListeners(JGCSException exception) { 
+	protected void notifyExceptionListeners(GroupException exception) { 
 		Collection<CS> css;
 		synchronized(this) {
 			css = new ArrayList<CS>(); 
@@ -174,9 +184,9 @@ public abstract class AbstractProtocol<
 	
 	/**
 	 * Check if the protocol has not been closed.
-	 * @throws JGCSException
+	 * @throws GroupException
 	 */
-	protected void onEntry() throws JGCSException {
+	protected void onEntry() throws GroupException {
 		if (isClosed()) throw new ClosedProtocolException();
 	}
 }

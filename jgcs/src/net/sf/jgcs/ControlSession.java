@@ -31,13 +31,13 @@ public interface ControlSession extends Closeable {
 	 * Joins the group. It must block until the join process is finished.
 	 *
 	 */
-	public void join() throws JGCSException;
+	public void join() throws GroupException;
 	
 	/**
 	 * Leaves the group. It must block until the leave process is finished.
 	 *
 	 */
-	public void leave() throws JGCSException;
+	public void leave() throws GroupException;
 	
 	/**
 	 * Verifies if the member belongs to a group.
@@ -46,8 +46,9 @@ public interface ControlSession extends Closeable {
 	public boolean isJoined();
 	
 	/**
-	 * Gets the local address. It should return null if the member is not joined to any group.
-	 * @return the local address.
+	 * Gets the local address. It might return null if the member is not joined to any group
+	 * or the session is closed.
+	 * @return the local address or null if not available
 	 */
 	public SocketAddress getLocalAddress();
 	

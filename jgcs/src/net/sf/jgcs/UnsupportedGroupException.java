@@ -19,25 +19,25 @@ package net.sf.jgcs;
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public class UnsupportedServiceException extends GroupException {
+public class UnsupportedGroupException extends GroupException {
 
-	private static final long serialVersionUID = -8332539718709043101L;
+	private static final long serialVersionUID = 4206652425727671499L;
 
 	/**
 	 * 
 	 * Creates a new UnsupportedServiceException.
 	 */
-	public UnsupportedServiceException() {
+	public UnsupportedGroupException() {
 		super();
 	}
 
 	/**
 	 * 
 	 * Creates a new UnsupportedServiceException.
-	 * @param "" the error message.
+	 * @param group the error message.
 	 */
-	public UnsupportedServiceException(Service service) {
-		super("unsupported service exception: "+service);
+	public UnsupportedGroupException(GroupConfiguration group) {
+		super("unsupported group configuration: "+group);
 	}
 
 }

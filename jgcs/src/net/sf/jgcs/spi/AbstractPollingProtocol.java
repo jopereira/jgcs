@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 import net.sf.jgcs.GroupConfiguration;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 
 /**
  * 
@@ -66,17 +66,17 @@ public abstract class AbstractPollingProtocol<
 			return;
 		try {
 			read();
-		} catch (JGCSException e) {
+		} catch (GroupException e) {
 			if (isClosed())
 				return;
-			JGCSException je=new JGCSException("I/O exception", e);
+			GroupException je=new GroupException("I/O exception", e);
 			notifyExceptionListeners(je);			
 			return;
 		}
 		pool.execute(task);
 	}
 	
-	protected abstract void read() throws JGCSException;
+	protected abstract void read() throws GroupException;
 
 	@Override
 	protected synchronized void cleanup() {

@@ -27,9 +27,9 @@ public interface Membership {
 	/**
 	 * Gets the local rank of the member in this membership.
 	 * @return the local rank of this member.
-	 * @throws NotJoinedException if the member is not in a group.
+	 * @throws InvalidStateException if the member is not in a group.
 	 */
-	public int getLocalRank() throws NotJoinedException;
+	public int getLocalRank() throws InvalidStateException;
 
 	/**
 	 * Gets the rank of the coordinator of this group.

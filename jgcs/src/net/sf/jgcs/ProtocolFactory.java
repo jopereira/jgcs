@@ -29,8 +29,8 @@ public interface ProtocolFactory extends Serializable {
 	/**
 	 * Creates a new Protocol that represents a toolkit.
 	 * @return a new protocol.
-	 * @throws JGCSException
+	 * @throws GroupException
 	 */
-	public Protocol createProtocol() throws JGCSException;
+	public Protocol createProtocol() throws GroupException;
 	
 }

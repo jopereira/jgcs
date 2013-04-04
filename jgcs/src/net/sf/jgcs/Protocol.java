@@ -35,18 +35,18 @@ public interface Protocol extends Closeable {
 	 * to receive messages from the other members of the group.
 	 * @param group the configuration.
 	 * @return a new data session.
-	 * @throws JGCSException
+	 * @throws GroupException
 	 */
-	public DataSession openDataSession(GroupConfiguration group) throws JGCSException;
+	public DataSession openDataSession(GroupConfiguration group) throws GroupException;
 	
 	/**
 	 * Creates a new Control Session. This session must be used to join a group and register a listener
 	 * to receive asynchronous notifications about the other members of the group (join, leave, fail).
 	 * @param group the group configuration.
 	 * @return a new control session.
-	 * @throws JGCSException
+	 * @throws GroupException
 	 */
-	public ControlSession openControlSession(GroupConfiguration group) throws JGCSException;
+	public ControlSession openControlSession(GroupConfiguration group) throws GroupException;
 	
 	/**
 	 * Close this protocol. This will close all existing associated sessions and prevent any

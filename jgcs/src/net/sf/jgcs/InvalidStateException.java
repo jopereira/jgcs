@@ -13,13 +13,16 @@
 package net.sf.jgcs;
 
 /**
+ * The operation cannot be performed in the current group state.
  * 
- * This class defines a NotJoinedException.
+ * This happens when trying to re-join or re-leave a group, sending
+ * messages to a blocked group, sending messaages to a closed group
+ * without joining, ... 
  * 
  * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
  * @version 1.0
  */
-public class NotJoinedException extends JGCSException {
+public class InvalidStateException extends GroupException {
 
 	private static final long serialVersionUID = 5069170460259403046L;
 
@@ -27,7 +30,7 @@ public class NotJoinedException extends JGCSException {
 	 * 
 	 * Creates a new NotJoinedException.
 	 */
-	public NotJoinedException() {
+	public InvalidStateException() {
 		super();
 	}
 
@@ -36,7 +39,7 @@ public class NotJoinedException extends JGCSException {
 	 * Creates a new NotJoinedException.
 	 * @param s the error message
 	 */
-	public NotJoinedException(String s) {
+	public InvalidStateException(String s) {
 		super(s);
 	}
 
@@ -46,29 +49,7 @@ public class NotJoinedException extends JGCSException {
 	 * @param s the error message.
 	 * @param cause the throwable that caused this exception.
 	 */
-	public NotJoinedException(String s, Throwable cause) {
+	public InvalidStateException(String s, Throwable cause) {
 		super(s, cause);
 	}
-
-	/**
-	 * 
-	 * Creates a new NotJoinedException.
-	 * @param s the error message.
-	 * @param code the error code.
-	 */
-	public NotJoinedException(String s, int code) {
-		super(s, code);
-	}
-
-	/**
-	 * 
-	 * Creates a new NotJoinedException.
-	 * @param s the error message.
-	 * @param cause the throwable that caused this exception.
-	 * @param code the error code.
-	 */
-	public NotJoinedException(String s, Throwable cause, int code) {
-		super(s, cause, code);
-	}
-
 }

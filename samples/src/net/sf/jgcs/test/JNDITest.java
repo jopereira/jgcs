@@ -18,7 +18,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import net.sf.jgcs.GroupConfiguration;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.ProtocolFactory;
 import net.sf.jgcs.Service;
 
@@ -28,7 +28,7 @@ import net.sf.jgcs.Service;
  */
 public class JNDITest extends Application {
 
-	public JNDITest(Context ctx) throws JGCSException, NamingException {
+	public JNDITest(Context ctx) throws GroupException, NamingException {
 		super((ProtocolFactory) ctx.lookup("myProto"),
 				(GroupConfiguration) ctx.lookup("myGroup"),
 				(Service)ctx.lookup("myService"));

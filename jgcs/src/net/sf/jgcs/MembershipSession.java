@@ -26,16 +26,16 @@ public interface MembershipSession extends ControlSession {
 	/**
 	 * Gets the current Membership.
 	 * @return a membership.
-	 * @throws NotJoinedException if the member is not joined
+	 * @throws InvalidStateException if the member is not joined
 	 */
-	public Membership getMembership() throws NotJoinedException;
+	public Membership getMembership() throws InvalidStateException;
 
 	/**
 	 * Gets the current membership ID
 	 * @return the current membership ID
-	 * @throws NotJoinedException if the member is not joined
+	 * @throws InvalidStateException if the member is not joined
 	 */
-	public MembershipID getMembershipID() throws NotJoinedException;
+	public MembershipID getMembershipID() throws InvalidStateException;
 	
 	/**
 	 * Registers a listener for the membership changes.

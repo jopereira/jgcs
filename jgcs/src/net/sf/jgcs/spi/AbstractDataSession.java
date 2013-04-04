@@ -17,7 +17,7 @@ import java.util.concurrent.locks.Lock;
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.MessageListener;
 import net.sf.jgcs.Service;
@@ -51,7 +51,7 @@ public abstract class AbstractDataSession<
 	}
 
 	@Override
-	public void close() throws JGCSException {
+	public void close() throws GroupException {
 		protocol.removeSessions(group);
 	}
 	
@@ -77,7 +77,7 @@ public abstract class AbstractDataSession<
 		}
 	}
 
-	protected void notifyExceptionListeners(JGCSException exception) {
+	protected void notifyExceptionListeners(GroupException exception) {
 		controlSession.notifyExceptionListeners(exception);
 	}
 
@@ -93,7 +93,7 @@ public abstract class AbstractDataSession<
 		} finally {
 			lock.unlock();
 		}
-		if(listener != null)
+		if (listener != null)
 			return listener.onMessage(msg);
 		return null;
 	}
@@ -120,7 +120,7 @@ public abstract class AbstractDataSession<
 			notifyServiceListeners(cookie, service); 		
 	}
 	
-	public GroupConfiguration getGroup() {
+	public G getGroup() {
 		try {
 			lock.lock();
 			return group;
@@ -131,9 +131,9 @@ public abstract class AbstractDataSession<
 	
 	/**
 	 * Check if the protocol has not been closed.
-	 * @throws JGCSException
+	 * @throws GroupException
 	 */
-	protected void onEntry() throws JGCSException {
+	protected void onEntry() throws GroupException {
 		if (isClosed()) throw new ClosedSessionException();
 	}
 }
