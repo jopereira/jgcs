@@ -17,9 +17,10 @@ package net.sf.jgcs.neem;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
-import net.sf.neem.MulticastChannel;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
+import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.spi.AbstractControlSession;
+import net.sf.neem.MulticastChannel;
 
 public class NeEMControlSession extends AbstractControlSession<NeEMProtocol,NeEMDataSession,NeEMControlSession,NeEMGroup> {
 	private MulticastChannel sock;
@@ -30,21 +31,42 @@ public class NeEMControlSession extends AbstractControlSession<NeEMProtocol,NeEM
 		this.joined = false;
 	}
 
-	public synchronized void join() throws JGCSException {
-		onEntry();
-		for(InetSocketAddress peer: group.getPeers())
-			sock.connect(peer);
-		joined = true;
+	public void join() throws GroupException {
+		try {
+			lock.lock();
+			onEntry();
+			if (joined)
+				throw new InvalidStateException("already joined");
+			for(InetSocketAddress peer: group.getPeers())
+				sock.connect(peer);
+			joined = true;
+		} finally {
+			lock.unlock();
+		}
 	}
 
-	public synchronized void leave() throws JGCSException {
-		onEntry();
-		joined = false;
-		sock.close();
+	public void leave() throws GroupException {
+		try {
+			lock.lock();
+			onEntry();
+			if (!joined)
+				throw new InvalidStateException("not joined");
+			joined = false;
+			sock.close();
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public SocketAddress getLocalAddress() {
-		return sock.getLocalSocketAddress();
+		try {
+			lock.lock();
+			if (!isClosed())
+				return sock.getLocalSocketAddress();
+			return null;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public boolean isJoined() {
