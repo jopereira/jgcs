@@ -30,77 +30,81 @@
  
 package net.sf.jgcs.jgroups;
 
+import org.jgroups.Message;
+
 import net.sf.jgcs.Service;
 
 public class JGroupsService implements Service {
 
 	private static final long serialVersionUID = 2L;
-	
-	public enum Services{
-		FIFO("vsc+fifo"),
-		TOTAL("vsc+total"),
-		TOTAL_SERVICES("vsc+total+services"),
-		CAUSAL("vsc+causal");
-		private String service_name;
-		Services(String service){
-			this.service_name = service;
-		}
-	}
-	
-	private Services myService;
-	
-	/**
-	 * Service is the channel name that was given in the XML configuration file.
-	 * @param service
-	 */
-	public JGroupsService(Services service) {
-		myService = service;
+
+	private short flags;
+
+	public JGroupsService() {
 	}
 
-	public JGroupsService(String service_name){
-		if(Services.CAUSAL.service_name.equals(service_name))
-			myService = Services.CAUSAL;
-		else if(Services.TOTAL.service_name.equals(service_name))
-			myService = Services.TOTAL;
-		else if(Services.TOTAL_SERVICES.service_name.equals(service_name))
-			myService = Services.TOTAL_SERVICES;
-		else if(Services.FIFO.service_name.equals(service_name))
-			myService = Services.FIFO;
-	}
-	
-	public String getService() {
-		return myService.service_name;
+	public JGroupsService(Message.Flag... flags) {
+		this.setFlags(flags);
 	}
 
-	public void setService(Services service) {
-		myService = service;
+	public JGroupsService(String flagNames) {
+		this.setFlags(flagNames);
+	}
+
+	public JGroupsService(short flags) {
+		this.setFlags(flags);
+	}
+	
+	public void setFlags(Message.Flag... flags) {
+		for(Message.Flag flag: flags)
+			this.flags |= flag.value();
+	}
+	
+	public void setFlags(String flagNames) {
+		String[] flags = flagNames.split("[|]");
+		for(String flag: flags)
+			this.flags |= Message.Flag.valueOf(flag).value();
+	}
+
+	public void setFlags(short flags) {
+		this.flags = flags;
+	}
+	
+	public short getFlags() {
+		return flags;
 	}
 
 	public boolean satisfies(Service service) {
 		if(! (service instanceof JGroupsService))
 			return false;
 		JGroupsService as = (JGroupsService) service;
-		return as.myService.compareTo(myService) >= 0;
-	}
-	
-	@Override
-	public int hashCode(){
-		return myService.hashCode();
+		return (flags | as.flags) == as.flags;
 	}
 
 	@Override
-	public boolean equals(Object o){
-		if (o instanceof JGroupsService) {
-			JGroupsService as = (JGroupsService) o;
-			return (as.myService.compareTo(myService) == 0);
-		}
-		else
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + flags;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-	}
-	
-	@Override
-	public String toString(){
-		return "JGroups service: "+myService.service_name;
+		if (getClass() != obj.getClass())
+			return false;
+		JGroupsService other = (JGroupsService) obj;
+		if (flags != other.flags)
+			return false;
+		return true;
 	}
 
+	@Override
+	public String toString() {
+		return Message.flagsToString(flags);
+	}
 }

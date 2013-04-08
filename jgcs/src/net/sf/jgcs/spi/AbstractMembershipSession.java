@@ -27,7 +27,7 @@ public abstract class AbstractMembershipSession<
 	extends AbstractControlSession<P,DS,CS,G> implements MembershipSession {
 
 	private MembershipListener membListener;	
-	private transient Membership membership;
+	protected Membership membership;
 	
 	protected void setMembership(Membership m) {
 		membership = m;

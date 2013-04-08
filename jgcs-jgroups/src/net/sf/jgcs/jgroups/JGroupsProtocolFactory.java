@@ -31,28 +31,25 @@
  
 package net.sf.jgcs.jgroups;
 
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 
 public class JGroupsProtocolFactory implements ProtocolFactory {
 
 	private static final long serialVersionUID = 2L;
+	
+	private String config;
 
 	public JGroupsProtocolFactory() {
-		super();
 	}
 
-	/**
-	 * @deprecated
-	 * @param nil
-	 */
-	public JGroupsProtocolFactory(String nil) {
-		super();
+	public JGroupsProtocolFactory(String config) {
+		this.config = config;
 	}
 
-	public Protocol createProtocol() throws JGCSException{
-		return new JGroupsProtocol();
+	public Protocol createProtocol() throws GroupException{
+		return new JGroupsProtocol(config);
 	}
 
 }

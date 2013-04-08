@@ -34,7 +34,8 @@ package net.sf.jgcs.jgroups;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
+import net.sf.jgcs.UnsupportedGroupException;
 import net.sf.jgcs.spi.AbstractProtocol;
 
 import org.jgroups.Address;
@@ -45,20 +46,21 @@ import org.jgroups.View;
 
 public class JGroupsProtocol extends AbstractProtocol<JGroupsProtocol,JGroupsDataSession,JGroupsControlSession,JGroupsGroup> {
 
-	public JGroupsProtocol() {
-		super();
+	private String config;
+
+	JGroupsProtocol(String config) {
+		this.config = config;
 	}
-	
+
 	@Override
-	protected synchronized void createSessions(JGroupsGroup g) throws JGCSException {
+	protected void createSessions(JGroupsGroup g) throws GroupException {
 		if( !(g instanceof JGroupsGroup))
-			throw new JGCSException("Wrong type of the given Group: "+g.getClass().getName()+
-					"should be of type "+JGroupsGroup.class.getName());
+			throw new UnsupportedGroupException(g);
 		
 		JGroupsGroup group = (JGroupsGroup) g;
 
 		try {
-			JChannel channel = new JChannel(group.getConfigName());
+			JChannel channel = new JChannel(config);
 			final JGroupsControlSession cs = new JGroupsControlSession(channel);
 			final JGroupsDataSession ds= new JGroupsDataSession(channel);
 			putSessions(group, cs,ds);
@@ -67,15 +69,10 @@ public class JGroupsProtocol extends AbstractProtocol<JGroupsProtocol,JGroupsDat
 
 				@Override
 				public void receive(Message msg) {
-					byte[] jgroupsBuffer = ((org.jgroups.Message) msg).getBuffer();
-					if(jgroupsBuffer == null)
-						return;
-					byte[] buffer = new byte[jgroupsBuffer.length];
-					// FIXME? This makes the gap on the DOA results.
-					System.arraycopy(jgroupsBuffer,0,buffer,0,buffer.length);
-					JGroupsMessage message = new JGroupsMessage(buffer, new JGroupsSocketAddress(((org.jgroups.Message) msg).getSrc()));
-					// FIXME? Service notification?
-					ds.deliver(message);
+					ds.deliver(
+							new JGroupsMessage(msg.getBuffer(), new JGroupsSocketAddress(msg.getSrc())),
+							new JGroupsService(msg.getFlags())
+						);
 				}
 
 				@Override
@@ -95,7 +92,7 @@ public class JGroupsProtocol extends AbstractProtocol<JGroupsProtocol,JGroupsDat
 
 				@Override
 				public void suspect(Address suspected_mbr) {
-					cs.jgroupsSuspect(suspected_mbr);
+					// TODO Auto-generated method stub
 				}
 
 				@Override
@@ -112,7 +109,7 @@ public class JGroupsProtocol extends AbstractProtocol<JGroupsProtocol,JGroupsDat
 			channel.setReceiver(recv);
 
 		} catch (Exception e) {
-			throw new JGCSException("Could not create JGroups channel. ",e);
+			throw new GroupException("Could not create JGroups channel. ",e);
 		}
 	}
 }

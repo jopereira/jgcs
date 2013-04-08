@@ -38,30 +38,14 @@ public class JGroupsGroup implements GroupConfiguration {
 
 	private static final long serialVersionUID = 2L;
 	
-	private String config, groupName;
+	private String groupName;
 	
 	public JGroupsGroup() {
 		super();
 	}
 
-	public JGroupsGroup(String name, String config) {
+	public JGroupsGroup(String name) {
 		this.groupName = name;
-		this.config = config;
-	}
-	
-	@Override
-	public int hashCode(){
-		return groupName.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object o){
-		if (o instanceof JGroupsGroup) {
-			JGroupsGroup ag = (JGroupsGroup) o;
-			return ag.groupName.equals(this.groupName);
-		}
-		else
-			return false;
 	}
 
 	public void setGroupName(String groupName) {
@@ -72,11 +56,30 @@ public class JGroupsGroup implements GroupConfiguration {
 		return groupName;
 	}
 
-	public void setConfigName(String config) {
-		this.config = config;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((groupName == null) ? 0 : groupName.hashCode());
+		return result;
 	}
-	
-	public String getConfigName() {
-		return config;
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		JGroupsGroup other = (JGroupsGroup) obj;
+		if (groupName == null) {
+			if (other.groupName != null)
+				return false;
+		} else if (!groupName.equals(other.groupName))
+			return false;
+		return true;
 	}
+
 }

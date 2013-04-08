@@ -40,11 +40,11 @@ public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.M
 	
 	private SocketAddress sender;
 
-	public JGroupsMessage() {
+	JGroupsMessage() {
 		super();
 	}
 
-	public JGroupsMessage(byte[] buffer, JGroupsSocketAddress sender) {
+	JGroupsMessage(byte[] buffer, JGroupsSocketAddress sender) {
 		super();
 		this.sender = sender;
 		this.setBuffer(buffer);
@@ -55,10 +55,7 @@ public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.M
 	}
 
 	public byte[] getPayload() {
-		byte[] jgroupsBuffer = this.getBuffer();
-		byte[] array = new byte[jgroupsBuffer.length];
-		System.arraycopy(jgroupsBuffer,0,array,0,array.length);
-		return array;
+		return this.getBuffer();
 	}
 
 	public SocketAddress getSenderAddress() {

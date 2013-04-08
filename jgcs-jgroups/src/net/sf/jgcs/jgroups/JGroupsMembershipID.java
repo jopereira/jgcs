@@ -31,12 +31,6 @@
  
 package net.sf.jgcs.jgroups;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-
-import net.sf.jgcs.JGCSException;
 import net.sf.jgcs.MembershipID;
 
 import org.jgroups.ViewId;
@@ -46,10 +40,6 @@ public class JGroupsMembershipID implements MembershipID {
 	private static final long serialVersionUID = 2L;
 	
 	private ViewId id;
-
-	public JGroupsMembershipID() {
-		id = new ViewId();
-	}
 
 	public JGroupsMembershipID(ViewId id) {
 		this.id = id;
@@ -78,30 +68,5 @@ public class JGroupsMembershipID implements MembershipID {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	public byte[] getBytes() throws JGCSException{
-		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-		DataOutputStream out = null;
-		try {
-			out = new DataOutputStream(byteStream);
-			id.writeTo(out);
-			out.close();
-		} catch (Exception e) {
-			throw new JGCSException("Could not write to output stream", e);
-		}
-		return byteStream.toByteArray();
-	}
-
-	public void fromBytes(byte[] bytes) throws JGCSException{
-		ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
-		DataInputStream in = null;
-		try {
-			in = new DataInputStream(byteStream);
-			id.readFrom(in);
-			in.close();
-		} catch (Exception e) {
-			throw new JGCSException("Could not read from input stream", e);
-		}
 	}
 }

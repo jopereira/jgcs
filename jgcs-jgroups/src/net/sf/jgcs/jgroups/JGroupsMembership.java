@@ -1,4 +1,3 @@
-
 /*
  *
  * JGroups implementation of JGCS - Group Communication Service
@@ -33,81 +32,55 @@ package net.sf.jgcs.jgroups;
 
 import java.net.SocketAddress;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-
+import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.Membership;
 import net.sf.jgcs.MembershipID;
-import net.sf.jgcs.NotJoinedException;
 
 import org.jgroups.Address;
-import org.jgroups.JChannel;
 import org.jgroups.View;
 
 public class JGroupsMembership implements Membership {
 
 	private List<SocketAddress> addresses;
-	private List<SocketAddress> failed, joined, leaved, failedOnNextView;
+	private List<SocketAddress> failed, joined, leaved;
 	private SocketAddress myAddr;
 	private JGroupsMembershipID membershipID;
 	
-	public JGroupsMembership(View view, JChannel ch) {
-		addresses = new ArrayList<SocketAddress>();
-		Iterator<Address> it = view.getMembers().iterator();
-		while(it.hasNext()){
-			Address jgroupsAddr = (Address) it.next();
-			addresses.add(new JGroupsSocketAddress(jgroupsAddr));
-		}
+	JGroupsMembership(SocketAddress me, View view, Membership previous) {
 		membershipID = new JGroupsMembershipID(view.getViewId());
-		Address myjgaddr = (Address) ch.getAddress();
-		myAddr = new JGroupsSocketAddress(myjgaddr);
-		failed = new ArrayList<SocketAddress>(addresses.size());
-		joined = new ArrayList<SocketAddress>(addresses.size());
-		leaved = new ArrayList<SocketAddress>(addresses.size());
-		failedOnNextView = new ArrayList<SocketAddress>(addresses.size());
+		myAddr = me;
+		
+		addresses = new ArrayList<SocketAddress>(view.getMembers().size());
+		for(Address a: view.getMembers())
+			addresses.add(new JGroupsSocketAddress(a));
+		if (previous == null) {
+			joined = new ArrayList<SocketAddress>(1);
+			joined.add(me);
+			failed = new ArrayList<SocketAddress>();
+		} else {
+			joined = new ArrayList<SocketAddress>(addresses);
+			joined.removeAll(previous.getMembershipList());
+			failed = new ArrayList<SocketAddress>(previous.getMembershipList());
+			failed.removeAll(addresses);
+		}
+		leaved = new ArrayList<SocketAddress>();		
 	}
 
 	public MembershipID getMembershipID() {
 		return membershipID;
 	}
 
-	SocketAddress getMyAddress() {
-		return myAddr;
-	}
-	
 	public String toString(){
 		return "JGroups membership: "+addresses;
 	}
 	
-	void setFailed(List<SocketAddress> failed) {
-		this.failed = failed;
-	}
-
-	void setJoined(List<SocketAddress> joined) {
-		this.joined = joined;
-	}
-
-	void setLeaved(List<SocketAddress> leaved) {
-		this.leaved = leaved;
-	}
-
-	public boolean addToFailed(SocketAddress peer){
-		boolean contain = addresses.contains(peer);
-		if(contain)
-			failedOnNextView.add(peer);
-		return contain;
-	}
-	
-	public List<SocketAddress> getFailedToNextView() {
-		return failedOnNextView;
-	}
-
 	public List<SocketAddress> getMembershipList() {
 		return addresses;
 	}
 
-	public int getLocalRank() throws NotJoinedException {
+	public int getLocalRank() throws InvalidStateException {
 		return getMemberRank(myAddr);
 	}
 
@@ -134,5 +107,4 @@ public class JGroupsMembership implements Membership {
 	public List<SocketAddress> getFailedMembers(){
 		return failed;
 	}
-
 }
