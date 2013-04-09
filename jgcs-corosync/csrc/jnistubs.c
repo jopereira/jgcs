@@ -25,6 +25,7 @@
    initialization being called again.
 */
 static jfieldID fid_CPG_handle;
+static jfieldID fid_CPG_busy;
 static jfieldID fid_CPG_callbacks;
 
 static jmethodID mid_CPG_deliver;
@@ -38,6 +39,7 @@ static void setup(JNIEnv *env) {
 
 	clazz=(*env)->FindClass(env, "net/sf/jgcs/corosync/jni/ClosedProcessGroup");
 	fid_CPG_handle=(*env)->GetFieldID(env, clazz, "handle", "J");
+	fid_CPG_busy=(*env)->GetFieldID(env, clazz, "busy", "Z");
 	fid_CPG_callbacks=(*env)->GetFieldID(env, clazz, "callbacks", "Lnet/sf/jgcs/corosync/jni/ClosedProcessGroup$Callbacks;");
 
 	clazz=(*env)->FindClass(env, "net/sf/jgcs/corosync/jni/ClosedProcessGroup$Callbacks");
@@ -106,6 +108,10 @@ static void cpg_deliver(
         size_t msg_len) {
 
 	struct context* jctx = get_context(handle);
+
+	if (jctx == NULL)
+		return;
+
 	JNIEnv *env = jctx->env;
 
 	(*env)->PushLocalFrame(env, 10);
@@ -128,6 +134,10 @@ static void cpg_confchg(
         const struct cpg_address *joined_list, size_t joined_list_entries) {
 
 	struct context* jctx = get_context(handle);
+
+	if (jctx == NULL)
+		return;
+
 	JNIEnv *env = jctx->env;
 
 	(*env)->PushLocalFrame(env, 10+member_list_entries+left_list_entries+joined_list_entries);
@@ -151,6 +161,10 @@ static void cpg_ringchg(
 		const uint32_t *member_list) {
 
 	struct context* jctx = get_context(handle);
+
+	if (jctx == NULL)
+		return;
+
 	JNIEnv *env = jctx->env;
 
 	(*env)->PushLocalFrame(env, 10);
@@ -177,11 +191,10 @@ JNIEXPORT void JNICALL Java_net_sf_jgcs_corosync_jni_ClosedProcessGroup__1initia
 	setup(env);
 
 	struct context* jctx = (struct context*) malloc(sizeof(struct context));
-	jctx->self = (*env)->NewGlobalRef(env, self);
+	memset(jctx, 0, sizeof(*jctx));
 
 	int error = cpg_model_initialize(&handle, CPG_MODEL_V1, (cpg_model_data_t*)&data, jctx);
 	if (error != CS_OK) {
-		(*env)->DeleteGlobalRef(env, jctx->self);
 		free(jctx);
 
 		throw_CorosyncException(env, error);
@@ -192,18 +205,26 @@ JNIEXPORT void JNICALL Java_net_sf_jgcs_corosync_jni_ClosedProcessGroup__1initia
 }
 
 JNIEXPORT void JNICALL Java_net_sf_jgcs_corosync_jni_ClosedProcessGroup__1finalize(JNIEnv *env, jobject self) {
+
 	cpg_handle_t handle = (*env)->GetLongField(env, self, fid_CPG_handle);
 
-	struct context* jctx = get_context(handle);
-	if (jctx != NULL) {
-		(*env)->DeleteGlobalRef(env, jctx->self);
-		free(jctx);
-	}
+	struct context* jctx = get_context(handle); /* might be NULL, if already finalized */
 
 	int error = cpg_finalize(handle);
-	if (error != CS_OK) {
-		throw_CorosyncException(env, error);
-		return;
+
+	/* Already finalized? */
+	if (error != CS_ERR_BAD_HANDLE) {
+
+		/* Dispose of native context only if not currenly dispatching. */
+		(*env)->MonitorEnter(env, self);
+		if (!(*env)->GetBooleanField(env, self, fid_CPG_busy))
+			free(jctx);
+		(*env)->MonitorExit(env, self);
+
+		/* Error in cleanup, but finalize anyway. */
+		if (error != CS_OK)
+			throw_CorosyncException(env, error);
+
 	}
 }
 
@@ -250,15 +271,46 @@ JNIEXPORT void JNICALL Java_net_sf_jgcs_corosync_jni_ClosedProcessGroup_leave(JN
 JNIEXPORT void JNICALL Java_net_sf_jgcs_corosync_jni_ClosedProcessGroup_dispatch(JNIEnv *env, jobject self, jint mode) {
 	cpg_handle_t handle = (*env)->GetLongField(env, self, fid_CPG_handle);
 
+	(*env)->MonitorEnter(env, self);
 	struct context* jctx = get_context(handle);
-	jctx->env = env;
-	int error = cpg_dispatch(handle, mode);
-	jctx->env = NULL;
-
-	if (error != CS_OK) {
-		throw_CorosyncException(env, error);
+	/* Already closed? */
+	if (jctx == NULL) {
+		(*env)->MonitorExit(env, self);
+		throw_CorosyncException(env, CS_ERR_BAD_HANDLE);
 		return;
 	}
+	/* Trying to re-enter dispatch? */
+	if ((*env)->GetBooleanField(env, self, fid_CPG_busy)) {
+		(*env)->MonitorExit(env, self);
+		throw_CorosyncException(env, CS_ERR_INVALID_PARAM);
+		return;
+	}
+	
+	/* Claim ownership of native context structure. */
+	(*env)->SetBooleanField(env, self, fid_CPG_busy, 1);
+	(*env)->MonitorExit(env, self);
+
+	/* Keep reference only when busy, to allow for GC and finalization. */
+	jctx->self = (*env)->NewGlobalRef(env, self);
+	jctx->env = env;
+
+	int error = cpg_dispatch(handle, mode);
+
+	(*env)->DeleteGlobalRef(env, jctx->self);
+	jctx->env = NULL;
+	jctx->self = NULL;
+
+	(*env)->MonitorEnter(env, self);
+	/* Was it closed while dispatching? */
+	if (get_context(handle) == NULL) {
+		free(jctx);
+	}
+	/* No longer owning native context. */
+	(*env)->SetBooleanField(env, self, fid_CPG_busy, 0);
+	(*env)->MonitorExit(env, self);
+
+	if (error != CS_OK)
+		throw_CorosyncException(env, error);
 }
 
 JNIEXPORT void JNICALL Java_net_sf_jgcs_corosync_jni_ClosedProcessGroup_multicast(JNIEnv *env, jobject self, jint guarantee, jbyteArray msg) {

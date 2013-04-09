@@ -12,9 +12,9 @@
 
 package net.sf.jgcs.corosync.jni;
 
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 
-public class CorosyncException extends JGCSException {
+public class CorosyncException extends GroupException {
 	private static final long serialVersionUID = 8111489446009578137L;
 
 	private CorosyncException(String string) {

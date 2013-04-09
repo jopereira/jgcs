@@ -12,10 +12,14 @@
 
 package net.sf.jgcs.corosync.jni;
 
+import java.io.Closeable;
+import java.io.IOException;
+
 import net.sf.jgcs.corosync.CPGAddress;
 
-public class ClosedProcessGroup {
+public class ClosedProcessGroup implements Closeable {
 	private long handle;
+	private boolean busy;
 	private Callbacks callbacks;
 	
 	public ClosedProcessGroup(Callbacks callbacks, int flags) throws CorosyncException {
@@ -26,6 +30,11 @@ public class ClosedProcessGroup {
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
+		_finalize();
+	}
+	
+	@Override
+	public void close() throws IOException {
 		_finalize();
 	}
 
@@ -40,7 +49,10 @@ public class ClosedProcessGroup {
 	public static final int CS_DISPATCH_BLOCKING = 3;
 	public static final int CS_DISPATCH_ONE_NONBLOCKING = 4;
 	
-	public native synchronized void dispatch(int mode) throws CorosyncException;
+	/**
+	 * This method will throw an exception if re-entered.
+	 */
+	public native void dispatch(int mode) throws CorosyncException;
 
 	public static final int CPG_TYPE_UNORDERED = 0;
 	public static final int CPG_TYPE_FIFO = 1;
@@ -51,10 +63,6 @@ public class ClosedProcessGroup {
 	
 	public native int getLocalNodeId() throws CorosyncException;
 	public native int getProcessId();
-	
-	public void close() throws CorosyncException {
-		_finalize();
-	}
 	
 	public static final int CPG_REASON_JOIN = 1;
 	public static final int CPG_REASON_LEAVE = 2;
