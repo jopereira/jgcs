@@ -18,9 +18,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import net.sf.jgcs.Annotation;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.ClosedSessionException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
+import net.sf.jgcs.UnsupportedMessageException;
+import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.annotation.PointToPoint;
 import net.sf.jgcs.annotation.SelfDelivery;
 import net.sf.jgcs.spi.AbstractDataSession;
@@ -33,22 +36,37 @@ public class SpDataSession extends AbstractDataSession<SpProtocol,SpDataSession,
 		this.mb=mb;
 	}
 
-	public Message createMessage() throws JGCSException {
-		onEntry();
-		return new SpMessage();
+	public Message createMessage() throws GroupException {
+		try {
+			lock.lock();
+			onEntry();
+			return new SpMessage();
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException {
-		onEntry();
 		int ret = 0;
-		int qos=((SpService)service).getService();
+		int qos = 0;
+		try {
+			qos = ((SpService)service).getService();
+		} catch(ClassCastException cce) {
+			throw new UnsupportedServiceException(service);
+		}
+		Message m;
+		try {
+			m = (SpMessage) msg;
+		} catch(ClassCastException cce) {
+			throw new UnsupportedMessageException(msg);
+		}
 		String dest = null;
 		for(Annotation a: annotation)
 			if (a instanceof PointToPoint)
 				dest = ((SpGroup)((PointToPoint)a).getDestination()).getGroup();
 			else if (a.equals(SelfDelivery.DISCARD))
 				qos = qos | SpService.SELF_DISCARD;
-		ByteBuffer mess=ByteBuffer.wrap(msg.getPayload());
+		ByteBuffer mess=ByteBuffer.wrap(m.getPayload());
 
 		if (dest == null) {
 			dest=((SpGroup)getGroup()).getGroup();
@@ -58,13 +76,14 @@ public class SpDataSession extends AbstractDataSession<SpProtocol,SpDataSession,
 			Mailbox.MulticastArgs info=new Mailbox.MulticastArgs(qos, ((SpGroup)getGroup()).getGroup(), new String[]{dest}, (short) 0);
 			ret=mb.C_subgroupcast(info, mess);
 		}
-		if (ret<0) throw new SpException(ret, null);
+		if (ret<0) {
+			if (ret == SpException.ILLEGAL_SESSION)
+				throw new ClosedSessionException();
+			throw new SpException(ret, null);
+		}
 	}
 
 	void deliverMessage(Mailbox.ReceiveArgs info, ByteBuffer mess) {
-		SpMessage msg = new SpMessage(mess, new SpGroup(info.sender));
-		Object cookie = notifyMessageListeners(msg);
-		if(cookie != null)
-			notifyServiceListeners(cookie,new SpService(info.service_type));
+		notifyListeners(new SpMessage(mess, new SpGroup(info.sender)), new SpService(info.service_type));
 	}
 }

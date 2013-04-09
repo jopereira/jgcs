@@ -17,9 +17,9 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 
 import net.sf.jgcs.ClosedSessionException;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
+import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.MembershipID;
-import net.sf.jgcs.NotJoinedException;
 import net.sf.jgcs.spi.AbstractBlockSession;
 import net.sf.jgcs.spread.jni.Mailbox;
 
@@ -27,27 +27,55 @@ public class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSess
 	private Mailbox mb;
 	private boolean blocked = true;
 	private SpMembership current;
+	private boolean joining;
 
-	public SpControlSession(Mailbox mb) {
+	SpControlSession(Mailbox mb) {
 		this.mb = mb;
 	}
 
-	public synchronized void join() throws JGCSException {
-		onEntry();
+	public void join() throws GroupException {
+		try {
+			lock.lock();
+			if (joining)
+				throw new InvalidStateException();
+			joining=true;
+		} finally {
+			lock.unlock();
+		}
 		int ret=mb.C_join(group.getGroup());
-		if (ret<0) throw new SpException(ret, null);
+		if (ret<0) {
+			if (ret == SpException.ILLEGAL_SESSION)
+				throw new ClosedSessionException();
+			throw new SpException(ret, null);
+		}
 	}
 
-	public synchronized void leave() throws JGCSException {
-		onEntry();
+	public void leave() throws GroupException {
+		try {
+			lock.lock();
+			if (!joining)
+				throw new InvalidStateException();
+			joining=false;
+		} finally {
+			lock.unlock();
+		}
 		int ret=mb.C_leave(group.getGroup());
-		if (ret<0) throw new SpException(ret, null);
+		if (ret<0) {
+			if (ret == SpException.ILLEGAL_SESSION)
+				throw new ClosedSessionException();
+			throw new SpException(ret, null);
+		}
 	}
 
-	public synchronized SocketAddress getLocalAddress() {
-		if (isClosed())
-			return null;
-		return new SpGroup(mb.getPrivateGroup());
+	public SocketAddress getLocalAddress() {
+		try {
+			lock.lock();
+			if (isClosed())
+				return null;
+			return new SpGroup(mb.getPrivateGroup());
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	public void deliverView(Mailbox.ReceiveArgs info, ByteBuffer mess) {
@@ -72,23 +100,17 @@ public class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSess
 		notifyAndSetMembership(current);		
 	}
 
-	public boolean isJoined() {
-		return current != null;
-	}
-
-	public void blockOk() throws NotJoinedException, JGCSException {
-		 if(!isJoined())
-             throw new NotJoinedException();
+	public void blockOk() throws InvalidStateException, GroupException {
 		int ret=mb.C_flush(group.getGroup());
 		if (ret<0) throw new SpException(ret, null);
 		blocked = true;
 	}
 
-	public boolean isBlocked() throws NotJoinedException {
+	public boolean isBlocked() throws InvalidStateException {
 		return blocked;
 	}
 
-	public MembershipID getMembershipID() throws NotJoinedException {
+	public MembershipID getMembershipID() throws InvalidStateException {
 		return current.getMembershipID();
 	}
 }

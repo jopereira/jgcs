@@ -14,19 +14,22 @@
 	  
 package net.sf.jgcs.spread;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import net.sf.jgcs.GroupConfiguration;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.spi.AbstractPollingProtocol;
 import net.sf.jgcs.spread.jni.Mailbox;
 
+/**
+ * Spread protocol. Unicast messages can be received by opening a data session
+ * for the local address. 
+ * @author jop
+ */
 public class SpProtocol extends AbstractPollingProtocol<SpProtocol,SpDataSession,SpControlSession,SpGroup> {
 	private Mailbox mb;
-	private SpDataSession defaultData;
 
-	SpProtocol(Mailbox mb, String daemonAddress, String processName) throws JGCSException {
+	SpProtocol(Mailbox mb, String daemonAddress, String processName) throws GroupException {
 		this.mb = mb;
 		if (processName==null)
 			processName=""+System.nanoTime()/1000%100000000;
@@ -36,26 +39,31 @@ public class SpProtocol extends AbstractPollingProtocol<SpProtocol,SpDataSession
 	}
 	
 	@Override
-	public synchronized void close() throws IOException {
-		super.close();
+	protected void cleanup() {
+		super.cleanup();
 		mb.C_disconnect();
 		mb = null;
 	}
 
-	protected synchronized void createSessions(SpGroup group) {
+	protected void createSessions(SpGroup group) {
 		putSessions(group, new SpControlSession(mb), new SpDataSession(mb));
 	}
 	
-	protected void read() throws JGCSException {
+	protected void read() throws GroupException {
 		Mailbox.ReceiveArgs info=new Mailbox.ReceiveArgs();
 		int allocate_size = 1024, ret=-1;
 		ByteBuffer mess=null;
-		do{
-			mess = ByteBuffer.allocate(allocate_size);
-			ret=mb.C_receive(info, mess);
-			if (ret<0)
-				allocate_size *= 2;
-		}while(ret < 0);
+		try {
+			do{
+				mess = ByteBuffer.allocate(allocate_size);
+				ret=mb.C_receive(info, mess);
+				if (ret<0)
+					allocate_size *= 2;
+			} while(ret < 0);
+		} catch(NullPointerException npe) {
+			/* closing */
+			return;
+		}
 		mess.flip();
 		if ((info.service_type & SpService.REGULAR_MESS) == 0) {
 			GroupConfiguration group = new SpGroup(info.sender);
@@ -66,13 +74,16 @@ public class SpProtocol extends AbstractPollingProtocol<SpProtocol,SpDataSession
 		} else {
 			// If this is a subcast, info.groups contains all targets
 			// and then the enclosing group name
-			String name = info.groups[info.groups.length-1];
-			GroupConfiguration group = new SpGroup(name);
-			SpDataSession data = lookupDataSession(group);
-			// If we don't know the group, it is directed at the process itself
-			if (data==null)
-				data=defaultData;
-			data.deliverMessage(info,mess);
+			for(String name: info.groups) {
+				GroupConfiguration group = new SpGroup(name);
+				SpDataSession data = lookupDataSession(group);
+				// If we don't know the group, it is directed at the process itself
+				if (data!=null) {
+					data.deliverMessage(info,mess);
+					return;
+				}
+			}
+			// not delivered.
 		}
 	}
 }

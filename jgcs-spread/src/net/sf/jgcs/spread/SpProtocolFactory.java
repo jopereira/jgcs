@@ -14,7 +14,7 @@
 	  
 package net.sf.jgcs.spread;
 
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 import net.sf.jgcs.spread.jni.Mailbox;
@@ -27,12 +27,12 @@ public class SpProtocolFactory implements ProtocolFactory {
 	private String processName;
 	private String mailboxClass = "net.sf.jgcs.spread.jni.SpMailbox";
 
-	public Protocol createProtocol() throws JGCSException {
+	public Protocol createProtocol() throws GroupException {
 		Mailbox mb;
 		try {
 			mb = (Mailbox) Class.forName(mailboxClass).newInstance();
 		} catch (Exception e) {
-			throw new JGCSException("cannot create mailbox", e);
+			throw new GroupException("cannot create mailbox", e);
 		}
 		return new SpProtocol(mb, daemonAddress, processName);
 	}
