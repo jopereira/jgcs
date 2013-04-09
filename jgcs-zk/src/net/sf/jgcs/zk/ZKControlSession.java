@@ -19,26 +19,26 @@ package net.sf.jgcs.zk;
 import java.net.SocketAddress;
 
 import net.sf.jgcs.ClosedSessionException;
-import net.sf.jgcs.JGCSException;
-import net.sf.jgcs.NotJoinedException;
+import net.sf.jgcs.GroupException;
+import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.spi.AbstractBlockSession;
 import net.sf.jgcs.zk.groupz.Endpoint;
+import net.sf.jgcs.zk.groupz.StateException;
 
 public class ZKControlSession extends AbstractBlockSession<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {
 
 	Endpoint endpoint;
-	private ZKAddress localid;
 	private ZKMembership current;
 	private boolean blocked;
 
 	@Override
-	public void blockOk() throws NotJoinedException, JGCSException {
+	public void blockOk() throws InvalidStateException, GroupException {
 		blocked = true;
 		endpoint.blockOk();
 	}
 
 	@Override
-	public boolean isBlocked() throws NotJoinedException {
+	public boolean isBlocked() throws InvalidStateException {
 		/* Don't bother with synchronized, since this is inherently 
 		 * racy and should be deprecated.
 		 */
@@ -46,30 +46,36 @@ public class ZKControlSession extends AbstractBlockSession<ZKProtocol,ZKDataSess
 	}
 
 	@Override
-	public synchronized void join() throws JGCSException {
-		onEntry();
-		endpoint.join();
-		localid = new ZKAddress(endpoint.getProcessId());
+	public void join() throws GroupException {
+		try {
+			endpoint.join();
+		} catch(StateException se) {
+			if (se.isDisconnected())
+				throw new ClosedSessionException();
+			throw new InvalidStateException();
+		}
 	}
 
 	@Override
-	public synchronized void leave() throws JGCSException {
-		onEntry();
+	public void leave() throws GroupException {
+		lock.lock();
+		if (isClosed())
+			throw new ClosedSessionException();
 		endpoint.leave();
-	}
-
-	@Override
-	public boolean isJoined() {
-		return current != null;
+		lock.unlock();
 	}
 
 	@Override
 	public SocketAddress getLocalAddress() {
-		return localid;
+		try {
+			return new ZKAddress(endpoint.getProcessId());
+		} catch (ZKException e) {
+			return null;
+		}
 	}
 
-	void install(int vid, String[] members) {
-		current = new ZKMembership(localid.getName(), vid, members);
+	void install(int vid, String[] members) throws ZKException {
+		current = new ZKMembership(endpoint.getProcessId(), vid, members, membership);
 		blocked = false;
 		notifyAndSetMembership(current);
 	}

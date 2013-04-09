@@ -20,27 +20,50 @@ import java.io.IOException;
 
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.ClosedSessionException;
+import net.sf.jgcs.GroupException;
+import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
+import net.sf.jgcs.UnsupportedMessageException;
 import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.spi.AbstractDataSession;
 import net.sf.jgcs.zk.groupz.Endpoint;
+import net.sf.jgcs.zk.groupz.StateException;
 
 public class ZKDataSession extends AbstractDataSession<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {	
 
 	Endpoint endpoint;
 
 	@Override
-	public Message createMessage() throws ClosedSessionException {
+	public Message createMessage() throws GroupException {
+		onEntry();
 		return new ZKMessage();
 	}
 
 	@Override
-	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException, UnsupportedServiceException {
-		endpoint.send(msg.getPayload());
+	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException {
+		ZKService s;
+		ZKMessage m;
+		try {
+			s = (ZKService) service;
+		} catch(ClassCastException cce) {
+			throw new UnsupportedServiceException(service);
+		}
+		try {
+			m = (ZKMessage) msg;
+		} catch(ClassCastException cce) {
+			throw new UnsupportedMessageException(msg);
+		}
+		try {
+			endpoint.send(msg.getPayload());
+		} catch(StateException se) {
+			if (se.isDisconnected())
+				throw new ClosedSessionException();
+			throw new InvalidStateException();
+		}
 	}
 
 	void receive(byte[] data) {
-		notifyMessageListeners(new ZKMessage(data));
-	}
+		notifyListeners(new ZKMessage(data), new ZKService());
+	}	
 }

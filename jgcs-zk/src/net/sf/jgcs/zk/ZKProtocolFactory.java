@@ -16,7 +16,7 @@
 
 package net.sf.jgcs.zk;
 
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 
@@ -52,7 +52,7 @@ public class ZKProtocolFactory implements ProtocolFactory {
 	}
 
 	@Override
-	public Protocol createProtocol() throws JGCSException {
+	public Protocol createProtocol() throws GroupException {
 		return new ZKProtocol(connectString, sessionTimeout);
 	}
 }

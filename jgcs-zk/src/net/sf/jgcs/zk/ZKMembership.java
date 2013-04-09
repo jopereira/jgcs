@@ -23,14 +23,16 @@ import java.util.List;
 
 import net.sf.jgcs.Membership;
 import net.sf.jgcs.MembershipID;
-import net.sf.jgcs.NotJoinedException;
+import net.sf.jgcs.InvalidStateException;
 
 public class ZKMembership implements Membership {
 
 	private int vid, rank = -1;
-	private ArrayList<SocketAddress> members;
+	private List<SocketAddress> members;
+	private List<SocketAddress> failed, joined, leaved;
 
-	ZKMembership(String me, int vid, String[] members) {
+
+	ZKMembership(String me, int vid, String[] members, Membership previous) {
 		this.vid = vid;
 		this.members = new ArrayList<SocketAddress>();
 		for(int i = 0; i<members.length; i++) {
@@ -38,6 +40,18 @@ public class ZKMembership implements Membership {
 				rank = i;
 			this.members.add(new ZKAddress(members[i]));
 		}
+		if (previous == null) {
+			joined = new ArrayList<SocketAddress>(1);
+			joined.add(new ZKAddress(me));
+			failed = new ArrayList<SocketAddress>();
+		} else {
+			joined = new ArrayList<SocketAddress>(this.members);
+			joined.removeAll(previous.getMembershipList());
+			failed = new ArrayList<SocketAddress>(previous.getMembershipList());
+			failed.removeAll(this.members);
+		}
+		leaved = new ArrayList<SocketAddress>();		
+
 	}
 
 	@Override
@@ -51,7 +65,7 @@ public class ZKMembership implements Membership {
 	}
 
 	@Override
-	public int getLocalRank() throws NotJoinedException {
+	public int getLocalRank() throws InvalidStateException {
 		return rank;
 	}
 
@@ -72,17 +86,17 @@ public class ZKMembership implements Membership {
 
 	@Override
 	public List<SocketAddress> getJoinedMembers() {
-		return Collections.emptyList();
+		return joined;
 	}
 
 	@Override
 	public List<SocketAddress> getLeavedMembers() {
-		return Collections.emptyList();
+		return leaved;
 	}
 
 	@Override
 	public List<SocketAddress> getFailedMembers() {
-		return Collections.emptyList();
+		return failed;
 	}
 
 	@Override

@@ -18,7 +18,7 @@ package net.sf.jgcs.zk;
 
 import java.io.IOException;
 
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.spi.AbstractProtocol;
 import net.sf.jgcs.zk.groupz.Application;
 import net.sf.jgcs.zk.groupz.Endpoint;
@@ -28,7 +28,7 @@ import org.apache.zookeeper.ZooKeeper;
 public class ZKProtocol extends AbstractProtocol<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {
 	private ZooKeeper zk;
 
-	ZKProtocol(String connectString, int sessionTimeout) throws JGCSException {
+	ZKProtocol(String connectString, int sessionTimeout) throws GroupException {
 		try {
 			zk = new ZooKeeper(connectString, sessionTimeout, null);
 		} catch (IOException e) {
@@ -37,7 +37,7 @@ public class ZKProtocol extends AbstractProtocol<ZKProtocol,ZKDataSession,ZKCont
 	}
 
 	@Override
-	protected synchronized void createSessions(ZKGroup group) throws ZKException {
+	protected void createSessions(ZKGroup group) throws ZKException {
 		final ZKControlSession cs = new ZKControlSession();
 		final ZKDataSession ds = new ZKDataSession();
 		
@@ -64,5 +64,14 @@ public class ZKProtocol extends AbstractProtocol<ZKProtocol,ZKDataSession,ZKCont
 		ds.endpoint = ep;
 		
 		putSessions(group, cs, ds);
+	}
+	
+	protected void cleanup() {
+		super.cleanup();
+		try {
+			zk.close();
+		} catch (InterruptedException e) {
+			/* don't care, we're cleaning up */
+		}
 	}
 }

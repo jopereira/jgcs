@@ -50,7 +50,7 @@ public class Endpoint {
 	private boolean awake;
 	private Application app;
 	
-	private enum State { CONNECTED, JOINED, BLOCKING, BLOCKED, DISCONNECTED };
+	public enum State { CONNECTED, JOINED, BLOCKING, BLOCKED, DISCONNECTED };
 	private State state;
 	private Exception cause;
 
@@ -367,7 +367,8 @@ public class Endpoint {
 				rl=req.toString();
 			else
 				rl+=" or "+req;
-		ZKException e=new ZKException("the group is "+state+", should be "+rl, cause);
+		
+		ZKException e=new StateException(state, rl);
 		cleanup(e);
 		throw e;
 	}
@@ -386,11 +387,6 @@ public class Endpoint {
 			logger.error("detached from group on error", cause);
 		else
 			logger.info("detached from group on leave");
-		try {
-			zk.close();
-		} catch (InterruptedException e) {
-			// don't care
-		}
 		wakeup();
 	}
 		

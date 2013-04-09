@@ -14,25 +14,28 @@
    limitations under the License.
 */
 
-package net.sf.jgcs.zk;
+package net.sf.jgcs.zk.groupz;
 
-import net.sf.jgcs.GroupException;
+import net.sf.jgcs.zk.ZKException;
+import net.sf.jgcs.zk.groupz.Endpoint.State;
 
 /**
- * Group communication exception. Any exception within the group
- * communication protocol or the application callbacks removes
- * the process from the view.
+ * Operation cannot be performed in this state.
  * 
  * @author jop
  */
-public class ZKException extends GroupException {
-	private static final long serialVersionUID = -3526423319319274589L;
+public class StateException extends ZKException {
 
-	public ZKException(String message, Throwable cause) {
-		super(message, cause);
+	private static final long serialVersionUID = -8346304783464624788L;
+	
+	private State found;
+
+	public StateException(Endpoint.State found, String expected) {
+		super("the group is "+found+", should be "+expected);
+		this.found = found;
 	}
-
-	public ZKException(String message) {
-		super(message);
+		
+	public boolean isDisconnected() {
+		return found.equals(Endpoint.State.DISCONNECTED);
 	}
 }
