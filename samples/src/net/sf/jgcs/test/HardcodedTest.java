@@ -29,9 +29,9 @@ public class HardcodedTest {
 
 			ProtocolFactory pf = new JGroupsProtocolFactory();
 			
-			JGroupsGroup g = new JGroupsGroup("MyGroup", "sequencer.xml");
+			JGroupsGroup g = new JGroupsGroup("MyGroup");
 
-			Service s = new JGroupsService("vsc+total");
+			Service s = new JGroupsService();
 			
 			Runnable test = new Application(pf, g, s);
 			test.run();
