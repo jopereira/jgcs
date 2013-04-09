@@ -12,23 +12,26 @@
 	  
 package net.sf.jgcs.corosync;
 
-import net.sf.jgcs.JGCSException;
+import java.io.IOException;
+
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup.Callbacks;
-import net.sf.jgcs.corosync.jni.CorosyncException;
 import net.sf.jgcs.spi.AbstractPollingProtocol;
 
 public class CPGProtocol extends AbstractPollingProtocol<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
 	
 	ClosedProcessGroup cpg;
 	
-	CPGProtocol() throws JGCSException {
+	CPGProtocol() throws GroupException {
+		
 		cpg = new ClosedProcessGroup(new Callbacks() {
 			public void deliver(String group, int nodeid, int pid, byte[] msg) {
 				try {
 					CPGDataSession data=(CPGDataSession) lookupDataSession(new CPGGroup(group));
-					data.deliver(nodeid, pid, msg);
-				} catch(JGCSException e) {
+					if (data!=null)
+						data.deliver(nodeid, pid, msg);
+				} catch(GroupException e) {
 					// Session not found. Discard message.
 				}
 			}
@@ -37,8 +40,9 @@ public class CPGProtocol extends AbstractPollingProtocol<CPGProtocol,CPGDataSess
 			public void configurationChange(String group, CPGAddress[] members, CPGAddress[] left, int[] lr, CPGAddress[] joined, int[] jr) {
 				try {
 					CPGControlSession control=(CPGControlSession) lookupControlSession(new CPGGroup(group));
-					control.install(members, left, lr, joined, jr);
-				} catch(JGCSException e) {
+					if (control!=null)
+						control.install(members, left, lr, joined, jr);
+				} catch(GroupException e) {
 					// Session not found. Discard change.
 				}
 			}
@@ -52,17 +56,22 @@ public class CPGProtocol extends AbstractPollingProtocol<CPGProtocol,CPGDataSess
 	}
 
 	@Override
-	protected synchronized void createSessions(CPGGroup group) {
+	protected void createSessions(CPGGroup group) {
 		putSessions(group, new CPGControlSession(), new CPGDataSession());
 	}
 	
 	@Override
-	protected void read() {
+	protected void read() throws GroupException {
+		cpg.dispatch(ClosedProcessGroup.CS_DISPATCH_ONE);
+	}
+	
+	public void cleanup() {
+		super.cleanup();
 		try {
-			cpg.dispatch(ClosedProcessGroup.CS_DISPATCH_ONE);
-		} catch (CorosyncException e) {
-			// We really need a protocol exception listener
-			e.printStackTrace();
+			cpg.close();
+		} catch (IOException e) {
+			/* discard, as we're cleaning up */
 		}
+		cpg = null;
 	}
 }

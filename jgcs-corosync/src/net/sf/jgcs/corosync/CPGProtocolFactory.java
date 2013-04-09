@@ -12,7 +12,7 @@
 
 package net.sf.jgcs.corosync;
 
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 
@@ -20,7 +20,7 @@ public class CPGProtocolFactory implements ProtocolFactory {
 	
 	private static final long serialVersionUID = 2L;
 
-	public Protocol createProtocol() throws JGCSException {
+	public Protocol createProtocol() throws GroupException {
 		return new CPGProtocol();
 	}
 }

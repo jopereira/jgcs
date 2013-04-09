@@ -15,15 +15,17 @@ package net.sf.jgcs.corosync;
 import java.io.IOException;
 
 import net.sf.jgcs.Annotation;
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
+import net.sf.jgcs.UnsupportedMessageException;
 import net.sf.jgcs.UnsupportedServiceException;
+import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
 import net.sf.jgcs.spi.AbstractDataSession;
 
 public class CPGDataSession extends AbstractDataSession<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
 	
-	public Message createMessage() throws JGCSException {
+	public Message createMessage() throws GroupException {
 		onEntry();
 		return new CPGMessage();
 	}
@@ -34,12 +36,19 @@ public class CPGDataSession extends AbstractDataSession<CPGProtocol,CPGDataSessi
 		try {
 			guarantee = (CPGService) service;
 		} catch(ClassCastException e) {
-			throw new UnsupportedServiceException(service.toString());
+			throw new UnsupportedServiceException(service);
 		}
-		protocol.cpg.multicast(guarantee.getGuarantee(), msg.getPayload());
+		CPGMessage m;
+		try {
+			m = (CPGMessage) msg;
+		} catch(ClassCastException e) {
+			throw new UnsupportedMessageException(msg);
+		}
+
+		protocol.cpg.multicast(guarantee.getGuarantee(), m.getPayload());
 	}
 
 	void deliver(int nodeid, int pid, byte[] msg) {
-		notifyMessageListeners(new CPGMessage(msg, new CPGAddress(nodeid, pid)));
+		notifyListeners(new CPGMessage(msg, new CPGAddress(nodeid, pid)), new CPGService(ClosedProcessGroup.CPG_TYPE_SAFE));
 	}
 }

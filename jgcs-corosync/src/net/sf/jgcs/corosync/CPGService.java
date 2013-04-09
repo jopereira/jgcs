@@ -33,11 +33,11 @@ public class CPGService implements Service {
 		if (prop.equals("unordered"))
 			guarantee = ClosedProcessGroup.CPG_TYPE_UNORDERED;
 		else if (prop.equals("fifo"))
-			guarantee = ClosedProcessGroup.CPG_TYPE_UNORDERED;
+			guarantee = ClosedProcessGroup.CPG_TYPE_FIFO;
 		else if (prop.equals("agreed"))
-			guarantee = ClosedProcessGroup.CPG_TYPE_UNORDERED;
+			guarantee = ClosedProcessGroup.CPG_TYPE_AGREED;
 		else if (prop.equals("safe"))
-			guarantee = ClosedProcessGroup.CPG_TYPE_UNORDERED;
+			guarantee = ClosedProcessGroup.CPG_TYPE_SAFE;
 	}
 
 	public int getGuarantee() {

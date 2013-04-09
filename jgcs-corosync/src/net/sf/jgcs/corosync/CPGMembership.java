@@ -19,7 +19,7 @@ import java.util.List;
 
 import net.sf.jgcs.Membership;
 import net.sf.jgcs.MembershipID;
-import net.sf.jgcs.NotJoinedException;
+import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
 
 public class CPGMembership implements Membership {
@@ -52,7 +52,7 @@ public class CPGMembership implements Membership {
 	}
 
 	@Override
-	public int getLocalRank() throws NotJoinedException {
+	public int getLocalRank() throws InvalidStateException {
 		return getMemberRank(localid);
 	}
 

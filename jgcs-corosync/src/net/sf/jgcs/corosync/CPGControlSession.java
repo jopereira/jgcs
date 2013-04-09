@@ -14,36 +14,65 @@ package net.sf.jgcs.corosync;
 
 import java.net.SocketAddress;
 
-import net.sf.jgcs.JGCSException;
+import net.sf.jgcs.ClosedSessionException;
+import net.sf.jgcs.GroupException;
+import net.sf.jgcs.InvalidStateException;
+import net.sf.jgcs.corosync.jni.CorosyncException;
 import net.sf.jgcs.spi.AbstractMembershipSession;
 
 public class CPGControlSession extends AbstractMembershipSession<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
-	private SocketAddress localid;
-
 	@Override
-	public synchronized void join() throws JGCSException {
-		onEntry();
-		protocol.cpg.join(group.getGroup());
+	public void join() throws GroupException {
+		try {
+			protocol.cpg.join(group.getGroup());
+		} catch(NullPointerException npe) {
+			throw new ClosedSessionException();
+		} catch(CorosyncException ce) {
+			if (ce.getError() == CorosyncException.BAD_HANDLE) {
+				throw new ClosedSessionException();
+			}
+			if (ce.getError() == CorosyncException.EXIST ||
+				ce.getError() == CorosyncException.TRY_AGAIN) {
+				throw new InvalidStateException("cannot join now");
+			}
+			throw ce;
+		}
 	}
 
 	@Override
-	public synchronized void leave() throws JGCSException {
-		onEntry();
-		protocol.cpg.leave(group.getGroup());
-	}
-
-	@Override
-	public boolean isJoined() {
-		return localid!=null;
+	public void leave() throws GroupException {
+		try {
+			protocol.cpg.leave(group.getGroup());
+		} catch(NullPointerException npe) {
+			throw new ClosedSessionException();
+		} catch(CorosyncException ce) {
+			if (ce.getError() == CorosyncException.BAD_HANDLE) {
+				throw new ClosedSessionException();
+			}
+			if (ce.getError() == CorosyncException.NOT_EXIST ||
+				ce.getError() == CorosyncException.TRY_AGAIN) {
+				throw new InvalidStateException("cannot leave now");
+			}
+			throw ce;
+		}
 	}
 
 	@Override
 	public SocketAddress getLocalAddress() {
-		return localid;
+		try {
+			lock.lock();
+			if (isClosed())
+				return null;
+			return new CPGAddress(protocol.cpg.getLocalNodeId(), protocol.cpg.getProcessId());
+		} catch (CorosyncException ce) {
+			return null;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	void install(CPGAddress[] members, CPGAddress[] left, int[] lr, CPGAddress[] joined, int[] jr) {
-		CPGMembership memb = new CPGMembership(localid, members, left, lr, joined);
+		CPGMembership memb = new CPGMembership(getLocalAddress(), members, left, lr, joined);
 		notifyAndSetMembership(memb);
 	}
 }

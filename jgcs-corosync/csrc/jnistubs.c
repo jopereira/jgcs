@@ -16,6 +16,7 @@
 #include <corosync/corotypes.h>
 #include <corosync/cpg.h>
 
+#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/uio.h>
@@ -34,6 +35,8 @@ static jmethodID mid_CPG_ringchg;
 
 static jmethodID mid_CPG_new_Address;
 
+static jmethodID mid_CPG_new_Exception;
+
 static void setup(JNIEnv *env) {
 	jclass clazz;
 
@@ -49,6 +52,9 @@ static void setup(JNIEnv *env) {
 
 	clazz=(*env)->FindClass(env, "net/sf/jgcs/corosync/CPGAddress");
 	mid_CPG_new_Address=(*env)->GetMethodID(env, clazz, "<init>", "(II)V");
+
+	clazz=(*env)->FindClass(env, "net/sf/jgcs/corosync/jni/CorosyncException");
+	mid_CPG_new_Exception=(*env)->GetMethodID(env, clazz, "<init>", "(ILjava/lang/String;)V");
 }
 
 /*
@@ -74,8 +80,8 @@ static inline jstring group_to_jstring(JNIEnv *env, const struct cpg_name* group
 
 static void throw_CorosyncException(JNIEnv *env, cs_error_t error) {
 	jclass clazz = (*env)->FindClass(env, "net/sf/jgcs/corosync/jni/CorosyncException");
-	const char* message = cs_strerror(error);
-	(*env)->ThrowNew(env, clazz, message);
+	(*env)->Throw(env, (*env)->NewObject(env, clazz, mid_CPG_new_Exception, error,
+			(*env)->NewStringUTF(env, cs_strerror(error))));
 }
 
 static jarray make_member_array(JNIEnv *env, const struct cpg_address *member_list, size_t member_list_entries) {
@@ -340,5 +346,9 @@ JNIEXPORT jint JNICALL Java_net_sf_jgcs_corosync_jni_ClosedProcessGroup_getLocal
 	}
 
 	return nodeid;
+}
+
+JNIEXPORT jint JNICALL  Java_net_sf_jgcs_corosync_jni_ClosedProcessGroup_getProcessId(JNIEnv *env, jobject self) {
+	return getpid();
 }
 
