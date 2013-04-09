@@ -60,25 +60,26 @@ public abstract class AbstractPollingDataSession<
 	}
 	
 	private void poll() {
-		if (isClosed())
+		if (isClosed()) {
+			pool.shutdown();
 			return;
+		}
 		try {
 			read();
 		} catch (IOException e) {
-			if (isClosed())
-				return;
-			GroupException je=new GroupException("I/O exception", e);
-			notifyExceptionListeners(je);			
-			return;
+			if (!isClosed()) {
+				GroupException je=new GroupException("I/O exception", e);
+				notifyExceptionListeners(je);
+			}
 		}
-		if (!isClosed())
-			pool.execute(task);
+		pool.execute(task);
 	}
 
-	protected void cleanup() {
-		super.cleanup();
-		pool.shutdown();
-	}
-	
+	/**
+	 * This method normally blocks waiting for input. It should wakeup and never
+	 * block again after cleanup has been called, either by returning or throwing
+	 * some exception.
+	 * @throws GroupException
+	 */
 	protected abstract void read() throws IOException;
 }
