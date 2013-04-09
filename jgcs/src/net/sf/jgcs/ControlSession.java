@@ -40,14 +40,9 @@ public interface ControlSession extends Closeable {
 	public void leave() throws GroupException;
 	
 	/**
-	 * Verifies if the member belongs to a group.
-	 * @return true if the member is correctly joined, false otherwise.
-	 */
-	public boolean isJoined();
-	
-	/**
 	 * Gets the local address. It might return null if the member is not joined to any group
-	 * or the session is closed.
+	 * or the session is closed, but not necessarily. This cannot thus be used to determine
+	 * if it is joined to a group.
 	 * @return the local address or null if not available
 	 */
 	public SocketAddress getLocalAddress();

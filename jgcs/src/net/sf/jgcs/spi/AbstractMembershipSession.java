@@ -34,7 +34,6 @@ public abstract class AbstractMembershipSession<
 	}
 
 	protected void notifyAndSetMembership(Membership m) {
-		membership = m;
 		/* Avoid NPE but invoke callback outside the lock.
 		 * This means that there can be callbacks after close(),
 		 * but avoids deadlocks.
@@ -42,6 +41,7 @@ public abstract class AbstractMembershipSession<
 		MembershipListener listener = null;
 		try {
 			lock.lock();
+			membership = m;
 			listener = membListener;		
 		} finally {
 			lock.unlock();
@@ -51,7 +51,6 @@ public abstract class AbstractMembershipSession<
 	}
 
 	protected void notifyRemoved() {
-		membership = null;
 		/* Avoid NPE but invoke callback outside the lock.
 		 * This means that there can be callbacks after close(),
 		 * but avoids deadlocks.
@@ -59,6 +58,7 @@ public abstract class AbstractMembershipSession<
 		MembershipListener listener = null;
 		try {
 			lock.lock();
+			membership = null;
 			listener = membListener;		
 		} finally {
 			lock.unlock();

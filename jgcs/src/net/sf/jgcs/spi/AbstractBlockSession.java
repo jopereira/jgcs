@@ -29,8 +29,6 @@ public abstract class AbstractBlockSession<
 	public void setBlockListener(BlockListener listener) throws GroupException {
 		try {
 			lock.lock();
-			if(isJoined() && listener == null)
-				throw new GroupException("Cannot unset block listener while in the group.");
 			blkListener = listener;
 		} finally {
 			lock.unlock();

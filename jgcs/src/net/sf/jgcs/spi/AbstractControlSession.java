@@ -54,10 +54,11 @@ public abstract class AbstractControlSession<
 	protected void cleanup() {
 		try {
 			exceptionListener = null;
-			if (isJoined())
-				leave();
+			
+			/* Try to leave. Will probably cause an exception. */
+			leave();
 		} catch (GroupException e) {
-			// don't care, as the session is already closed
+			/* Don't care, as the session is already closed. */
 		} finally {
 			closed = true;
 		}
