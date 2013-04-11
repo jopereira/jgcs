@@ -1,7 +1,9 @@
 /*
- *
  * JGroups implementation of JGCS - Group Communication Service
  * Copyright (C) 2006 Nuno Carvalho, Universidade de Lisboa
+ * Copyright (C) 2013 José Orlando Pereira
+ * 
+ * http://github.com/jopereira/jgcs
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,16 +18,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
- * 
- * Contact
- * 	Address:
- * 		LASIGE, Departamento de Informatica, Bloco C6
- * 		Faculdade de Ciencias, Universidade de Lisboa
- * 		Campo Grande, 1749-016 Lisboa
- * 		Portugal
- * 	Email:
- * 		jgcs@lasige.di.fc.ul.pt
- * 
  */
  
 package net.sf.jgcs.jgroups;

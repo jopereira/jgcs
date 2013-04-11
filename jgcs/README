@@ -1,5 +1,6 @@
 jGCS: Group Communication Service
-Copyright (c) 2006-2007, Universidade de Lisboa & Universidade do Minho
+Copyright (c) 2006-2007, Nuno Carvalho, Universidade de Lisboa
+Copyright (c) 2013, José Orlando Pereira
 All rights reserved.
 
 1. Overview
@@ -34,7 +35,6 @@ This service supports the following notions:
   the thread policy to receive messages (blocking or concurrent
   non-blocking).
 
-
 2. Compile
 ----------
 
@@ -46,14 +46,14 @@ To compile this distribution use the Apache Ant and Ivy.  Targets are:
 3. Credits
 ----------
 
-This implementation of the jGCS service was developed by:
+This version is maintained by J. Pereira at:
 
- - Nuno Carvalho <nunomrc@di.fc.ul.pt>
- - Jose' Pereira <jop@di.uminho.pt>
+ http://github.com/jopereira/jgcs
 
-Research leading to the jGCS service was partially funded by the
-European Union. People involved were N. Carvalho, J. Pereira,
-A. Pinto and L. Rodrigues.
+jGCS was initially developed by Nuno Carvalho <nunomrc@di.fc.ul.pt>
+at U. Lisboa. It was based on research partially funded by the European
+Union. People involved were N. Carvalho, J. Pereira, L. Rodrigues and
+R. Oliveira.
 
 4. License
 ----------
@@ -61,7 +61,3 @@ A. Pinto and L. Rodrigues.
 This library is released under a BSD-style licence,
 See COPYING for licensing details.
 
-5. Contacts
------------
-
-For more information, see http://jgcs.sf.net.

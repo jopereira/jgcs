@@ -40,9 +40,12 @@ To compile this distribution use the Apache Ant and Ivy. Targets are:
 3. Credits
 ----------
 
-The ZooKeeper implementation of the jGCS service was developed by:
+This implementation was developed and is maintained by J. Pereira at:
 
- - Jose' Pereira <jop@di.uminho.pt>
+ http://github.com/jopereira/jgcs
+
+It was based on research partially funded by the European Union. People
+involved were N. Carvalho, J. Pereira, L. Rodrigues and R. Oliveira.
 
 4. License
 ----------
@@ -50,7 +53,3 @@ The ZooKeeper implementation of the jGCS service was developed by:
 This library is released under the Apache 2.0 licence,
 See COPYING for licensing details.
 
-5. Contacts
------------
-
-For more information, see https://github.com/jopereira/jgcs.

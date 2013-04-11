@@ -1,15 +1,13 @@
-
 /*
  * JGCS - Group Communication Service.
  * Copyright (C) 2006 Nuno Carvalho, Universidade de Lisboa
+ * Copyright (C) 2013 Jose' Orlando Pereira
  *
- * jgcs@lasige.di.fc.ul.pt
- *
- * Departamento de Informatica, Universidade de Lisboa
- * Bloco C6, Faculdade de Ciências, Campo Grande, 1749-016 Lisboa, Portugal.
+ * http://github.com/jopereira/jgcs
  *
  * See COPYING for licensing details.
  */
+
 package net.sf.jgcs.spi;
 
 import java.util.concurrent.locks.Lock;

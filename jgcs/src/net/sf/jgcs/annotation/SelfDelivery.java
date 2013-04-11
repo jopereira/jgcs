@@ -1,6 +1,9 @@
 /*
  * JGCS - Group Communication Service.
- * Copyright (C) 2013 Universidade do Minho
+ * Copyright (C) 2006 Nuno Carvalho, Universidade de Lisboa
+ * Copyright (C) 2013 Jose' Orlando Pereira
+ *
+ * http://github.com/jopereira/jgcs
  *
  * See COPYING for licensing details.
  */

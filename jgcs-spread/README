@@ -1,5 +1,5 @@
 Spread implementation of jGCS - Group Communication Service
-Copyright (c) 2006, Universidade do Minho
+Copyright (c) 2004,2006,2013, Universidade do Minho
 All rights reserved.
 
 1. Overview
@@ -37,14 +37,12 @@ Java, Spread and FlushSpread.
 3. Credits
 ----------
 
-The Spread implementation of the jGCS service was developed by:
+This implementation was developed and is maintained by J. Pereira at:
 
- - Jose' Pereira <jop@di.uminho.pt>
- - Nuno Carvalho <nunomrc@di.fc.ul.pt>
+ http://github.com/jopereira/jgcs
 
-Research leading to this implementation was partially funded by the
-European Union. People involved were N. Carvalho, J. Pereira,
-L. Rodrigues and R. Oliveira.
+It was based on research partially funded by the European Union. People
+involved were N. Carvalho, J. Pereira, L. Rodrigues and R. Oliveira.
 
 4. License
 ----------
@@ -52,7 +50,3 @@ L. Rodrigues and R. Oliveira.
 This library is released under a BSD-style licence,
 See COPYING for licensing details.
 
-5. Contacts
------------
-
-For more information, see http://jgcs.sf.net.

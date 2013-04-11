@@ -1,5 +1,6 @@
 JGroups implementation of jGCS - Group Communication Service
-Copyright (c) 2006, Universidade de Lisboa.
+Copyright (c) 2006, Nuno Carvalho, Universidade de Lisboa.
+Copyright (c) 2013, José Orlando Pereira
 All rights reserved.
 
 1. Overview
@@ -29,13 +30,14 @@ To compile this distribution use the Apache Ant and Ivy. Targets are:
 3. Credits
 ----------
 
-The JGroups implementation of the jGCS service was developed by:
+This version is maintained by J. Pereira at:
 
- - Nuno Carvalho <nunomrc@di.fc.ul.pt>
+ http://github.com/jopereira/jgcs
 
-Research leading to this implementation was partially funded by the
-European Union. People involved were N. Carvalho, J. Pereira,
-L. Rodrigues and R. Oliveira.
+This implementation of the jGCS service was initially developed by 
+Nuno Carvalho <nunomrc@di.fc.ul.pt> at U. Lisboa. It was based on
+research partially funded by the European Union. People involved
+were N. Carvalho, J. Pereira, L. Rodrigues and R. Oliveira.
 
 4. License
 ----------
@@ -43,7 +45,3 @@ L. Rodrigues and R. Oliveira.
 This library is released under the LGPL licence,
 See COPYING for licensing details.
 
-5. Contacts
------------
-
-For more information, see http://jgcs.sf.net.

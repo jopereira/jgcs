@@ -1,13 +1,8 @@
-
 /*
  * NeEM implementation of JGCS - Group Communication Service.
- * Copyright (C) 2006 Jose' Orlando Pereira, Universidade do Minho
+ * Copyright (C) 2006,2013 José Orlando Pereira
  *
- * jop@di.uminho.pt - http://gsd.di.uminho.pt/~jop
- * jgcs@lasige.di.fc.ul.pt
- *
- * Departamento de Informatica, Universidade do Minho
- * Campus de Gualtar, 4710-057 Braga, Portugal
+ * http://github.com/jopereira/jgcs
  *
  * See COPYING for licensing details.
  */

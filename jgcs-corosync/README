@@ -1,5 +1,5 @@
 Corosync/CPG implementation of jGCS - Group Communication Service
-Copyright (C) 2013, Universidade do Minho
+Copyright (C) 2013, José Orlando Pereira
 All rights reserved.
 
 1. Overview
@@ -39,9 +39,12 @@ Otherwise, you'll get segmentation faults and other weird errors.
 3. Credits
 ----------
 
-The Corosync implementation of the jGCS service was developed by:
+This implementation was developed and is maintained by J. Pereira at:
 
- - Jose' Pereira <jop@di.uminho.pt>
+ http://github.com/jopereira/jgcs
+
+It was based on research partially funded by the European Union. People
+involved were N. Carvalho, J. Pereira, L. Rodrigues and R. Oliveira.
 
 4. License
 ----------
@@ -49,7 +52,3 @@ The Corosync implementation of the jGCS service was developed by:
 This library is released under a BSD-style licence,
 See COPYING for licensing details.
 
-5. Contacts
------------
-
-For more information, see https://github.com/jopereira/jgcs.
