@@ -55,6 +55,12 @@ public interface ControlSession extends Closeable {
 		throws ClosedSessionException;
 
 	/**
+	 * Get the registered listener.
+	 * @return the current listener.
+	 */
+	public ExceptionListener getExceptionListener();
+	
+	/**
 	 * Close this session. This will close the corresponding data sessions, if any. 
 	 */
 	@Override

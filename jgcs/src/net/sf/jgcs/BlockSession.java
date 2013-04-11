@@ -48,4 +48,10 @@ public interface BlockSession extends MembershipSession {
 	 */
 	public void setBlockListener(BlockListener listener) throws GroupException;
 	
+	/**
+	 * Get the registered listener.
+	 * @return the current listener.
+	 */
+	public BlockListener getBlockListener();
+	
 }

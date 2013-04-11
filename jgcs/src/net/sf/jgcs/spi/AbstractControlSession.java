@@ -90,6 +90,15 @@ public abstract class AbstractControlSession<
 		}
 	}
 
+	public ExceptionListener getExceptionListener() {
+		try {
+			lock.lock();
+			return exceptionListener;
+		} finally {
+			lock.unlock();
+		}
+	}
+	
 	/**
 	 * Verifies listener registratioVerifies listener registration.
 	 * @return true if all listeners are registered

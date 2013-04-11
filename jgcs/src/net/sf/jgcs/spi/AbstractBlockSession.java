@@ -34,7 +34,16 @@ public abstract class AbstractBlockSession<
 			lock.unlock();
 		}
 	}
-
+	
+	public BlockListener getBlockListener() {
+		try {
+			lock.lock();
+			return blkListener;
+		} finally {
+			lock.unlock();
+		}
+	}
+	
 	protected boolean hasAllListeners(){
 		return super.hasAllListeners() && blkListener != null;
 	}

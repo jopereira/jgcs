@@ -76,6 +76,24 @@ public abstract class AbstractDataSession<
 			lock.unlock();
 		}
 	}
+	
+	public MessageListener getMessageListener() {
+		try {
+			lock.lock();
+			return msgListener;
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	public ServiceListener getServiceListener() {
+		try {
+			lock.lock();
+			return srvcListener;
+		} finally {
+			lock.unlock();
+		}
+	}
 
 	protected void notifyExceptionListeners(GroupException exception) {
 		controlSession.notifyExceptionListeners(exception);

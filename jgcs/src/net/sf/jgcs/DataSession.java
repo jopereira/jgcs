@@ -44,11 +44,23 @@ public interface DataSession extends Closeable {
 		throws ClosedSessionException;
 	
 	/**
+	 * Get the registered message listener.
+	 * @return the current listener.
+	 */
+	public MessageListener getMessageListener();
+	
+	/**
 	 * Adds a listener to deliver notifications from this channel.
 	 * @param listener the listener to be bound to the channel.
 	 */
 	public void setServiceListener(ServiceListener listener)
 		throws ClosedSessionException;
+	
+	/**
+	 * Get the registered service listener.
+	 * @return the current listener.
+	 */
+	public ServiceListener getServiceListener();
 	
 	/**
 	 * Closes the session. All resources that the session holds

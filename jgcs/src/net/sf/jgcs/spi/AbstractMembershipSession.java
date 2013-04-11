@@ -13,11 +13,11 @@
 package net.sf.jgcs.spi;
 
 import net.sf.jgcs.GroupConfiguration;
+import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.Membership;
 import net.sf.jgcs.MembershipID;
 import net.sf.jgcs.MembershipListener;
 import net.sf.jgcs.MembershipSession;
-import net.sf.jgcs.InvalidStateException;
 
 public abstract class AbstractMembershipSession<
 		P extends AbstractProtocol<P,DS,CS,G>,
@@ -71,6 +71,15 @@ public abstract class AbstractMembershipSession<
 		try {
 			lock.lock();
 			membListener = listener;
+		} finally {
+			lock.unlock();
+		}
+	}
+	
+	public MembershipListener getMembershipListener() {
+		try {
+			lock.lock();
+			return membListener;
 		} finally {
 			lock.unlock();
 		}

@@ -43,4 +43,9 @@ public interface MembershipSession extends ControlSession {
 	 */
 	public void setMembershipListener(MembershipListener listener);
 	
+	/**
+	 * Get the registered listener.
+	 * @return the current listener.
+	 */
+	public MembershipListener getMembershipListener();
 }
