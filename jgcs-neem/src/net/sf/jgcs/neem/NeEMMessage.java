@@ -25,7 +25,6 @@ class NeEMMessage implements Message {
 	private static final long serialVersionUID = 2L;
 	
 	private byte[] payload;
-	private SocketAddress sender;
 
 	NeEMMessage() {}
 	
@@ -42,7 +41,10 @@ class NeEMMessage implements Message {
 		return payload;
 	}
 
+	/**
+	 * NeEM does not provide a sender address.
+	 */
 	public SocketAddress getSenderAddress() {
-		return sender;
+		return null;
 	}
 }

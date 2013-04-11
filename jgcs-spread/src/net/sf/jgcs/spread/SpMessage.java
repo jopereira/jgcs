@@ -24,7 +24,7 @@ class SpMessage implements Message {
 	private static final long serialVersionUID = 2L;
 	
 	private byte[] payload;
-	private String sender;
+	private SocketAddress sender;
 	
 	SpMessage() {
 	}
@@ -32,6 +32,7 @@ class SpMessage implements Message {
 	SpMessage(ByteBuffer buf, SocketAddress sender) {
 		payload=new byte[buf.remaining()];
 		buf.get(payload);
+		this.sender = sender;
 	}
 
 	public void setPayload(byte[] buffer) {
@@ -43,6 +44,6 @@ class SpMessage implements Message {
 	}
 
 	public SocketAddress getSenderAddress() {
-		return new SpGroup(sender);
+		return sender;
 	}
 }

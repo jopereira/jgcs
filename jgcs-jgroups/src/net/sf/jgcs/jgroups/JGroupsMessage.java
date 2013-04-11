@@ -40,7 +40,7 @@ public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.M
 	
 	private SocketAddress sender;
 
-	JGroupsMessage() {
+	public JGroupsMessage() {
 		super();
 	}
 

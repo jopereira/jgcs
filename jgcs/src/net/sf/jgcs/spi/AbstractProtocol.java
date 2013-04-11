@@ -97,10 +97,13 @@ public abstract class AbstractProtocol<
 		}
 		/* Might happen if being closed concurrently by two threads. */
 		if (control!=null) {
-			control.lock.lock();
-			control.cleanup();
-			data.cleanup();
-			control.lock.unlock();
+			try {
+				control.lock.lock();
+				control.cleanup();
+				data.cleanup();
+			} finally {
+				control.lock.unlock();
+			}
 		}
 	}
 	
@@ -160,10 +163,13 @@ public abstract class AbstractProtocol<
 		dataSessions = null;
 		closed = true;
 		for(CS c: css) {
-			c.lock.lock();
-			c.cleanup();
-			c.dataSession.cleanup();
-			c.lock.unlock();
+			try {
+				c.lock.lock();
+				c.cleanup();
+				c.dataSession.cleanup();
+			} finally {
+				c.lock.unlock();
+			}
 		}		
 	}
 	
