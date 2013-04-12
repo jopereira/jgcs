@@ -39,6 +39,7 @@ public class JGroupsProtocolFactory implements ProtocolFactory {
 		this.config = config;
 	}
 
+	@Override
 	public Protocol createProtocol() throws GroupException{
 		return new JGroupsProtocol(config);
 	}

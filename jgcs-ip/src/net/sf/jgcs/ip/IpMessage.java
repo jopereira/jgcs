@@ -29,14 +29,17 @@ class IpMessage implements Message {
 		sender = dgram.getSocketAddress();
 	}
 	
+	@Override
 	public void setPayload(byte[] payload) {
 		this.payload=payload;
 	}
 
+	@Override
 	public byte[] getPayload() {
 		return payload;
 	}
 
+	@Override
 	public SocketAddress getSenderAddress() {
 		return sender;
 	}

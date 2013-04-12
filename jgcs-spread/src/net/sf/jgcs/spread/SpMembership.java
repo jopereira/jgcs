@@ -36,6 +36,7 @@ public class SpMembership implements Membership {
 		return -1;
 	}
 
+	@Override
 	public List<SocketAddress> getMembershipList() {
 		List<SocketAddress> view=new ArrayList<SocketAddress>(info.groups.length);
 		for(String s: info.groups)
@@ -43,26 +44,32 @@ public class SpMembership implements Membership {
 		return view;
 	}
 
+	@Override
 	public MembershipID getMembershipID() {
 		return new SpMembershipID(view.group_id);
 	}
 
+	@Override
 	public int getLocalRank() {
 		return currentRank;
 	}
 
+	@Override
 	public int getCoordinatorRank() {
 		return 0;
 	}
 
+	@Override
 	public int getMemberRank(SocketAddress peer) {
 		return findRank(((SpGroup)peer).getGroup(), info.groups);
 	}
 
+	@Override
 	public SocketAddress getMemberAddress(int rank) {
 		return new SpGroup(info.groups[rank]);
 	}
 
+	@Override
 	public List<SocketAddress> getJoinedMembers() {
 		List<SocketAddress> res=new LinkedList<SocketAddress>();
 		if ((info.service_type&SpService.CAUSED_BY_JOIN)!=0)
@@ -70,6 +77,7 @@ public class SpMembership implements Membership {
 		return res;
 	}
 
+	@Override
 	public List<SocketAddress> getLeavedMembers() {
 		List<SocketAddress> res=new LinkedList<SocketAddress>();
 		if ((info.service_type&SpService.CAUSED_BY_LEAVE)!=0)
@@ -77,6 +85,7 @@ public class SpMembership implements Membership {
 		return res;
 	}
 
+	@Override
 	public List<SocketAddress> getFailedMembers() {
 		List<SocketAddress> res=new LinkedList<SocketAddress>();
 		if ((info.service_type&SpService.CAUSED_BY_DISCONNECT)!=0)

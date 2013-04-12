@@ -17,6 +17,7 @@ public class CPGProtocolFactory implements ProtocolFactory {
 	
 	private static final long serialVersionUID = 2L;
 
+	@Override
 	public Protocol createProtocol() throws GroupException {
 		return new CPGProtocol();
 	}

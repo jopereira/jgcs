@@ -73,6 +73,7 @@ public class SpService implements Service {
 		return serviceFlags;
 	}
 
+	@Override
 	public boolean satisfies(Service service) {
 		if (!(service instanceof SpService))
 			return false;

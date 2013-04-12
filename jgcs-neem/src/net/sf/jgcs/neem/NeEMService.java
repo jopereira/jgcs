@@ -15,6 +15,7 @@ public class NeEMService implements Service {
 	
 	private static final long serialVersionUID = 2L;
 	
+	@Override
 	public boolean satisfies(Service service) {
 		return service instanceof NeEMService;
 	}

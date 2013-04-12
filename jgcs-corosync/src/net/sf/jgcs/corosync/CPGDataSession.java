@@ -22,11 +22,13 @@ import net.sf.jgcs.spi.AbstractDataSession;
 
 public class CPGDataSession extends AbstractDataSession<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
 	
+	@Override
 	public Message createMessage() throws GroupException {
 		onEntry();
 		return new CPGMessage();
 	}
 
+	@Override
 	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException {
 		onEntry();
 		CPGService guarantee;

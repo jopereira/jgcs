@@ -42,14 +42,17 @@ public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.M
 		this.setBuffer(buffer);
 	}
 
+	@Override
 	public void setPayload(byte[] buffer) {
 		this.setBuffer(buffer);
 	}
 
+	@Override
 	public byte[] getPayload() {
 		return this.getBuffer();
 	}
 
+	@Override
 	public SocketAddress getSenderAddress() {
 		return this.sender;
 	}

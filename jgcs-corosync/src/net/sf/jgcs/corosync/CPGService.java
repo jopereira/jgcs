@@ -41,6 +41,7 @@ public class CPGService implements Service {
 		return guarantee;
 	}
 
+	@Override
 	public boolean satisfies(Service service) {
 		if (!(service instanceof CPGService))
 			return false;

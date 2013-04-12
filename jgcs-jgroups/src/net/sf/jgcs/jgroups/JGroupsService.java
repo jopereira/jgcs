@@ -66,6 +66,7 @@ public class JGroupsService implements Service {
 		return flags;
 	}
 
+	@Override
 	public boolean satisfies(Service service) {
 		if(! (service instanceof JGroupsService))
 			return false;

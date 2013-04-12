@@ -26,6 +26,7 @@ public class NeEMControlSession extends AbstractControlSession<NeEMProtocol,NeEM
 		this.joined = false;
 	}
 
+	@Override
 	public void join() throws GroupException {
 		try {
 			lock.lock();
@@ -40,6 +41,7 @@ public class NeEMControlSession extends AbstractControlSession<NeEMProtocol,NeEM
 		}
 	}
 
+	@Override
 	public void leave() throws GroupException {
 		try {
 			lock.lock();
@@ -53,6 +55,7 @@ public class NeEMControlSession extends AbstractControlSession<NeEMProtocol,NeEM
 		}
 	}
 
+	@Override
 	public SocketAddress getLocalAddress() {
 		try {
 			lock.lock();
@@ -62,9 +65,5 @@ public class NeEMControlSession extends AbstractControlSession<NeEMProtocol,NeEM
 		} finally {
 			lock.unlock();
 		}
-	}
-
-	public boolean isJoined() {
-		return joined;
 	}
 }

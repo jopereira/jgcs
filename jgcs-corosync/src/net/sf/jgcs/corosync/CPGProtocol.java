@@ -62,7 +62,8 @@ public class CPGProtocol extends AbstractPollingProtocol<CPGProtocol,CPGDataSess
 		cpg.dispatch(ClosedProcessGroup.CS_DISPATCH_ONE);
 	}
 	
-	public void cleanup() {
+	@Override
+	protected void cleanup() {
 		super.cleanup();
 		try {
 			cpg.close();

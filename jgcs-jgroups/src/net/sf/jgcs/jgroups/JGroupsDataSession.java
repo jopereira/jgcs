@@ -45,6 +45,7 @@ public class JGroupsDataSession extends AbstractDataSession<JGroupsProtocol,JGro
 		this.channel = channel;
 	}
 
+	@Override
 	public Message createMessage() throws GroupException {
 		try {
 			lock.lock();
@@ -55,6 +56,7 @@ public class JGroupsDataSession extends AbstractDataSession<JGroupsProtocol,JGro
 		}
 	}
 
+	@Override
 	public void multicast(Message msg, Service service, Object cookie,
 			Annotation... annotation) throws IOException {
 	

@@ -24,6 +24,7 @@ public abstract class AbstractBlockSession<
 
 	private BlockListener blkListener;
 	
+	@Override
 	public void setBlockListener(BlockListener listener) throws GroupException {
 		try {
 			lock.lock();
@@ -33,6 +34,7 @@ public abstract class AbstractBlockSession<
 		}
 	}
 	
+	@Override
 	public BlockListener getBlockListener() {
 		try {
 			lock.lock();
@@ -42,6 +44,7 @@ public abstract class AbstractBlockSession<
 		}
 	}
 	
+	@Override
 	protected boolean hasAllListeners(){
 		return super.hasAllListeners() && blkListener != null;
 	}
@@ -66,6 +69,7 @@ public abstract class AbstractBlockSession<
 	}
 	
 	
+	@Override
 	protected void cleanup() {
 		super.cleanup();
 		blkListener = null;

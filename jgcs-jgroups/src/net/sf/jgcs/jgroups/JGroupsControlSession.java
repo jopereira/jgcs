@@ -47,6 +47,7 @@ public class JGroupsControlSession extends AbstractMembershipSession<JGroupsProt
 		channel.close();
 	}
 	
+	@Override
 	public void join() throws GroupException {
 		lock.lock();
 		if (isJoined())
@@ -62,6 +63,7 @@ public class JGroupsControlSession extends AbstractMembershipSession<JGroupsProt
 		}
 	}
 
+	@Override
 	public void leave() throws GroupException {
 		try {
 			lock.lock();
@@ -75,6 +77,7 @@ public class JGroupsControlSession extends AbstractMembershipSession<JGroupsProt
 		}
 	}
 
+	@Override
 	public SocketAddress getLocalAddress() {
 		if (channel == null || channel.getAddress() == null)
 			return null;
@@ -83,7 +86,7 @@ public class JGroupsControlSession extends AbstractMembershipSession<JGroupsProt
 
 	// listeners of JGroups
 	
-	public void jgroupsViewAccepted(View new_view) {
+	protected void jgroupsViewAccepted(View new_view) {
 		JGroupsSocketAddress addr = new JGroupsSocketAddress(channel.getAddress());
 		JGroupsMembership incomingMembership = new JGroupsMembership(addr, new_view, membership);
 		if (incomingMembership.getMembershipList().contains(addr))
@@ -92,7 +95,7 @@ public class JGroupsControlSession extends AbstractMembershipSession<JGroupsProt
 			notifyRemoved();
 	}
 
-	public boolean isJoined() {
+	private boolean isJoined() {
 		try {
 			return getMembership() != null;
 		} catch (InvalidStateException e) {

@@ -67,6 +67,7 @@ public abstract class AbstractControlSession<
 		protocol.removeSessions(group);
 	}
 	
+	@Override
 	public boolean isClosed() {
 		try {
 			lock.lock();
@@ -79,6 +80,7 @@ public abstract class AbstractControlSession<
 	/**
 	 * Sets the exception listener.
 	 */
+	@Override
 	public void setExceptionListener(ExceptionListener listener) {
 		try {
 			lock.lock();
@@ -88,6 +90,7 @@ public abstract class AbstractControlSession<
 		}
 	}
 
+	@Override
 	public ExceptionListener getExceptionListener() {
 		try {
 			lock.lock();

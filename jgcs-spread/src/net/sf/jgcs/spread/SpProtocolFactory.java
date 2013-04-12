@@ -22,6 +22,7 @@ public class SpProtocolFactory implements ProtocolFactory {
 	private String processName;
 	private String mailboxClass = "net.sf.jgcs.spread.jni.SpMailbox";
 
+	@Override
 	public Protocol createProtocol() throws GroupException {
 		Mailbox mb;
 		try {

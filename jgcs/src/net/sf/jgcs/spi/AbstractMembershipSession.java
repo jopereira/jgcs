@@ -65,6 +65,7 @@ public abstract class AbstractMembershipSession<
 			listener.onExcluded();
 	}
 
+	@Override
 	public void setMembershipListener(MembershipListener listener) {
 		try {
 			lock.lock();
@@ -74,6 +75,7 @@ public abstract class AbstractMembershipSession<
 		}
 	}
 	
+	@Override
 	public MembershipListener getMembershipListener() {
 		try {
 			lock.lock();
@@ -83,10 +85,12 @@ public abstract class AbstractMembershipSession<
 		}
 	}
 	
+	@Override
 	protected boolean hasAllListeners(){
 		return super.hasAllListeners() && membListener != null ;
 	}
 
+	@Override
 	public Membership getMembership() throws InvalidStateException {
 		try {
 			lock.lock();
@@ -98,6 +102,7 @@ public abstract class AbstractMembershipSession<
 		}				
 	}
 
+	@Override
 	public MembershipID getMembershipID() throws InvalidStateException {
 		try {
 			lock.lock();
@@ -109,6 +114,7 @@ public abstract class AbstractMembershipSession<
 		}				
 	}
 	
+	@Override
 	protected void cleanup() {
 		super.cleanup();
 		membListener = null;

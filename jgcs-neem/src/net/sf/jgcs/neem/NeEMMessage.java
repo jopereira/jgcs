@@ -28,10 +28,12 @@ class NeEMMessage implements Message {
 		buf.get(payload);
 	}
 
+	@Override
 	public void setPayload(byte[] buffer) {
 		payload=buffer;
 	}
 
+	@Override
 	public byte[] getPayload() {
 		return payload;
 	}
@@ -39,6 +41,7 @@ class NeEMMessage implements Message {
 	/**
 	 * NeEM does not provide a sender address.
 	 */
+	@Override
 	public SocketAddress getSenderAddress() {
 		return null;
 	}

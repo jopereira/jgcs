@@ -36,6 +36,7 @@ public class JGroupsSocketAddress extends SocketAddress {
 		this.id = address;
 	}
 
+	@Override
 	public String toString() {
 		return id.toString();
 	}

@@ -16,6 +16,7 @@ public class IpService implements Service {
 	private static final long serialVersionUID = 2L;
 	
 	private int ttl;
+	
 	public IpService(String ttl) {
 		this.ttl=Integer.parseInt(ttl);
 	}
@@ -25,6 +26,8 @@ public class IpService implements Service {
 	public void setTtl(int ttl) {
 		this.ttl = ttl;
 	}
+	
+	@Override
 	public boolean satisfies(Service service) {
 		return service instanceof IpService;
 	}

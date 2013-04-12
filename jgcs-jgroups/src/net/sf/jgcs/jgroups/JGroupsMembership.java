@@ -60,42 +60,52 @@ public class JGroupsMembership implements Membership {
 		leaved = new ArrayList<SocketAddress>();		
 	}
 
+	@Override
 	public MembershipID getMembershipID() {
 		return membershipID;
 	}
 
+	@Override
 	public String toString(){
 		return "JGroups membership: "+addresses;
 	}
 	
+	@Override
 	public List<SocketAddress> getMembershipList() {
 		return addresses;
 	}
 
+	@Override
 	public int getLocalRank() throws InvalidStateException {
 		return getMemberRank(myAddr);
 	}
 
+	@Override
 	public int getCoordinatorRank() {
 		return 0;
 	}
 
+	@Override
 	public int getMemberRank(SocketAddress peer) {
 		return addresses.indexOf(peer);
 	}
 
+	@Override
 	public SocketAddress getMemberAddress(int rank) {
 		return addresses.get(rank);
 	}
 
+	@Override
 	public List<SocketAddress> getJoinedMembers() {
 		return joined;
 	}
 
+	@Override
 	public List<SocketAddress> getLeavedMembers() {
 		return leaved;
 	}
 
+	@Override
 	public List<SocketAddress> getFailedMembers(){
 		return failed;
 	}

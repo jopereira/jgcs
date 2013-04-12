@@ -45,6 +45,7 @@ public class SpMembershipID implements MembershipID {
 		return true;
 	}
 
+	@Override
 	public String toString() {
 		return id[0]+"-"+id[1]+"-"+id[2];
 	}

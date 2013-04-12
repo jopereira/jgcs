@@ -29,6 +29,7 @@ public class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSess
 		this.mb = mb;
 	}
 
+	@Override
 	public void join() throws GroupException {
 		try {
 			lock.lock();
@@ -46,6 +47,7 @@ public class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSess
 		}
 	}
 
+	@Override
 	public void leave() throws GroupException {
 		try {
 			lock.lock();
@@ -63,6 +65,7 @@ public class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSess
 		}
 	}
 
+	@Override
 	public SocketAddress getLocalAddress() {
 		try {
 			lock.lock();
@@ -74,7 +77,7 @@ public class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSess
 		}
 	}
 
-	public void deliverView(Mailbox.ReceiveArgs info, ByteBuffer mess) {
+	protected void deliverView(Mailbox.ReceiveArgs info, ByteBuffer mess) {
 		if ((info.service_type & SpService.TRANSITION_MESS)!=0) {
 			// TODO ignoring transitional views...
 			return;
@@ -96,16 +99,19 @@ public class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSess
 		notifyAndSetMembership(current);		
 	}
 
+	@Override
 	public void blockOk() throws InvalidStateException, GroupException {
 		int ret=mb.C_flush(group.getGroup());
 		if (ret<0) throw new SpException(ret, null);
 		blocked = true;
 	}
 
+	@Override
 	public boolean isBlocked() throws InvalidStateException {
 		return blocked;
 	}
 
+	@Override
 	public MembershipID getMembershipID() throws InvalidStateException {
 		return current.getMembershipID();
 	}

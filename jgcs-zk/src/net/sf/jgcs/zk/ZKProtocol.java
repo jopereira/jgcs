@@ -66,6 +66,7 @@ public class ZKProtocol extends AbstractProtocol<ZKProtocol,ZKDataSession,ZKCont
 		putSessions(group, cs, ds);
 	}
 	
+	@Override
 	protected void cleanup() {
 		super.cleanup();
 		try {

@@ -25,14 +25,17 @@ public class CPGGroup implements GroupConfiguration {
 		return group;
 	}
 	
+	@Override
 	public int hashCode() {
 		return group.hashCode();
 	}
 	
+	@Override
 	public boolean equals(Object other) {
 		return other instanceof CPGGroup && ((CPGGroup)other).group.equals(group);
 	}
 	
+	@Override
 	public String toString() {
 		return group;
 	}

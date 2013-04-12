@@ -30,14 +30,17 @@ class SpMessage implements Message {
 		this.sender = sender;
 	}
 
+	@Override
 	public void setPayload(byte[] buffer) {
 		payload=buffer;
 	}
 
+	@Override
 	public byte[] getPayload() {
 		return payload;
 	}
 
+	@Override
 	public SocketAddress getSenderAddress() {
 		return sender;
 	}

@@ -26,6 +26,7 @@ public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSe
 		this.joined=false;
 	}
 
+	@Override
 	public void join() throws GroupException {
 		lock.lock();
 		onEntry();
@@ -39,6 +40,7 @@ public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSe
 		}
 	}
 
+	@Override
 	public void leave() throws GroupException {
 		lock.lock();
 		onEntry();
@@ -52,6 +54,7 @@ public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSe
 		}
 	}
 
+	@Override
 	public SocketAddress getLocalAddress() {
 		return sock.getLocalSocketAddress();
 	}
