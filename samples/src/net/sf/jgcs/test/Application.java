@@ -1,12 +1,7 @@
-
 /*
  * JGCS - Group Communication Service.
  * Copyright (C) 2006 Nuno Carvalho, Universidade de Lisboa
- *
- * jgcs@lasige.di.fc.ul.pt
- *
- * Departamento de Informatica, Universidade de Lisboa
- * Bloco C6, Faculdade de Ciências, Campo Grande, 1749-016 Lisboa, Portugal.
+ * Copyright (C) 2013 José Orlando Pereira
  *
  * See COPYING for licensing details.
  */
