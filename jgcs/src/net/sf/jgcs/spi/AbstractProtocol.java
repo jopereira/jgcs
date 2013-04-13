@@ -24,7 +24,6 @@ import net.sf.jgcs.DataSession;
 import net.sf.jgcs.GroupConfiguration;
 import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Protocol;
-import net.sf.jgcs.UnsupportedGroupException;
 
 /**
  * 
@@ -111,12 +110,8 @@ public abstract class AbstractProtocol<
 		onEntry();
 		DataSession data=dataSessions.get(group);
 		if (data==null) {
-			try {
-				createSessions((G)group);
-				data=dataSessions.get(group);
-			} catch(ClassCastException cce) {
-				throw new UnsupportedGroupException(group);
-			}
+			createSessions((G)group);
+			data=dataSessions.get(group);
 		}
 		return data;
 	}
@@ -127,12 +122,8 @@ public abstract class AbstractProtocol<
 		onEntry();
 		ControlSession control=controlSessions.get(group);
 		if (control==null) {
-			try {
-				createSessions((G)group);
-				control=controlSessions.get(group);
-			} catch(ClassCastException cce) {
-				throw new UnsupportedGroupException(group);
-			}
+			createSessions((G)group);
+			control=controlSessions.get(group);
 		}
 		return control;
 	}

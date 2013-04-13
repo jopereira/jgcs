@@ -24,8 +24,6 @@ import net.sf.jgcs.GroupException;
 import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedMessageException;
-import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.spi.AbstractDataSession;
 import net.sf.jgcs.zk.groupz.Endpoint;
 import net.sf.jgcs.zk.groupz.StateException;
@@ -42,20 +40,10 @@ class ZKDataSession extends AbstractDataSession<ZKProtocol,ZKDataSession,ZKContr
 
 	@Override
 	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException {
-		ZKService s;
-		ZKMessage m;
+		ZKService s = (ZKService) service;
+		ZKMessage m = (ZKMessage) msg;
 		try {
-			s = (ZKService) service;
-		} catch(ClassCastException cce) {
-			throw new UnsupportedServiceException(service);
-		}
-		try {
-			m = (ZKMessage) msg;
-		} catch(ClassCastException cce) {
-			throw new UnsupportedMessageException(msg);
-		}
-		try {
-			endpoint.send(msg.getPayload());
+			endpoint.send(m.getPayload());
 		} catch(StateException se) {
 			if (se.isDisconnected())
 				throw new ClosedSessionException();

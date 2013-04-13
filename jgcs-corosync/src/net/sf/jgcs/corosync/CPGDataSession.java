@@ -15,8 +15,6 @@ import net.sf.jgcs.Annotation;
 import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedMessageException;
-import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup.Address;
 import net.sf.jgcs.spi.AbstractDataSession;
@@ -32,18 +30,9 @@ class CPGDataSession extends AbstractDataSession<CPGProtocol,CPGDataSession,CPGC
 	@Override
 	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException {
 		onEntry();
-		CPGService guarantee;
-		try {
-			guarantee = (CPGService) service;
-		} catch(ClassCastException e) {
-			throw new UnsupportedServiceException(service);
-		}
-		CPGMessage m;
-		try {
-			m = (CPGMessage) msg;
-		} catch(ClassCastException e) {
-			throw new UnsupportedMessageException(msg);
-		}
+		
+		CPGService guarantee = (CPGService) service;
+		CPGMessage m = (CPGMessage) msg;
 
 		protocol.cpg.multicast(guarantee.getGuarantee(), m.getPayload());
 	}

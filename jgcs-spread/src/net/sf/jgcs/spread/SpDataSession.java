@@ -17,8 +17,6 @@ import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedMessageException;
-import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.annotation.PointToPoint;
 import net.sf.jgcs.annotation.SelfDelivery;
 import net.sf.jgcs.spi.AbstractDataSession;
@@ -45,18 +43,8 @@ class SpDataSession extends AbstractDataSession<SpProtocol,SpDataSession,SpContr
 	@Override
 	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException {
 		int ret = 0;
-		int qos = 0;
-		try {
-			qos = ((SpService)service).getService();
-		} catch(ClassCastException cce) {
-			throw new UnsupportedServiceException(service);
-		}
-		Message m;
-		try {
-			m = (SpMessage) msg;
-		} catch(ClassCastException cce) {
-			throw new UnsupportedMessageException(msg);
-		}
+		int qos = ((SpService)service).getService();
+		Message m = (SpMessage) msg;
 		String dest = null;
 		for(Annotation a: annotation)
 			if (a instanceof PointToPoint)

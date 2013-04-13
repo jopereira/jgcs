@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import net.sf.jgcs.GroupException;
-import net.sf.jgcs.UnsupportedGroupException;
 import net.sf.jgcs.spi.AbstractProtocol;
 
 import org.jgroups.Address;
@@ -45,9 +44,6 @@ class JGroupsProtocol extends AbstractProtocol<JGroupsProtocol,JGroupsDataSessio
 
 	@Override
 	protected void createSessions(JGroupsGroup g) throws GroupException {
-		if( !(g instanceof JGroupsGroup))
-			throw new UnsupportedGroupException(g);
-		
 		JGroupsGroup group = (JGroupsGroup) g;
 
 		try {

@@ -18,8 +18,6 @@ import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedMessageException;
-import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.spi.AbstractPollingDataSession;
 import net.sf.neem.MulticastChannel;
 
@@ -45,11 +43,6 @@ class NeEMDataSession extends AbstractPollingDataSession<NeEMProtocol,NeEMDataSe
 	@Override
 	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException {
 		try {
-			if (!(msg instanceof NeEMMessage))
-				throw new UnsupportedMessageException(msg);
-			if (!(service instanceof NeEMService))
-				throw new UnsupportedServiceException(service);
-
 			sock.write(ByteBuffer.wrap(msg.getPayload()));
 		} catch(ClosedChannelException cce) {
 			throw new ClosedSessionException();

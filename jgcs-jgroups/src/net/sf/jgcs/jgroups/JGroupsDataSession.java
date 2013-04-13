@@ -23,15 +23,12 @@
 package net.sf.jgcs.jgroups;
 
 import java.io.IOException;
-import java.nio.channels.UnsupportedAddressTypeException;
 
 import net.sf.jgcs.Annotation;
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedMessageException;
-import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.annotation.PointToPoint;
 import net.sf.jgcs.spi.AbstractDataSession;
 
@@ -60,28 +57,12 @@ class JGroupsDataSession extends AbstractDataSession<JGroupsProtocol,JGroupsData
 	public void multicast(Message msg, Service service, Object cookie,
 			Annotation... annotation) throws IOException {
 	
-		JGroupsService s;
-		JGroupsMessage m;
+		JGroupsMessage m = (JGroupsMessage) msg;
+		JGroupsService s = (JGroupsService) service;
 		
-		try {
-			s = (JGroupsService) service;
-		} catch(ClassCastException cce) {
-			throw new UnsupportedServiceException(service);
-		}
-		
-		try {
-			m = (JGroupsMessage) msg;
-		} catch(ClassCastException cce) {
-			throw new UnsupportedMessageException(msg);
-		}
-
-		try {
-			for(Annotation a: annotation)
-				if (a instanceof PointToPoint)
-					m.setDest(((JGroupsSocketAddress)((PointToPoint)a).getDestination()).getAddress());
-		} catch(ClassCastException cce) {
-			throw new UnsupportedAddressTypeException();
-		}
+		for(Annotation a: annotation)
+			if (a instanceof PointToPoint)
+				m.setDest(((JGroupsSocketAddress)((PointToPoint)a).getDestination()).getAddress());
 
 		m.setFlag(s.getFlags());
 

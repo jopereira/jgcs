@@ -19,8 +19,6 @@ import net.sf.jgcs.Annotation;
 import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Message;
 import net.sf.jgcs.Service;
-import net.sf.jgcs.UnsupportedMessageException;
-import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.annotation.PointToPoint;
 import net.sf.jgcs.spi.AbstractPollingDataSession;
 
@@ -51,21 +49,13 @@ class IpDataSession extends AbstractPollingDataSession<IpProtocol,IpDataSession,
 			if (a instanceof PointToPoint)
 				iaddr = (InetSocketAddress)((PointToPoint)a).getDestination();
 		
-		IpMessage m;
-		
-		try {
-			m = (IpMessage) msg;
-		} catch(ClassCastException cce) {
-			throw new UnsupportedMessageException(msg);
-		}
+		IpMessage m = (IpMessage) msg;
 			
 		try {
 			send(m.getPayload(), ((IpService)service).getTtl(), iaddr);
 		} catch(SocketException se) {
 			onEntry();
 			throw se;
-		} catch(ClassCastException cce) {
-			throw new UnsupportedServiceException(service);
 		}
 	}
 	
