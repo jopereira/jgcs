@@ -12,25 +12,23 @@ package net.sf.jgcs;
 
 
 /**
- * This class defines a MembershipSession.
- * This session should be implemented when the underlying toolkit provides
- * extended view synchrony semantics.
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * Allows the application to know the current group composition. This
+ * is used by protocols implementing group membership services, that
+ * agree on a common view of the group and notify the application
+ * on membership changes.
  */
 public interface MembershipSession extends ControlSession {
 
 	/**
-	 * Gets the current Membership.
+	 * Gets the current membership.
 	 * @return a membership.
 	 * @throws InvalidStateException if the member is not joined
 	 */
 	public Membership getMembership() throws InvalidStateException;
 
 	/**
-	 * Gets the current membership ID
-	 * @return the current membership ID
+	 * Gets the current membership identifier
+	 * @return a membership identifier
 	 * @throws InvalidStateException if the member is not joined
 	 */
 	public MembershipID getMembershipID() throws InvalidStateException;

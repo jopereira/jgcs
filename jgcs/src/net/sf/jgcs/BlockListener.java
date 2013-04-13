@@ -11,12 +11,7 @@
 package net.sf.jgcs;
 
 /**
- * 
- * This class defines a BlockListener.
- * This listener must be used to receive notifications that a group membership will block.
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * Application interface for delivering block notifcations.
  */
 public interface BlockListener {
 
@@ -28,6 +23,5 @@ public interface BlockListener {
 	 * After the group is blocked, the members cannot send more messages 
 	 * until a new Membership view is received.
 	 */
-	public void onBlock();
-	
+	public void onBlock();	
 }

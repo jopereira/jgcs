@@ -15,47 +15,46 @@ import java.util.List;
 
 
 /**
- * This class defines a Membership.
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * A group membership configuration. This includes the current members
+ * of the group, but also how it differs from the previous configuration. 
  */
 public interface Membership {
 
 	/**
-	 * Gets the current view of the membership.
-	 * @return the current view of the membership.
+	 * Gets the list of members in this configuration.
+	 * @return list of members.
 	 */
 	public List<SocketAddress> getMembershipList();
 
 	/**
-	 * Gets the current membership ID.
-	 * @return the current membership ID.
+	 * Gets the membership identifier
+	 * @return a membership identifier.
 	 */
 	public MembershipID getMembershipID();
 
 	/**
-	 * Gets the local rank of the member in this membership.
-	 * @return the local rank of this member.
+	 * Gets the rank of this process in this membership.
+	 * @return the rank of the local process.
 	 * @throws InvalidStateException if the member is not in a group.
 	 */
 	public int getLocalRank() throws InvalidStateException;
 
 	/**
-	 * Gets the rank of the coordinator of this group.
+	 * Gets the rank of the coordinator of this group. It is guaranteed
+	 * that all members will get the same reply.
 	 * @return the rank of the coordinator of the group.
 	 */
 	public int getCoordinatorRank();
 
 	/**
-	 * Gets the member rank that has the given socket address, or null if there is no matching rank.
-	 * @param peer the socket address of the member.
+	 * Gets the member rank that has the given address, or null if there is no matching rank.
+	 * @param member the socket address of the member.
 	 * @return the rank of the member.
 	 */
-	public int getMemberRank(SocketAddress peer);
+	public int getMemberRank(SocketAddress member);
 
 	/**
-	 * Gets the socket address of the member that has the given rank.
+	 * Gets the address of the member that has the given rank.
 	 * @param rank the rank of the member.
 	 * @return the socket address of the member.
 	 */

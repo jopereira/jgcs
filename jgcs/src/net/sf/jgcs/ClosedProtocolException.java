@@ -11,10 +11,7 @@
 package net.sf.jgcs;
 
 /**
- * This class defines a ClosedSessionException. 
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * Thrown when trying to use a closed protocol. 
  */
 public class ClosedProtocolException extends GroupException {
 
@@ -31,5 +28,4 @@ public class ClosedProtocolException extends GroupException {
 	public ClosedProtocolException(String s) {
 		super(s);
 	}
-
 }

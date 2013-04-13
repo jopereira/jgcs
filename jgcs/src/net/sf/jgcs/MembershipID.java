@@ -13,7 +13,7 @@ package net.sf.jgcs;
 import java.io.Serializable;
 
 /**
- * Uniquely identifies each membership configuration shown to the application.
+ * Uniquely identifies each membership configuration.
  * 
  * With primary partition protocols, this identifier provides a total order
  * on views. With partitionable protocols, views are not totally ordered and

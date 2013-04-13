@@ -14,41 +14,39 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * 
- * This interface defines a Protocol represents an instance of the toolkit 
- * used to implement the Group Communication Service (GCS). 
- * This interface must be used to create instances of DataSession and Control Session.
- * 
- * @see DataSession
- * @see ControlSession
- * @see GroupConfiguration
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * A protocol instance is the main entry point for group communication.
+ * It allows applications to open {@link net.sf.jgcs.DataSession data}
+ * and {@link net.sf.jgcs.ControlSession control} sessions associated
+ * with specific groups.
  */
 public interface Protocol extends Closeable {
-
 	/**
-	 * Creates e new Data Session. This session must be used to send messages and to register a listener
-	 * to receive messages from the other members of the group.
+	 * Obtains a data session for a group. This session must be used to send messages
+	 * and to register a listener to receive messages from the other members of the group.
+	 * A new session is created if it does not yet exist. Otherwise, the existing
+	 * session is returned.
+	 * 
 	 * @param group the configuration.
-	 * @return a new data session.
-	 * @throws GroupException
+	 * @return the data session.
+	 * @throws GroupException a protocol specific exception.
 	 */
 	public DataSession openDataSession(GroupConfiguration group) throws GroupException;
 	
 	/**
-	 * Creates a new Control Session. This session must be used to join a group and register a listener
-	 * to receive asynchronous notifications about the other members of the group (join, leave, fail).
-	 * @param group the group configuration.
-	 * @return a new control session.
-	 * @throws GroupException
+	 * Obtains a control session for a group. This session must be used to join and
+	 * leave the group, as well as, to obtain information on current membership.
+	 * A new session is created if it does not yet exist. Otherwise, the existing
+	 * session is returned.
+	 * 
+	 * @param group the configuration.
+	 * @return the control session.
+	 * @throws GroupException a protocol specific exception.
 	 */
 	public ControlSession openControlSession(GroupConfiguration group) throws GroupException;
 	
 	/**
 	 * Close this protocol. This will close all existing associated sessions and prevent any
-	 * other from being opened. 
+	 * other from being opened. It will release all resources used by the protocol.
 	 */
 	@Override
 	public void close() throws IOException;

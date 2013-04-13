@@ -13,19 +13,10 @@ package net.sf.jgcs;
 import java.io.Serializable;
 
 /**
- * 
- * This class defines a GroupConfiguration.
- * Interface that provides a Group configuration to open 
- * {@link net.sf.jgcs.DataSession Sessions}.
- * This Interface must be used together with the {@link net.sf.jgcs.Protocol Protocol}
- * to create a {@link DataSession DataSession} and a {@link ControlSession ControlSession}. 
- * 
- * @see DataSession
- * @see ControlSession
- * @see Protocol
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * A process group identifier. It is used mostly to open
+ * {@link net.sf.jgcs.DataSession data} and {@link net.sf.jgcs.ControlSession control}
+ * sessions associated with that group on some {@link net.sf.jgcs.Protocol protocol}.
+ * Its content is entirely specified by each protocol.
  */
 public interface GroupConfiguration extends Serializable {
-
 }

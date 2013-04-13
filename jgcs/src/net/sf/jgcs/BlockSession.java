@@ -11,13 +11,7 @@
 package net.sf.jgcs;
 
 /**
- * 
- * This class defines a BlockSession.
- * This session should be used by toolkits that implement Group Communication 
- * with flush of messages before a view change.
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * Allows flushing the group after a block notification.
  */
 public interface BlockSession extends MembershipSession {
 
@@ -50,5 +44,4 @@ public interface BlockSession extends MembershipSession {
 	 * @return the current listener.
 	 */
 	public BlockListener getBlockListener();
-	
 }

@@ -15,25 +15,21 @@ import java.io.IOException;
 import java.net.SocketAddress;
 
 /**
- * This class defines a ControlSession.
- * This Session is used to join and leave a simple group. It is also used to register a ControlListener.
- * An instance of this session must be created by the Protocol interface.
- * @see Protocol
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * Allows a process to control its participation in a process group.
+ * Namely, it is used to join and leave a group, but also to  collect exceptions
+ * thrown asynchronously by the protocol.
  */
 public interface ControlSession extends Closeable {
 
 	/**
-	 * Joins the group. It must block until the join process is finished.
-	 *
+	 * Joins the group. For protocols implementing {@link net.sf.jgcs.MembershipSession}
+	 * membership, it does not necessarily wait for join to complete. The application
+	 * should instead wait for a membership change notification.
 	 */
 	public void join() throws GroupException;
 	
 	/**
-	 * Leaves the group. It must block until the leave process is finished.
-	 *
+	 * Leaves the group.
 	 */
 	public void leave() throws GroupException;
 	

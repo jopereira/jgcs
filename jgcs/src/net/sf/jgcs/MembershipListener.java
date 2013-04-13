@@ -11,21 +11,14 @@
 package net.sf.jgcs;
 
 /**
- * 
- * This class defines a MembershipListener.
- * 
- * This listener must be used to receive membership, when the control session used
- * implements the MembershipSession or BlockSession interfaces.
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * Application interface for delivering group membership change notifications. 
  */
 public interface MembershipListener {
 	
 	/**
-	 * Notification of a MembershipChange. This should happen due to joining, leaving or
+	 * Notification of a membership change. This should happen due to joining, leaving or
 	 * failure of group members, but also because of merging or partitioning of 
-	 * memberships. The new membership can be retrieved from the MembershipSession.
+	 * memberships. The new membership can be retrieved from the {@link MembershipSession}.
 	 */
 	public void onMembershipChange();
 

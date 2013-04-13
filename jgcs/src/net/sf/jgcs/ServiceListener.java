@@ -11,17 +11,8 @@
 package net.sf.jgcs;
 
 /**
- * 
- * This class defines a ServiceListener.
- * 
- * Listeners interested in receiving notifications about guarantees of requested services
- * on messages must implement this interface.
- * 
- * @see DataSession
- * @see Service
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * Application interface for delivering service notifications. This is used
+ * for applications taking advantage of optimistic delivery. 
  */
 public interface ServiceListener extends MessageListener {
 	

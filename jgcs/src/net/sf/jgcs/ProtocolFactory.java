@@ -13,21 +13,15 @@ package net.sf.jgcs;
 import java.io.Serializable;
 
 /**
- * 
- * This class defines a ProtocolFactory
- * 
- * This factory must be used to create instances of Protocols. It should be stateless and represents
- * one toolkit.
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * A protocol factory that can create instances of protocols. It holds 
+ * the configuration to setup or connect to a protocol stack.
  */
 public interface ProtocolFactory extends Serializable {
 
 	/**
-	 * Creates a new Protocol that represents a toolkit.
-	 * @return a new protocol.
-	 * @throws GroupException
+	 * Creates a new protocol instance or connection.
+	 * @return a new protocol
+	 * @throws GroupException protocol specific exception
 	 */
 	public Protocol createProtocol() throws GroupException;
 	

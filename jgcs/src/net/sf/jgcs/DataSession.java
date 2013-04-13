@@ -14,16 +14,7 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * 
- * This class defines a DataSession.
- * 
- * This Session must be used to send and receive messages to/from the group. An instance of a DataSession
- * must be created on the Protocol interface.
- * 
- * @see Protocol
- * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * Allows a process to multicast and deliver messages in a process group.
  */
 public interface DataSession extends Closeable {
 
@@ -82,14 +73,14 @@ public interface DataSession extends Closeable {
 	public Message createMessage() throws GroupException;
 		
 	/**
-	 * <p>Sends a message to the group.</p>
+	 * Sends a message to the group.
 	 * @param msg The message to be sent.
 	 * @param service the service needed by the application for message delivery (e.g. total order)
 	 * or null to use the default channel service.
-	 * @param cookie a cookie used to identify the message in the future (e.g. service notifications).
+	 * @param context context used to identify the message in the future (e.g. service notifications).
 	 * @param annotation semantic information provided by the application 
 	 * to be used by communication protocols (e.g. semantic reliability).
 	 * @throws IOException 
 	 */
-	public void multicast(Message msg, Service service, Object cookie, Annotation... annotation) throws IOException;
+	public void multicast(Message msg, Service service, Object context, Annotation... annotation) throws IOException;
 }

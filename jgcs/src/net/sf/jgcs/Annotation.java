@@ -11,14 +11,9 @@
 package net.sf.jgcs;
 
 /**
- * 
- * This class defines a Annotation.
- * An Annotation should be used by the application to give semantic information about the message
- * to the Channel protocols implementation.
-  * 
- * @author <a href="mailto:nunomrc@di.fc.ul.pt">Nuno Carvalho</a>
- * @version 1.0
+ * Annotations provide optional semantic information to the protocol. Each 
+ * protocol may use it, or not, to optimize communication. Protocols should
+ * silently ignore unsupported annotations.
  */
 public interface Annotation {
-
 }

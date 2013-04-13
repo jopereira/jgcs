@@ -22,8 +22,6 @@ import net.sf.jgcs.Annotation;
  * some protocols. Being an annotation, this is optionally provided
  * by the protocol and the application should still behave correctly
  * even if the annotation is ignored.
- * 
- * @author jop
  */
 public class PointToPoint implements Annotation {
 	private SocketAddress target;
