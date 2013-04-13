@@ -12,6 +12,7 @@ package net.sf.jgcs.corosync;
 import java.net.SocketAddress;
 
 import net.sf.jgcs.Message;
+import net.sf.jgcs.corosync.jni.ClosedProcessGroup.Address;
 
 class CPGMessage implements Message {
 
@@ -23,7 +24,7 @@ class CPGMessage implements Message {
 	CPGMessage() {
 	}
 	
-	CPGMessage(byte[] data, CPGAddress sender) {
+	CPGMessage(byte[] data, Address sender) {
 		this.payload = data;
 		this.sender =sender;
 	}

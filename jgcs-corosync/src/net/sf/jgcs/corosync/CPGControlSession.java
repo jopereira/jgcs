@@ -14,6 +14,7 @@ import java.net.SocketAddress;
 import net.sf.jgcs.ClosedSessionException;
 import net.sf.jgcs.GroupException;
 import net.sf.jgcs.InvalidStateException;
+import net.sf.jgcs.corosync.jni.ClosedProcessGroup.Address;
 import net.sf.jgcs.corosync.jni.CorosyncException;
 import net.sf.jgcs.spi.AbstractMembershipSession;
 
@@ -60,7 +61,7 @@ class CPGControlSession extends AbstractMembershipSession<CPGProtocol,CPGDataSes
 			lock.lock();
 			if (isClosed())
 				return null;
-			return new CPGAddress(protocol.cpg.getLocalNodeId(), protocol.cpg.getProcessId());
+			return protocol.cpg.getLocalAddress();
 		} catch (CorosyncException ce) {
 			return null;
 		} finally {
@@ -68,7 +69,7 @@ class CPGControlSession extends AbstractMembershipSession<CPGProtocol,CPGDataSes
 		}
 	}
 
-	void install(CPGAddress[] members, CPGAddress[] left, int[] lr, CPGAddress[] joined, int[] jr) {
+	void install(Address[] members, Address[] left, int[] lr, Address[] joined, int[] jr) {
 		CPGMembership memb = new CPGMembership(getLocalAddress(), members, left, lr, joined);
 		notifyAndSetMembership(memb);
 	}

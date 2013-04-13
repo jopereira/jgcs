@@ -13,28 +13,29 @@ import java.io.IOException;
 
 import net.sf.jgcs.GroupException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
+import net.sf.jgcs.corosync.jni.ClosedProcessGroup.Address;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup.Callbacks;
 import net.sf.jgcs.spi.AbstractPollingProtocol;
 
-public class CPGProtocol extends AbstractPollingProtocol<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
+class CPGProtocol extends AbstractPollingProtocol<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
 	
 	ClosedProcessGroup cpg;
 	
 	CPGProtocol() throws GroupException {
 		
 		cpg = new ClosedProcessGroup(new Callbacks() {
-			public void deliver(String group, int nodeid, int pid, byte[] msg) {
+			public void deliver(String group, Address addr, byte[] msg) {
 				try {
 					CPGDataSession data=(CPGDataSession) lookupDataSession(new CPGGroup(group));
 					if (data!=null)
-						data.deliver(nodeid, pid, msg);
+						data.deliver(addr, msg);
 				} catch(GroupException e) {
 					// Session not found. Discard message.
 				}
 			}
 			
 			@Override
-			public void configurationChange(String group, CPGAddress[] members, CPGAddress[] left, int[] lr, CPGAddress[] joined, int[] jr) {
+			public void configurationChange(String group, Address[] members, Address[] left, int[] lr, Address[] joined, int[] jr) {
 				try {
 					CPGControlSession control=(CPGControlSession) lookupControlSession(new CPGGroup(group));
 					if (control!=null)

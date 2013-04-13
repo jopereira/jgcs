@@ -14,10 +14,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.Membership;
 import net.sf.jgcs.MembershipID;
-import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
+import net.sf.jgcs.corosync.jni.ClosedProcessGroup.Address;
 
 class CPGMembership implements Membership {
 	
@@ -26,7 +27,7 @@ class CPGMembership implements Membership {
 	private List<SocketAddress> joined;
 	private SocketAddress localid;
 
-	CPGMembership(SocketAddress localid, CPGAddress[] members, CPGAddress[] left, int[] lr, CPGAddress[] joined) {
+	CPGMembership(SocketAddress localid, Address[] members, Address[] left, int[] lr, Address[] joined) {
 		this.localid = localid;
 		this.members = Arrays.asList((SocketAddress[])members);
 		this.joined = Arrays.asList((SocketAddress[])joined);

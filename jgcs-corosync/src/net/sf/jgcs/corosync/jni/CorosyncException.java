@@ -25,7 +25,7 @@ public class CorosyncException extends GroupException {
 		return error;
 	}
 	
-	/**
+	/*
 	 * Error codes copied from include/corosync/corotypes.h.
 	 * Copyright (c) 2008 Allied Telesis Labs.
 	 * Copyright (c) 2012 Red Hat, Inc.

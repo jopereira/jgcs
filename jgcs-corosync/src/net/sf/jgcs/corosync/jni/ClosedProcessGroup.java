@@ -11,9 +11,7 @@ package net.sf.jgcs.corosync.jni;
 
 import java.io.Closeable;
 import java.io.IOException;
-
-import net.sf.jgcs.corosync.CPGAddress;
-
+import java.net.SocketAddress;
 
 public class ClosedProcessGroup implements Closeable {
 	private long handle;
@@ -59,8 +57,7 @@ public class ClosedProcessGroup implements Closeable {
 	
 	public native void multicast(int guarantee, byte[] msg) throws CorosyncException;
 	
-	public native int getLocalNodeId() throws CorosyncException;
-	public native int getProcessId();
+	public native Address getLocalAddress() throws CorosyncException;
 	
 	public static final int CPG_REASON_JOIN = 1;
 	public static final int CPG_REASON_LEAVE = 2;
@@ -68,9 +65,59 @@ public class ClosedProcessGroup implements Closeable {
 	public static final int CPG_REASON_NODEUP = 4;
 	public static final int CPG_REASON_PROCDOWN = 5;
 	
+	public static class Address extends SocketAddress {
+
+		private static final long serialVersionUID = 2L;
+		
+		private int nodeid, pid;
+
+		public Address(int nodeid, int pid) {
+			this.nodeid = nodeid;
+			this.pid = pid;
+		}
+
+		public int getNodeId() {
+			return nodeid;
+		}
+
+		public int getProcessId() {
+			return pid;
+		}
+		
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + nodeid;
+			result = prime * result + pid;
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Address other = (Address) obj;
+			if (nodeid != other.nodeid)
+				return false;
+			if (pid != other.pid)
+				return false;
+			return true;
+		}
+		
+		@Override
+		public String toString() {
+			return "process-"+pid+"@"+nodeid;
+		}
+	}
+		
 	public static interface Callbacks {
-		public void deliver(String group, int nodeid, int pid, byte[] msg);
-		public void configurationChange(String group, CPGAddress[] members, CPGAddress[] left, int[] lreason, CPGAddress[] joined, int[] jreason);
+		public void deliver(String group, Address address, byte[] msg);
+		public void configurationChange(String group, Address[] members, Address[] left, int[] lreason, Address[] joined, int[] jreason);
 		public void ringChange(int nodeid, long seq, int[] nodes);
 	};
 	

@@ -18,6 +18,7 @@ import net.sf.jgcs.Service;
 import net.sf.jgcs.UnsupportedMessageException;
 import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
+import net.sf.jgcs.corosync.jni.ClosedProcessGroup.Address;
 import net.sf.jgcs.spi.AbstractDataSession;
 
 class CPGDataSession extends AbstractDataSession<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
@@ -47,7 +48,7 @@ class CPGDataSession extends AbstractDataSession<CPGProtocol,CPGDataSession,CPGC
 		protocol.cpg.multicast(guarantee.getGuarantee(), m.getPayload());
 	}
 
-	void deliver(int nodeid, int pid, byte[] msg) {
-		notifyListeners(new CPGMessage(msg, new CPGAddress(nodeid, pid)), new CPGService(ClosedProcessGroup.CPG_TYPE_SAFE));
+	void deliver(Address addr, byte[] msg) {
+		notifyListeners(new CPGMessage(msg, addr), new CPGService(ClosedProcessGroup.CPG_TYPE_SAFE));
 	}
 }
