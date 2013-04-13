@@ -26,42 +26,82 @@ import org.jgroups.Message;
 
 import net.sf.jgcs.Service;
 
+/**
+ * Service configuration. JGroups services are configured by setting
+ * flags that omit certain delivery guarantees.
+ */
 public class JGroupsService implements Service {
 
 	private static final long serialVersionUID = 2L;
 
 	private short flags;
 
+	/**
+	 * Create the default service configuration, with no flags set.
+	 */
 	public JGroupsService() {
 	}
 
+	/**
+	 * Create a configuration from JGroups message flags.
+	 * @param flags message flags
+	 */
 	public JGroupsService(Message.Flag... flags) {
 		this.setFlags(flags);
 	}
 
+	/**
+	 * Create a configuration from JGroups message flag names. Names
+	 * for multiple flags can be specified, sepated by the | (pipe)
+	 * character.
+	 * @param flagNames message flag names
+	 */
 	public JGroupsService(String flagNames) {
 		this.setFlags(flagNames);
 	}
 
+	/**
+	 * Create a configuration from JGroups message flag values.
+	 * @param flags flag values
+	 */
 	public JGroupsService(short flags) {
 		this.setFlags(flags);
 	}
 	
+	/**
+	 * Set additional flags from JGroups message flags. Set the flags
+	 * first to 0 to reset them all.
+	 * @param flags message flags
+	 */
 	public void setFlags(Message.Flag... flags) {
 		for(Message.Flag flag: flags)
 			this.flags |= flag.value();
 	}
 	
+	/**
+	 * Set additional flags from JGroups message flag names. Set the flags
+	 * first to 0 to reset them all.
+ 	 * @param flagNames message flag names
+	 */
 	public void setFlags(String flagNames) {
 		String[] flags = flagNames.split("[|]");
 		for(String flag: flags)
 			this.flags |= Message.Flag.valueOf(flag).value();
 	}
 
+	/**
+	 * Set flags to JGroups message flag names. This resets all flags
+	 * that are not explicitly specified.
+ 	 * @param flags message flag values
+	 */
 	public void setFlags(short flags) {
 		this.flags = flags;
 	}
 	
+	/**
+	 * Get flag values.
+	 * @return flag values
+	 */
 	public short getFlags() {
 		return flags;
 	}

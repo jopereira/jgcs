@@ -28,6 +28,11 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.net.SocketAddress;
 
+/**
+ * Wraps a JGroups message. It provides a public construtor and implements
+ * the Externalizable interface such that it can be serialized. Messages
+ * should be created only using the corresponding DataSession.
+ */
 public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.Message, Externalizable {
 	
 	private SocketAddress sender;

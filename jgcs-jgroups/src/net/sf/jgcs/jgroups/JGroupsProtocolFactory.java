@@ -26,22 +26,49 @@ import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 
+/**
+ * Protocol configuration in JGroups. A protocol is configured with an
+ * XML file describing the stack, loaded from the class path. See JGroups
+ * configuration for available alternatives and how to configure your
+ * own stacks.
+ */
 public class JGroupsProtocolFactory implements ProtocolFactory {
 
 	private static final long serialVersionUID = 2L;
 	
-	private String config;
+	private String configuration;
 
+	/** 
+	 * Use the default JGroups protocol configuration.
+	 */
 	public JGroupsProtocolFactory() {
 	}
 
+	/** 
+	 * Use an alternate JGroups protocol configuration.
+	 */
 	public JGroupsProtocolFactory(String config) {
-		this.config = config;
+		this.configuration = config;
 	}
 
+	/**
+	 * Get the name of the protocol configuration file.
+	 * @return the configuration file, or null for the default
+	 */
+	public String getConfiguration() {
+		return configuration;
+	}
+
+	/**
+	 * Set the name of the protocol configuration file.
+	 * @param configuration the configuration file, or null for the default
+	 */
+	public void setConfiguration(String configuration) {
+		this.configuration = configuration;
+	}	
+	
 	@Override
 	public Protocol createProtocol() throws GroupException{
-		return new JGroupsProtocol(config);
+		return new JGroupsProtocol(configuration);
 	}
-
 }

@@ -37,11 +37,8 @@
 
     <target name="doc" depends="init">
         <javadoc sourcepath="${src}" destdir="${api}" >
-        	<header>Documentation</header>
-        	<doctitle>- Group Communication Service</doctitle>
-        	<bottom>
-        		<![CDATA[Copyright (c) 2006-2008, FFCUL and U. Uminho<BR>For updates and related information please see <A HREF="http://jgcs.sf.net">home page</A>]]>
-        	</bottom>
+        	<header>JGCS Documentation</header>
+        	<doctitle>JGCS Documentation</doctitle>
 	        <packageset dir="${src}" >
         		<include name="**"/>
         	</packageset>

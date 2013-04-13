@@ -24,25 +24,42 @@ package net.sf.jgcs.jgroups;
 
 import net.sf.jgcs.GroupConfiguration;
 
-
+/**
+ * Group identifier in JGroups. A group is identified by a string.
+ */
 public class JGroupsGroup implements GroupConfiguration {
 
 	private static final long serialVersionUID = 2L;
 	
 	private String groupName;
 	
+	/**
+	 * Build a group identifier. The name should be set before being used.
+	 */
 	public JGroupsGroup() {
 		super();
 	}
 
+	/**
+	 * Build a group identifier from a string.
+	 * @param name the name
+	 */
 	public JGroupsGroup(String name) {
 		this.groupName = name;
 	}
 
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
+	/**
+	 * Set group name.
+	 * @param name the name
+	 */
+	public void setGroupName(String name) {
+		this.groupName = name;
 	}
 	
+	/**
+	 * Get group name.
+	 * @return the name
+	 */
 	public String getGroupName() {
 		return groupName;
 	}
