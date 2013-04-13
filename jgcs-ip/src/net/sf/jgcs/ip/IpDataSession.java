@@ -24,7 +24,7 @@ import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.annotation.PointToPoint;
 import net.sf.jgcs.spi.AbstractPollingDataSession;
 
-public class IpDataSession extends AbstractPollingDataSession<IpProtocol,IpDataSession,IpControlSession,IpGroup> {
+class IpDataSession extends AbstractPollingDataSession<IpProtocol,IpDataSession,IpControlSession,IpGroup> {
 	private MulticastSocket sock;
 	
 	IpDataSession(MulticastSocket sock) {

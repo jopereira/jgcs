@@ -26,7 +26,7 @@ import java.net.SocketAddress;
 
 import org.jgroups.Address;
 
-public class JGroupsSocketAddress extends SocketAddress {
+class JGroupsSocketAddress extends SocketAddress {
 
 	private static final long serialVersionUID = 2L;
 	

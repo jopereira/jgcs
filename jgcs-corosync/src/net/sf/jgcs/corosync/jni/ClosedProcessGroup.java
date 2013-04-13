@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import net.sf.jgcs.corosync.CPGAddress;
 
+
 public class ClosedProcessGroup implements Closeable {
 	private long handle;
 	private boolean busy;

@@ -17,7 +17,7 @@ import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.corosync.jni.CorosyncException;
 import net.sf.jgcs.spi.AbstractMembershipSession;
 
-public class CPGControlSession extends AbstractMembershipSession<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
+class CPGControlSession extends AbstractMembershipSession<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
 	@Override
 	public void join() throws GroupException {
 		try {

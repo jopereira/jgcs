@@ -19,7 +19,7 @@ import net.sf.jgcs.MembershipID;
 import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
 
-public class CPGMembership implements Membership {
+class CPGMembership implements Membership {
 	
 	private List<SocketAddress> members;
 	private List<SocketAddress> left = new ArrayList<SocketAddress>(), failed = new ArrayList<SocketAddress>();

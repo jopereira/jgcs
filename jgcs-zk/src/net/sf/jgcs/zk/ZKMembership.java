@@ -18,14 +18,13 @@ package net.sf.jgcs.zk;
 
 import java.net.SocketAddress;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.Membership;
 import net.sf.jgcs.MembershipID;
-import net.sf.jgcs.InvalidStateException;
 
-public class ZKMembership implements Membership {
+class ZKMembership implements Membership {
 
 	private int vid, rank = -1;
 	private List<SocketAddress> members;

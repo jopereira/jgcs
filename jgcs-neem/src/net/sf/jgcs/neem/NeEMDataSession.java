@@ -23,7 +23,7 @@ import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.spi.AbstractPollingDataSession;
 import net.sf.neem.MulticastChannel;
 
-public class NeEMDataSession extends AbstractPollingDataSession<NeEMProtocol,NeEMDataSession,NeEMControlSession,NeEMGroup> {
+class NeEMDataSession extends AbstractPollingDataSession<NeEMProtocol,NeEMDataSession,NeEMControlSession,NeEMGroup> {
 	private MulticastChannel sock;
 	
 	NeEMDataSession(MulticastChannel sock) {

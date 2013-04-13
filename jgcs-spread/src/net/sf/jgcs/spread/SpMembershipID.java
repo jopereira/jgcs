@@ -13,13 +13,13 @@ import java.util.Arrays;
 
 import net.sf.jgcs.MembershipID;
 
-public class SpMembershipID implements MembershipID {
+class SpMembershipID implements MembershipID {
 
 	private static final long serialVersionUID = 2L;
 	
 	private int[] id;
 
-	public SpMembershipID(int[] group_id) {
+	SpMembershipID(int[] group_id) {
 		this.id = group_id;
 	}
 

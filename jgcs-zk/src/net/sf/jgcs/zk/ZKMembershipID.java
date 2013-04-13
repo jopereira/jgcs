@@ -18,7 +18,7 @@ package net.sf.jgcs.zk;
 
 import net.sf.jgcs.MembershipID;
 
-public class ZKMembershipID implements MembershipID, Comparable<MembershipID> {
+class ZKMembershipID implements MembershipID, Comparable<MembershipID> {
 
 	private static final long serialVersionUID = 2L;
 	

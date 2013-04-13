@@ -25,7 +25,7 @@ import net.sf.jgcs.spi.AbstractBlockSession;
 import net.sf.jgcs.zk.groupz.Endpoint;
 import net.sf.jgcs.zk.groupz.StateException;
 
-public class ZKControlSession extends AbstractBlockSession<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {
+class ZKControlSession extends AbstractBlockSession<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {
 
 	Endpoint endpoint;
 	private ZKMembership current;

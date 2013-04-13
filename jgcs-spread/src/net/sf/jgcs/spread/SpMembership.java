@@ -10,20 +10,20 @@
 package net.sf.jgcs.spread;
 
 import java.net.SocketAddress;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ArrayList;
 
 import net.sf.jgcs.Membership;
 import net.sf.jgcs.MembershipID;
 import net.sf.jgcs.spread.jni.Mailbox;
 
-public class SpMembership implements Membership {
+class SpMembership implements Membership {
 	private Mailbox.ViewInfo view;
 	private Mailbox.ReceiveArgs info;
 	private int currentRank;
 
-	public SpMembership(String id, Mailbox.ReceiveArgs info, Mailbox.ViewInfo view) {
+	SpMembership(String id, Mailbox.ReceiveArgs info, Mailbox.ViewInfo view) {
 		this.view=view;
 		this.info=info;
 		this.currentRank=findRank(id, info.groups);

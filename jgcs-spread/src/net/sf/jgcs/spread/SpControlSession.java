@@ -19,7 +19,7 @@ import net.sf.jgcs.MembershipID;
 import net.sf.jgcs.spi.AbstractBlockSession;
 import net.sf.jgcs.spread.jni.Mailbox;
 
-public class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSession,SpControlSession,SpGroup> {
+class SpControlSession extends AbstractBlockSession<SpProtocol,SpDataSession,SpControlSession,SpGroup> {
 	private Mailbox mb;
 	private boolean blocked = true;
 	private SpMembership current;

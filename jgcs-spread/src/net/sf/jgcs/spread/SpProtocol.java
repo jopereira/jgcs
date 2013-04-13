@@ -21,7 +21,7 @@ import net.sf.jgcs.spread.jni.Mailbox;
  * for the local address. 
  * @author jop
  */
-public class SpProtocol extends AbstractPollingProtocol<SpProtocol,SpDataSession,SpControlSession,SpGroup> {
+class SpProtocol extends AbstractPollingProtocol<SpProtocol,SpDataSession,SpControlSession,SpGroup> {
 	private Mailbox mb;
 
 	SpProtocol(Mailbox mb, String daemonAddress, String processName) throws GroupException {

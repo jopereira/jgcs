@@ -20,7 +20,7 @@ import net.sf.jgcs.UnsupportedServiceException;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
 import net.sf.jgcs.spi.AbstractDataSession;
 
-public class CPGDataSession extends AbstractDataSession<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
+class CPGDataSession extends AbstractDataSession<CPGProtocol,CPGDataSession,CPGControlSession,CPGGroup> {
 	
 	@Override
 	public Message createMessage() throws GroupException {

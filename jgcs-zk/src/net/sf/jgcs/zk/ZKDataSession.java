@@ -30,7 +30,7 @@ import net.sf.jgcs.spi.AbstractDataSession;
 import net.sf.jgcs.zk.groupz.Endpoint;
 import net.sf.jgcs.zk.groupz.StateException;
 
-public class ZKDataSession extends AbstractDataSession<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {	
+class ZKDataSession extends AbstractDataSession<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {	
 
 	Endpoint endpoint;
 

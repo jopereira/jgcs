@@ -17,13 +17,11 @@ import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.GroupException;
 import net.sf.jgcs.spi.AbstractControlSession;
 
-public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSession,IpControlSession,IpGroup> {
+class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSession,IpControlSession,IpGroup> {
 	private MulticastSocket sock;
-	private boolean joined;
 
-	public IpControlSession(MulticastSocket sock) {
+	IpControlSession(MulticastSocket sock) {
 		this.sock=sock;
-		this.joined=false;
 	}
 
 	@Override
@@ -32,7 +30,6 @@ public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSe
 		onEntry();
 		try {
 			sock.joinGroup(group.getGroupAddress());
-			joined = true;
 		} catch (IOException e) {
 			throw new InvalidStateException("cannot join group", e);
 		} finally {
@@ -45,7 +42,6 @@ public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSe
 		lock.lock();
 		onEntry();
 		try {
-			joined = false;
 			sock.leaveGroup(group.getGroupAddress());
 		} catch (IOException e) {
 			throw new InvalidStateException("cannot leave group", e);
@@ -57,9 +53,5 @@ public class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSe
 	@Override
 	public SocketAddress getLocalAddress() {
 		return sock.getLocalSocketAddress();
-	}
-
-	public boolean isJoined() {
-		return joined;
 	}
 }

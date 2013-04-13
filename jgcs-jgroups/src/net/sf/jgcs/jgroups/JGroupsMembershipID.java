@@ -26,7 +26,7 @@ import net.sf.jgcs.MembershipID;
 
 import org.jgroups.ViewId;
 
-public class JGroupsMembershipID implements MembershipID {
+class JGroupsMembershipID implements MembershipID {
 
 	private static final long serialVersionUID = 2L;
 	

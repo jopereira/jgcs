@@ -37,7 +37,7 @@ import net.sf.jgcs.spi.AbstractDataSession;
 
 import org.jgroups.JChannel;
 
-public class JGroupsDataSession extends AbstractDataSession<JGroupsProtocol,JGroupsDataSession,JGroupsControlSession,JGroupsGroup> {
+class JGroupsDataSession extends AbstractDataSession<JGroupsProtocol,JGroupsDataSession,JGroupsControlSession,JGroupsGroup> {
 
 	private JChannel channel;
 	

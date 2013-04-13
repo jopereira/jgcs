@@ -18,7 +18,7 @@ package net.sf.jgcs.zk;
 
 import java.net.SocketAddress;
 
-public class ZKAddress extends SocketAddress {
+class ZKAddress extends SocketAddress {
 
 	private static final long serialVersionUID = 2L;
 	

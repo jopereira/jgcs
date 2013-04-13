@@ -25,7 +25,7 @@ import net.sf.jgcs.zk.groupz.Endpoint;
 
 import org.apache.zookeeper.ZooKeeper;
 
-public class ZKProtocol extends AbstractProtocol<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {
+class ZKProtocol extends AbstractProtocol<ZKProtocol,ZKDataSession,ZKControlSession,ZKGroup> {
 	private ZooKeeper zk;
 
 	ZKProtocol(String connectString, int sessionTimeout) throws GroupException {

@@ -35,7 +35,7 @@ import org.jgroups.Message;
 import org.jgroups.Receiver;
 import org.jgroups.View;
 
-public class JGroupsProtocol extends AbstractProtocol<JGroupsProtocol,JGroupsDataSession,JGroupsControlSession,JGroupsGroup> {
+class JGroupsProtocol extends AbstractProtocol<JGroupsProtocol,JGroupsDataSession,JGroupsControlSession,JGroupsGroup> {
 
 	private String config;
 

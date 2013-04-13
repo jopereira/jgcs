@@ -15,7 +15,7 @@ import net.sf.jgcs.GroupException;
 import net.sf.jgcs.spi.AbstractProtocol;
 import net.sf.neem.MulticastChannel;
 
-public class NeEMProtocol extends AbstractProtocol<NeEMProtocol,NeEMDataSession,NeEMControlSession,NeEMGroup> {
+class NeEMProtocol extends AbstractProtocol<NeEMProtocol,NeEMDataSession,NeEMControlSession,NeEMGroup> {
 	@Override
 	protected void createSessions(NeEMGroup group) throws GroupException {
 		MulticastChannel sock;

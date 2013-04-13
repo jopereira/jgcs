@@ -15,7 +15,7 @@ import java.net.MulticastSocket;
 import net.sf.jgcs.GroupException;
 import net.sf.jgcs.spi.AbstractProtocol;
 
-public class IpProtocol extends AbstractProtocol<IpProtocol,IpDataSession,IpControlSession,IpGroup> {
+class IpProtocol extends AbstractProtocol<IpProtocol,IpDataSession,IpControlSession,IpGroup> {
 	
 	@Override
 	protected void createSessions(IpGroup group) throws GroupException {

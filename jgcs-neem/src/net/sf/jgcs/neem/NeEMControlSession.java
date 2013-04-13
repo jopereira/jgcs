@@ -17,11 +17,11 @@ import net.sf.jgcs.InvalidStateException;
 import net.sf.jgcs.spi.AbstractControlSession;
 import net.sf.neem.MulticastChannel;
 
-public class NeEMControlSession extends AbstractControlSession<NeEMProtocol,NeEMDataSession,NeEMControlSession,NeEMGroup> {
+class NeEMControlSession extends AbstractControlSession<NeEMProtocol,NeEMDataSession,NeEMControlSession,NeEMGroup> {
 	private MulticastChannel sock;
 	private boolean joined;
 
-	public NeEMControlSession(MulticastChannel channel) {
+	NeEMControlSession(MulticastChannel channel) {
 		this.sock=channel;
 		this.joined = false;
 	}

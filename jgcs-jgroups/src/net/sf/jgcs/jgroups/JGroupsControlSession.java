@@ -32,7 +32,7 @@ import net.sf.jgcs.spi.AbstractMembershipSession;
 import org.jgroups.JChannel;
 import org.jgroups.View;
 
-public class JGroupsControlSession extends AbstractMembershipSession<JGroupsProtocol,JGroupsDataSession,JGroupsControlSession,JGroupsGroup> {
+class JGroupsControlSession extends AbstractMembershipSession<JGroupsProtocol,JGroupsDataSession,JGroupsControlSession,JGroupsGroup> {
 
 	private JChannel channel;
 

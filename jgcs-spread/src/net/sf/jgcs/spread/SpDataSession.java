@@ -24,7 +24,7 @@ import net.sf.jgcs.annotation.SelfDelivery;
 import net.sf.jgcs.spi.AbstractDataSession;
 import net.sf.jgcs.spread.jni.Mailbox;
 
-public class SpDataSession extends AbstractDataSession<SpProtocol,SpDataSession,SpControlSession,SpGroup> {
+class SpDataSession extends AbstractDataSession<SpProtocol,SpDataSession,SpControlSession,SpGroup> {
 	private Mailbox mb;
 	
 	SpDataSession(Mailbox mb) {

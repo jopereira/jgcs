@@ -33,7 +33,7 @@ import net.sf.jgcs.MembershipID;
 import org.jgroups.Address;
 import org.jgroups.View;
 
-public class JGroupsMembership implements Membership {
+class JGroupsMembership implements Membership {
 
 	private List<SocketAddress> addresses;
 	private List<SocketAddress> failed, joined, leaved;
