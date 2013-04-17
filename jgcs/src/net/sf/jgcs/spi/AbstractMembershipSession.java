@@ -117,6 +117,7 @@ public abstract class AbstractMembershipSession<
 	@Override
 	protected void cleanup() {
 		super.cleanup();
+		membership = null;
 		membListener = null;
 	}
 }
