@@ -67,6 +67,11 @@ public abstract class AbstractPollingProtocol<
 		}
 		try {
 			read();
+		} catch (InterruptedException e) {
+			if (!isClosed()) {
+				GroupException je=new GroupException("reader thread interrupted", e);
+				notifyExceptionListeners(je);
+			}
 		} catch (IOException e) {
 			if (!isClosed()) {
 				GroupException je=new GroupException("I/O exception", e);
@@ -82,5 +87,5 @@ public abstract class AbstractPollingProtocol<
 	 * some exception.
 	 * @throws GroupException
 	 */
-	protected abstract void read() throws IOException;
+	protected abstract void read() throws IOException, InterruptedException;
 }

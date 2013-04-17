@@ -64,6 +64,11 @@ public abstract class AbstractPollingDataSession<
 		}
 		try {
 			read();
+		} catch (InterruptedException e) {
+			if (!isClosed()) {
+				GroupException je=new GroupException("reader thread interrupted", e);
+				notifyExceptionListeners(je);
+			}
 		} catch (IOException e) {
 			if (!isClosed()) {
 				GroupException je=new GroupException("I/O exception", e);
@@ -77,7 +82,8 @@ public abstract class AbstractPollingDataSession<
 	 * This method normally blocks waiting for input. It should wakeup and never
 	 * block again after cleanup has been called, either by returning or throwing
 	 * some exception.
+	 * @throws InterruptedException 
 	 * @throws GroupException
 	 */
-	protected abstract void read() throws IOException;
+	protected abstract void read() throws IOException, InterruptedException;
 }
