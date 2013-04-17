@@ -13,6 +13,9 @@ import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 
+/**
+ * No protocolo configuraiton is required for Corosync.
+ */
 public class CPGProtocolFactory implements ProtocolFactory {
 	
 	private static final long serialVersionUID = 2L;

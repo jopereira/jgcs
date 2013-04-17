@@ -12,20 +12,42 @@ package net.sf.jgcs.corosync;
 import net.sf.jgcs.Service;
 import net.sf.jgcs.corosync.jni.ClosedProcessGroup;
 
+/**
+ * Service configuration. JGroups services are configured by selecting
+ * one delivery guarantee. See {@link ClosedProcessGroup} for possible
+ * guarantees.
+ */
 public class CPGService implements Service {
 
 	private static final long serialVersionUID = 2L;
 
 	private int guarantee;
 
+	/**
+	 * Create the default service configuration (safe).
+	 */
+	public CPGService() {
+		this.guarantee=ClosedProcessGroup.CPG_TYPE_SAFE;
+	}
+	
+	/**
+	 * Create a service configuration using constants in {@link ClosedProcessGroup}. 
+	 */
 	public CPGService(int guarantee) {
 		this.guarantee=guarantee;
 	}
 	
+	/**
+	 * Create a service configuration using a string identifier: unordered,
+	 * fifo, agreed, or safe.
+	 */
 	public CPGService(String prop) {
 		setGuarantee(prop);
 	}
 
+	/**
+	 * Set guarantee using a string identifier: unordered, fifo, agreed, or safe.
+	 */
 	public void setGuarantee(String prop) {
 		if (prop.equals("unordered"))
 			guarantee = ClosedProcessGroup.CPG_TYPE_UNORDERED;
@@ -37,6 +59,10 @@ public class CPGService implements Service {
 			guarantee = ClosedProcessGroup.CPG_TYPE_SAFE;
 	}
 
+	/**
+	 * Get currently set guarantee.
+	 * @return guarantee as integer constant.
+	 */
 	public int getGuarantee() {
 		return guarantee;
 	}

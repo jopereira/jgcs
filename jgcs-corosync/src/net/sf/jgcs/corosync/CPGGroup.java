@@ -11,16 +11,27 @@ package net.sf.jgcs.corosync;
 
 import net.sf.jgcs.GroupConfiguration;
 
+/**
+ * Group identifier for Corosync. A group is identified by a string.
+ */
 public class CPGGroup implements GroupConfiguration {
 
 	private static final long serialVersionUID = 2L;
 	
 	private String group;
 	
+	/**
+	 * Build a group identifier from a string.
+	 * @param name the name
+	 */
 	public CPGGroup(String group) {
 		this.group=group;
 	}
 	
+	/**
+	 * Get group name.
+	 * @return the name
+	 */
 	public String getGroup() {
 		return group;
 	}
