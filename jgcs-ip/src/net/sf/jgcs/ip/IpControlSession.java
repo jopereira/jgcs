@@ -29,7 +29,7 @@ class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSession,I
 		lock.lock();
 		onEntry();
 		try {
-			sock.joinGroup(group.getGroupAddress());
+			sock.joinGroup(group.getAddress().getAddress());
 		} catch (IOException e) {
 			throw new InvalidStateException("cannot join group", e);
 		} finally {
@@ -42,7 +42,7 @@ class IpControlSession extends AbstractControlSession<IpProtocol,IpDataSession,I
 		lock.lock();
 		onEntry();
 		try {
-			sock.leaveGroup(group.getGroupAddress());
+			sock.leaveGroup(group.getAddress().getAddress());
 		} catch (IOException e) {
 			throw new InvalidStateException("cannot leave group", e);
 		} finally {

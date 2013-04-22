@@ -21,7 +21,7 @@ class IpProtocol extends AbstractProtocol<IpProtocol,IpDataSession,IpControlSess
 	protected void createSessions(IpGroup group) throws GroupException {
 		MulticastSocket sock;
 		try {
-			sock=new MulticastSocket(group.getPort());
+			sock=new MulticastSocket(group.getAddress().getPort());
 		} catch (IOException e) {
 			throw new GroupException("protocol exception", e);
 		}
