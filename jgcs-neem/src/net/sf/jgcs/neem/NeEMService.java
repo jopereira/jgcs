@@ -11,6 +11,9 @@ package net.sf.jgcs.neem;
 
 import net.sf.jgcs.Service;
 
+/**
+ * NeEM doesn't accept service configuration. 
+ */
 public class NeEMService implements Service {
 	
 	private static final long serialVersionUID = 2L;

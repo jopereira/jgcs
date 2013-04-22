@@ -13,6 +13,10 @@ import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 
+/**
+ * Protocol configuration. Configuration parameters can only be
+ * set through the JMX MBean.
+ */
 public class NeEMProtocolFactory implements ProtocolFactory {
 
 	private static final long serialVersionUID = 2L;
