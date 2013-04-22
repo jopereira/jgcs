@@ -19,7 +19,6 @@ import net.sf.jgcs.spread.jni.Mailbox;
 /**
  * Spread protocol. Unicast messages can be received by opening a data session
  * for the local address. 
- * @author jop
  */
 class SpProtocol extends AbstractPollingProtocol<SpProtocol,SpDataSession,SpControlSession,SpGroup> {
 	private Mailbox mb;

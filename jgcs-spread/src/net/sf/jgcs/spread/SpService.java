@@ -11,6 +11,10 @@ package net.sf.jgcs.spread;
 
 import net.sf.jgcs.Service;
 
+/**
+ * Service configuration. Spread services are configured by selecting
+ * one of the available message delivery guarantees.
+ */
 public class SpService implements Service {
 
 	private static final long serialVersionUID = 2L;
@@ -43,17 +47,38 @@ public class SpService implements Service {
     public static final int FLUSH_REQ_MESS=0x20000000;
     public static final int SUBGROUP_CAST=0x40000000;
 
-        
 	private int serviceFlags;
 
+	/**
+	 * Build service from integer flag.
+	 * @param service
+	 */
 	public SpService(int service) {
 		this.serviceFlags=service;
 	}
 	
+	/**
+	 * Build service from guarantee name. Available options are: unreliable, reliable, fifo,
+	 * causal, agreed, and safe.
+	 * @param service service name.
+	 */
 	public SpService(String prop) {
 		setService(prop);
 	}
+	
+	/**
+	 * Set service from integer flag.
+	 * @param service integer flag.
+	 */
+	public void setService(int prop) {
+		this.serviceFlags = prop;
+	}
 
+	/**
+	 * Set service from guarantee name. Available options are: unreliable, reliable, fifo,
+	 * causal, agreed, and safe.
+	 * @param service service name.
+	 */
 	public void setService(String prop) {
 		if (prop.equals("unreliable"))
 			serviceFlags = SpService.UNRELIABLE_MESS;
@@ -69,6 +94,10 @@ public class SpService implements Service {
 			serviceFlags = SpService.SAFE_MESS;
 	}
 
+	/**
+	 * Get service from integer flag.
+	 * @return integer flag.
+	 */
 	public int getService() {
 		return serviceFlags;
 	}
