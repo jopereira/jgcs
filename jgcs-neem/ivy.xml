@@ -1,12 +1,12 @@
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-    <info organisation="net.sf.jgcs" module="jgcs-neem" revision="0.7.0-SNAPSHOT"/>
+    <info organisation="net.sf.jgcs" module="jgcs-neem" revision="0.7.0"/>
 	<publications>
 		<artifact name="jgcs-neem" type="jar" ext="jar"/>
 		<artifact name="jgcs-neem" type="javadoc" ext="jar" m:classifier="javadoc"/>
 		<artifact name="jgcs-neem" type="source" ext="jar" m:classifier="sources"/>
 	</publications>
     <dependencies>
-		<dependency org="net.sf.jgcs" name="jgcs" rev="0.7.0-SNAPSHOT"/>
+		<dependency org="net.sf.jgcs" name="jgcs" rev="0.7.0"/>
 		<dependency org="net.sf.neem" name="neem" rev="0.8-SNAPSHOT"/>
     </dependencies>
 </ivy-module>

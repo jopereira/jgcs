@@ -1,12 +1,12 @@
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-    <info organisation="net.sf.jgcs" module="jgcs-zk" revision="0.7.0-SNAPSHOT"/>
+    <info organisation="net.sf.jgcs" module="jgcs-zk" revision="0.7.0"/>
 	<publications>
 		<artifact name="jgcs-zk" type="jar" ext="jar"/>
 		<artifact name="jgcs-zk" type="javadoc" ext="jar" m:classifier="javadoc"/>
 		<artifact name="jgcs-zk" type="source" ext="jar" m:classifier="sources"/>
 	</publications>
     <dependencies>
-		<dependency org="net.sf.jgcs" name="jgcs" rev="0.7.0-SNAPSHOT"/>
+		<dependency org="net.sf.jgcs" name="jgcs" rev="0.7.0"/>
 		<dependency org="org.apache.zookeeper" name="zookeeper" rev="3.4.5"/>
     </dependencies>
 </ivy-module>
