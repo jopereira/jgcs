@@ -1,0 +1,130 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>net.sf.jgcs</groupId>
+  <artifactId>common</artifactId>
+  <version>0.8.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>jGCS</name>
+  <inceptionYear>2006</inceptionYear>
+  <url>https://jopereira.github.com/jgcs</url>
+
+  <developers>
+    <developer>
+      <id>jop</id>
+      <name>José Orlando Pereira</name>
+      <email>jop@di.uminho.pt</email>
+      <url>http://haslab.uminho.pt/jop</url>
+      <properties>
+        <picUrl>http://haslab.uminho.pt/jop/sites/default/files/imagecache/os_modal_image_200/jop/files/jop-2013-med.jpg</picUrl>
+      </properties>
+    </developer>
+    <developer>
+      <id>nonius</id>
+      <name>Nuno Carvalho</name>
+      <email>nonius@gsd.inesc-id.pt</email>
+      <url>http://www.gsd.inesc-id.pt/~nonius/</url>
+      <properties>
+        <picUrl>http://www.gsd.inesc-id.pt/~nonius/_Media/37332_400758131748_71801674.jpeg</picUrl>
+      </properties>
+    </developer>
+  </developers>
+
+
+  <modules>
+    <module>jgcs</module>
+    <module>jgcs-ip</module>
+    <module>jgcs-jgroups</module>
+    <module>jgcs-neem</module>
+    <module>jgcs-corosync</module>
+    <module>jgcs-spread</module>
+    <module>jgcs-zk</module>
+    <module>tests</module>
+  </modules>
+
+  <dependencies>
+  	<dependency>
+  		<groupId>org.slf4j</groupId>
+  		<artifactId>slf4j-api</artifactId>
+  		<version>1.7.6</version>
+  	</dependency>
+
+  	<dependency>
+  		<groupId>org.slf4j</groupId>
+  		<artifactId>slf4j-log4j12</artifactId>
+		<version>1.6.1</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>log4j</groupId>
+  		<artifactId>log4j</artifactId>
+		<version>1.2.16</version>
+  		<scope>test</scope>
+  	</dependency>
+    <dependency>
+      <groupId>com.googlecode.jmockit</groupId>
+      <artifactId>jmockit</artifactId>
+      <version>1.7</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.jmockit</groupId>
+      <artifactId>jmockit-coverage</artifactId>
+      <version>0.999.26</version>
+      <scope>test</scope>
+    </dependency>
+  	<dependency>
+  	  <groupId>junit</groupId>
+  	  <artifactId>junit</artifactId>
+  	  <version>4.12</version>
+  	  <scope>test</scope>
+  	</dependency>
+    <dependency>
+      <groupId>simple-jndi</groupId>
+      <artifactId>simple-jndi</artifactId>
+      <version>0.11.4.1</version>
+  	  <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.3</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.1</version>
+        <configuration>
+          <show>public</show>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <id>aggregate</id>
+            <reports>
+              <report>aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+
+</project>

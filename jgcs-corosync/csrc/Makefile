@@ -1,6 +1,6 @@
 
 JDK=$${JAVA_HOME}
-CLASSES=../build/classes
+CLASSES=../target/classes
 
 LDFLAGS=-lcpg -lpthread
 CFLAGS=-Wall -I $(JDK)/include -I $(JDK)/include/linux
