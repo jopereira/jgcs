@@ -39,7 +39,6 @@
     <module>jgcs-corosync</module>
     <module>jgcs-spread</module>
     <module>jgcs-zk</module>
-    <module>tests</module>
   </modules>
 
   <dependencies>
