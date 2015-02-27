@@ -1,12 +1,5 @@
-/*
- * JGCS - Group Communication Service.
- * Copyright (C) 2006 Nuno Carvalho, Universidade de Lisboa
- * Copyright (C) 2013 José Orlando Pereira
- *
- * See COPYING for licensing details.
- */
 
-package net.sf.jgcs.test;
+package net.sf.jgcs.tutorial;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -17,12 +10,17 @@ import net.sf.jgcs.GroupException;
 import net.sf.jgcs.ProtocolFactory;
 import net.sf.jgcs.Service;
 
-/**
+/*
  * Test application using JNDI. Requires configuration of three objects
  * with names myProto, myGroup and myService.
  */
 public class JNDITest extends Application {
 
+	/*
+	 * Get the jGCS configuration objects from somewhere, in this case, from
+	 * JNDI. This means that we have no hard coded dependencies on any group
+	 * communication toolkit.
+	 */
 	public JNDITest(Context ctx) throws GroupException, NamingException {
 		super((ProtocolFactory) ctx.lookup("myProto"),
 				(GroupConfiguration) ctx.lookup("myGroup"),

@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>net.sf.jgcs</groupId>
+  <artifactId>tutorial</artifactId>
+  <version>0.8.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>jGCS tutorial</name>
+
+  <!-- Repository for jGCS binary packages. -->
+  <repositories>
+    <repository>
+      <id>gc</id>
+      <url>http://dl.bintray.com/jop/gc</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <!-- Mandatory compile time dependency. -->
+    <dependency>
+      <groupId>net.sf.jgcs</groupId>
+      <artifactId>jgcs</artifactId>
+      <version>0.8.0-SNAPSHOT</version>
+    </dependency>
+
+    <!-- Optional: used for reading configuration files. Any package that
+         allows you to create objects from configuration files can be used. -->
+    <dependency>
+      <groupId>simple-jndi</groupId>
+      <artifactId>simple-jndi</artifactId>
+      <version>0.11.4.1</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- Optional: any binding can be used here, but config/default.properties
+         needs to be changed accordingly. -->
+    <dependency>
+      <groupId>net.sf.jgcs</groupId>
+      <artifactId>jgcs-jgroups</artifactId>
+      <version>0.8.0-SNAPSHOT</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>net.sf.jgcs.tutorial.JNDITest</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

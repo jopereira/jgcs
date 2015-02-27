@@ -1,0 +1,7 @@
+This package demonstrates how to build protocol independent applications
+using JNDI. config/default.properties needs to be changed to switch protocol
+implementations. The corresponding dependency should be changed in pom.xml.
+By default, it uses JGroups.  Run as follows:
+
+ $ mvn exec:java
+
