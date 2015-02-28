@@ -1,5 +1,7 @@
 <head><title>About</title></head>
 
+## UDP/IP Binding
+
 This module contains an IP Multicast implementation, that provides
 basic IP Multicast based group communication using `java.net.MulticastSocket`.
 This implementation is not very useful by itself, but a good starting point for

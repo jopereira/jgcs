@@ -1,36 +1,6 @@
 
-This is an evolution of jGCS, the generic interface for group communication
-in Java, providing access to multiple toolkits, such as Appia, JGroups,
-Corosync, or Spread, through a common interface.
+This is an evolution of jGCS, the generic interface for group communication in
+Java, providing access to multiple toolkits, such as JGroups, Corosync, or Spread,
+through a common interface.
 
-The original version of JGCS (currently at version 0.6) is found at
-http://jgcs.sf.net. The design rationale is explained in a paper at
-http://jgcs.sourceforge.net/_Media/doa-06-13.pdf.
-
-The API in version 0.7 has changed from version 0.6. I still maintain a backwards
-compatible jGCS in branch compat-0.6.x, but it will not be further developed.
-Current source is at https://github.com/jopereira/jgcs (master branch).
-
-The main changes in version 0.7 are:
-
- - simplification of the API, eliminating redundant functionality (see API
- documentation and git log for porting instructions)
- - removal of support for legacy JGroups 2.x and Spread 3.x
- - Java generics are used where appropriate
- - refactoring of service provider classes in spi package
- - implementation and test of close() method in all protocols and sessions
- - major cleanup of synchronization and exception handling
- - many minor fixes, for instance, by using FindBugs
- - consistent sematics of implementations checked with tests
- - much improved JGroups and Corosync bindings
-
-To compile and use:
-
- - execute ant publish in jgcs/
- - execute ant publish in desired bindings, e.g. jgcs-jgroups/
- 
-Desired artifacts are then available at your local Ivy repository. 
-See samples/ directory for an usage example.
-
-Licenses for each sub-package differ and can be found in each 
-sub-directory.
+See Maven generated documentation at http://jopereira.github.io/jgcs for details.

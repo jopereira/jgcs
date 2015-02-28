@@ -5,7 +5,8 @@
   <artifactId>tutorial</artifactId>
   <version>0.8.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>jGCS tutorial</name>
+  <name>Tutorial</name>
+  <description>A simple application using jGCS.</description>
 
   <!-- Repository for jGCS binary packages. -->
   <repositories>
