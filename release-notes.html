@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20150228" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>jGCS - Overview</title>
+    <title>jGCS - Release Notes</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.0.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -50,7 +50,7 @@
         Home</a>
         </li>
       <li class="divider ">/</li>
-        <li class="">Overview</li>
+        <li class="">Release Notes</li>
                 
                 
                     
@@ -67,10 +67,12 @@
                 <ul class="nav nav-list">
                     <li class="nav-header">jGCS</li>
                                 
-      <li class="active">
+      <li>
     
-            <a href="#"><i class="none"></i>Overview</a>
-          </li>
+                          <a href="index.html" title="Overview">
+          <i class="none"></i>
+        Overview</a>
+            </li>
                   
       <li>
     
@@ -79,12 +81,10 @@
         History</a>
             </li>
                   
-      <li>
+      <li class="active">
     
-                          <a href="release-notes.html" title="Release Notes">
-          <i class="none"></i>
-        Release Notes</a>
-            </li>
+            <a href="#"><i class="none"></i>Release Notes</a>
+          </li>
                               <li class="nav-header">Modules</li>
                                 
       <li>
@@ -164,28 +164,66 @@
         <div id="bodyColumn"  class="span9" >
                                   
             <p></p>
-<p>The jGCS library provides a generic interface for <a class="externalLink" href="http://en.wikipedia.org/wiki/Group_communication_system">group communication</a> in Java. This interface can be used by applications that need primitives from simple unreliable IP multicast group communication to <a class="externalLink" href="http://en.wikipedia.org/wiki/Virtual_synchrony">virtual synchrony</a> or <a class="externalLink" href="http://en.wikipedia.org/wiki/Atomic_broadcast">atomic broadcast</a>. Its a common interface to several existing toolkits that provide different APIs.</p>
-<p>Using the inversion of control pattern, this service provides the separation of configuration and use: Applications use a common API that can be implemented using different toolkit bindings. The tollkit that will be used by an application is defined on configuration time. The generic interface has the following features:</p>
+<div class="section">
+<h2>Release Notes<a name="Release_Notes"></a></h2>
+<div class="section">
+<h3>0.8.0 (unreleased)<a name="a0.8.0_unreleased"></a></h3>
 
 <ul>
   
-<li>
-<p>Support for data and membership;</p></li>
+<li>build with Maven</li>
   
-<li>
-<p>Support for peer groups and multicast groups;</p></li>
+<li>test with JUnit4</li>
   
-<li>
-<p>Usable from IP multicast to virtual synchrony. It can also be usable for autonomous membership services;</p></li>
+<li>more documentation</li>
   
-<li>
-<p>High concurrency/low latency/latency hiding: Support for optimistic deliveries and semantic protocols;</p></li>
+<li>minor bug fixes</li>
+</ul></div>
+<div class="section">
+<h3>0.7.0 (2013-04-22)<a name="a0.7.0_2013-04-22"></a></h3>
+
+<ul>
   
-<li>
-<p>Container-managed concurrency: Ut is up to the application decide the thread policy to receive messages (blocking or concurrent non-blocking).</p></li>
-</ul>
-<p>Source code is available at <a class="externalLink" href="https://github.com/jopereira/jgcs">GitHub</a> and Maven binary packages at <a class="externalLink" href="https://bintray.com/jop/gc">BinTray</a>. For application development, see the <a href="jgcs/index.html">Generic API module</a>. For configuring applications with a specific group communication toolkit, see the corresponding binding module.</p>
-<p>The jGCS generic API and bindings are open source. Check each module for the its redistribution license.</p>
+<li>simplification of the API, eliminating redundant functionality (see API documentation and git log for porting instructions)</li>
+  
+<li>removal of support for legacy JGroups 2.x and Spread 3.x</li>
+  
+<li>Java generics are used where appropriate</li>
+  
+<li>refactoring of service provider classes in spi package</li>
+  
+<li>implementation and test of close() method in all protocols and sessions</li>
+  
+<li>major cleanup of synchronization and exception handling</li>
+  
+<li>many minor fixes, for instance, by using FindBugs</li>
+  
+<li>consistent semantics of implementations checked with tests</li>
+  
+<li>much improved JGroups and Corosync bindings</li>
+</ul></div>
+<div class="section">
+<h3>0.6.2 (2013-03-28)<a name="a0.6.2_2013-03-28"></a></h3>
+
+<ul>
+  
+<li>a new Corosync / Closed Process Group (CPG) binding using JNI</li>
+  
+<li>a new ZooKeeper binding, usable only for membership</li>
+  
+<li>minor changes to bindings to use updated versions of protocols</li>
+  
+<li>new build system with Ivy for dependency resolution;</li>
+  
+<li>move to GitHub</li>
+</ul></div>
+<div class="section">
+<h3>0.6.1 (2007-10-29)<a name="a0.6.1_2007-10-29"></a></h3>
+
+<ul>
+  
+<li>legacy version available in <a class="externalLink" href="http://jgcs.sf.net">SourceForge</a></li>
+</ul></div></div>
                   </div>
             </div>
           </div>
