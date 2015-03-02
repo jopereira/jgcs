@@ -28,7 +28,7 @@
     <dependency>
       <groupId>net.sf.neem</groupId>
       <artifactId>neem</artifactId>
-      <version>0.8-SNAPSHOT</version>
+      <version>0.8</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
