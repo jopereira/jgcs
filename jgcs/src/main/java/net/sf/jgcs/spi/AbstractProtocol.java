@@ -83,6 +83,8 @@ public abstract class AbstractProtocol<
 		
 		controlSessions.put(g, control);
 		dataSessions.put(g, data);
+		
+		data.boot();
 	}
 
 	protected void removeSessions(G g) {

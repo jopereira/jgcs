@@ -53,6 +53,7 @@ public abstract class AbstractPollingDataSession<
 	 * fully initialized and before any invocations. Most likely, as the last
 	 * operation of the constructor in a derived concrete class.
 	 */
+	@Override
 	protected void boot() {
 		pool.execute(task);		
 	}

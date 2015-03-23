@@ -27,7 +27,6 @@ class IpDataSession extends AbstractPollingDataSession<IpProtocol,IpDataSession,
 	
 	IpDataSession(MulticastSocket sock) {
 		this.sock=sock;
-		boot();
 	}
 
 	@Override

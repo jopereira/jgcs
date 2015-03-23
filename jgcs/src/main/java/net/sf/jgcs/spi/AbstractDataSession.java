@@ -43,6 +43,9 @@ public abstract class AbstractDataSession<
 	private MessageListener msgListener;
 	private ServiceListener srvcListener;
 	
+	protected void boot() {
+	}
+
 	protected void cleanup() {
 		msgListener = null;
 		srvcListener = null;

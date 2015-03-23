@@ -26,7 +26,6 @@ class NeEMDataSession extends AbstractPollingDataSession<NeEMProtocol,NeEMDataSe
 	
 	NeEMDataSession(MulticastChannel sock) {
 		this.sock=sock;
-		boot();
 	}
 
 	@Override
