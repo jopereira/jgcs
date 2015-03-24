@@ -49,6 +49,12 @@
 
   <modules>
     <module>jgcs</module>
+    <module>jgcs-jgroups</module>
+    <module>jgcs-corosync</module>
+    <module>jgcs-spread</module>
+    <module>jgcs-zk</module>
+    <module>jgcs-neem</module>
+    <module>jgcs-ip</module>
   </modules>
 
   <dependencies>
