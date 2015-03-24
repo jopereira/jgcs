@@ -3,4 +3,7 @@ This is an evolution of jGCS, the generic interface for group communication in
 Java, providing access to multiple toolkits, such as JGroups, Corosync, or Spread,
 through a common interface.
 
+To build, first run `mvn install` on the top-level project. Then on each desired binding.
+
 See Maven generated documentation at http://jopereira.github.io/jgcs for details.
+
