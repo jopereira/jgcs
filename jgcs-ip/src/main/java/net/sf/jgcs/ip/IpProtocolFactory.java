@@ -13,6 +13,10 @@ import net.sf.jgcs.GroupException;
 import net.sf.jgcs.Protocol;
 import net.sf.jgcs.ProtocolFactory;
 
+/**
+ * Protocol factory for IP multicast. This provides access to 
+ * java.net.MulticastSocket through the jGCS interface.
+ */
 public class IpProtocolFactory implements ProtocolFactory {
 
 	private static final long serialVersionUID = 2L;

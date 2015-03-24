@@ -12,7 +12,7 @@ package net.sf.jgcs.ip;
 import net.sf.jgcs.Service;
 
 /**
- * Service configuration. The only configuration available is the
+ * Service configuration for IP multicast. The only configuration available is the
  * time-to-live (TTL).
  */
 public class IpService implements Service {
