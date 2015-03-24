@@ -33,7 +33,7 @@ import java.net.SocketAddress;
  * the Externalizable interface such that it can be serialized. Messages
  * should be created only using the corresponding DataSession.
  */
-public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.Message, Externalizable {
+class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.Message, Externalizable {
 	
 	private SocketAddress sender;
 

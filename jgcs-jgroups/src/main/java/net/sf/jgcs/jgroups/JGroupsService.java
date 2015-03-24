@@ -28,7 +28,9 @@ import net.sf.jgcs.Service;
 
 /**
  * Service configuration. JGroups services are configured by setting
- * flags that omit certain delivery guarantees.
+ * flags that omit certain delivery guarantees. Available flags are
+ * available in <a href="http://www.jgroups.org/javadoc/org/jgroups/Message.Flag.html">
+ * JGroups documentation</a>.
  */
 public class JGroupsService implements Service {
 
