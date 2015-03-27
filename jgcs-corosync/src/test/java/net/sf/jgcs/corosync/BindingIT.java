@@ -1,4 +1,4 @@
-package net.sf.jgcs.neem;
+package net.sf.jgcs.corosync;
 
 import net.sf.jgcs.tests.AfterClose;
 import net.sf.jgcs.tests.JoinLeave;
@@ -11,7 +11,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({OpenClose.class, Messages.class, JoinLeave.class, AfterClose.class})
-public class TestAll {
+@SuiteClasses({OpenClose.class, Messages.class, JoinLeave.class, AfterClose.class, Membership.class})
+public class BindingIT {
 
 }

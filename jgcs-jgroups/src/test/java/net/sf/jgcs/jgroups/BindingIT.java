@@ -12,6 +12,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({OpenClose.class, Messages.class, JoinLeave.class, AfterClose.class, Membership.class})
-public class TestAll {
+public class BindingIT {
 
 }
