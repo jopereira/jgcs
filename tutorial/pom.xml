@@ -3,7 +3,7 @@
 
   <groupId>net.sf.jgcs</groupId>
   <artifactId>tutorial</artifactId>
-  <version>0.8.1-SNAPSHOT</version>
+  <version>0.8.1</version>
   <packaging>jar</packaging>
   <name>Tutorial</name>
   <description>A simple application using jGCS.</description>
@@ -24,7 +24,7 @@
     <dependency>
       <groupId>net.sf.jgcs</groupId>
       <artifactId>jgcs</artifactId>
-      <version>0.8.1-SNAPSHOT</version>
+      <version>0.8.1</version>
     </dependency>
 
     <!-- Optional: used for reading configuration files. Any package that

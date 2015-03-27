@@ -2,7 +2,12 @@
 
 ## Release Notes
 
-### 0.8.0 (unreleased)
+### 0.8.1 (2015-03-27)
+
+- fix race affecting IP and NeEM bindings
+- improve test handling when building
+
+### 0.8.0 (2015-03-02)
 
 - build with Maven
 - test with JUnit4
