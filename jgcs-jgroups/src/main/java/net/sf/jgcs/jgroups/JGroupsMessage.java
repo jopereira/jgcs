@@ -22,20 +22,21 @@
  
 package net.sf.jgcs.jgroups;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.net.SocketAddress;
+
+import org.jgroups.Address;
+import org.jgroups.util.Util;
 
 /**
  * Wraps a JGroups message. It provides a public construtor and implements
  * the Externalizable interface such that it can be serialized. Messages
  * should be created only using the corresponding DataSession.
  */
-class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.Message, Externalizable {
+public class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.Message {
 	
-	private SocketAddress sender;
+	private JGroupsSocketAddress sender;
 
 	public JGroupsMessage() {
 		super();
@@ -62,23 +63,20 @@ class JGroupsMessage extends org.jgroups.Message implements net.sf.jgcs.Message,
 		return this.sender;
 	}
 
-	@Override
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		try {
-			super.readFrom(in);
-		} catch (Exception e) {
-			throw new IOException(e);
-		}
-		sender = (SocketAddress) in.readObject();
+ 	@Override
+    public void readFrom(DataInput in) throws Exception {
+		super.readFrom(in);
+		Address addr = Util.readAddress(in);
+		if (addr != null)
+			sender = new JGroupsSocketAddress(addr);
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput out) throws IOException {
-		try {
-			super.writeTo(out);
-		} catch (Exception e) {
-			throw new IOException(e);
-		}
-		out.writeObject(sender);
+    public void writeTo(DataOutput out) throws Exception {
+		super.writeTo(out);
+		if (sender != null)
+			Util.writeAddress(sender.getAddress(), out);
+		else
+			Util.writeAddress(null, out);
 	}	
 }

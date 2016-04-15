@@ -36,7 +36,7 @@ public class JGroupsProtocolFactory implements ProtocolFactory {
 
 	private static final long serialVersionUID = 2L;
 	
-	private String configuration;
+	private String configuration = "tocast.xml";
 
 	/** 
 	 * Use the default JGroups protocol configuration.

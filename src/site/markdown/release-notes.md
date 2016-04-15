@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 0.8.1 (2016-04-15)
+
+- set total order as default configuration for JGroups
+
 ### 0.8.1 (2015-03-27)
 
 - fix race affecting IP and NeEM bindings
